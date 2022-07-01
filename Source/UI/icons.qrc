@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/request.png</file>
+    <file>icons/cargo.png</file>
+    <file>icons/service.png</file>
+    <file>icons/pencil.png</file>
+    <file>icons/group.png</file>
+    <file>icons/menu.png</file>
+    <file>icons/dashboard.png</file>
+    <file>icons/truck.png</file>
+    <file>icons/notification.png</file>
+    <file>icons/sign-in.png</file>
+    <file>icons/sign-out.png</file>
+    <file>icons/tools.png</file>
+  </qresource>
+</RCC>
