@@ -88,7 +88,6 @@ class Ui_MainWindow(object):
         self.animation.setStartValue(width)
         self.animation.setEndValue(newwidth)
         self.animation.start()
-    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1225, 717)
@@ -144,7 +143,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.left_menu_toggle_btn = QtWidgets.QPushButton(self.left_menu_toggle)
-        self.left_menu_toggle_btn.setMinimumSize(QtCore.QSize(0, 50))
+        self.left_menu_toggle_btn.setMinimumSize(QtCore.QSize(0, 40))
         self.left_menu_toggle_btn.setMaximumSize(QtCore.QSize(50, 16777215))
         self.left_menu_toggle_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.left_menu_toggle_btn.setStyleSheet("background-image: url(:/icons/icons/menu.png);\n"
@@ -251,12 +250,12 @@ class Ui_MainWindow(object):
         self.stackedWidget = QtWidgets.QStackedWidget(self.center_main_items)
         self.stackedWidget.setStyleSheet("background-color: #FEFDFC;")
         self.stackedWidget.setObjectName("stackedWidget")
-        '''self.page = QtWidgets.QWidget()
+        self.page = QtWidgets.QWidget()
         self.page.setObjectName("page")
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QtWidgets.QWidget()
         self.page_2.setObjectName("page_2")
-        self.stackedWidget.addWidget(self.page_2)'''
+        self.stackedWidget.addWidget(self.page_2)
         self.verticalLayout_2.addWidget(self.stackedWidget)
         self.horizontalLayout.addWidget(self.center_main_items)
         self.verticalLayout.addWidget(self.main_body)
@@ -633,3 +632,12 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.SignOut.setText(_translate("MainWindow", "Sign Out"))
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())

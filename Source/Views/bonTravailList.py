@@ -1,10 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .BonTravail import Ui_Dialog as Bontravail_UI
-
+from Models.BonTravailServices import getBonTravailList
 class Ui_Dialog(object):
+    def getSelectedRow(self):
+        for row in range(self.tableWidgetBonTravail.rowCount()):
+                if self.tableWidgetBonTravail.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
+                        print(" ".join([self.tableWidgetBonTravail.item(row,col).text() for col in range(self.tableWidgetBonTravail.columnCount())]))
     def RedirectBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
-        self.uiBonTravail = Bontravail_UI()
+        self.uiBonTravail = Bontravail_UI(self.mainWindowSelf)
         self.uiBonTravail.setupUi(self.dialogBonTravail)
         self.mainWindowSelf.stackedWidget.addWidget(self.dialogBonTravail)
         self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogBonTravail)
@@ -122,10 +126,12 @@ class Ui_Dialog(object):
         self.ButtonImprimer.setObjectName("ButtonImprimer")
         self.horizontalLayout_2.addWidget(self.ButtonImprimer)
         self.verticalLayout_3.addWidget(self.frame_4)
-        self.tableViewBonTravail = QtWidgets.QTableView(self.frame)
-        self.tableViewBonTravail.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.tableViewBonTravail.setObjectName("tableViewBonTravail")
-        self.verticalLayout_3.addWidget(self.tableViewBonTravail)
+        self.tableWidgetBonTravail = QtWidgets.QTableWidget(self.frame)
+        self.tableWidgetBonTravail.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tableWidgetBonTravail.setRowCount(0)
+        self.tableWidgetBonTravail.setColumnCount(0)
+        self.tableWidgetBonTravail.setObjectName("tableWidgetBonTravail")
+        self.verticalLayout_3.addWidget(self.tableWidgetBonTravail)
         self.verticalLayout.addWidget(self.frame)
         self.verticalLayout.setStretch(0, 1)
         self.verticalLayout.setStretch(1, 2)
@@ -133,7 +139,32 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
+        
         self.ButtonCreerBonTravail.clicked.connect(self.RedirectBonTravail)
+
+        status,record = getBonTravailList(self.mainWindowSelf.matricule)
+        if status :
+                print(record)
+                self.tableWidgetBonTravail.setColumnCount(7)
+                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","code equipement"])
+                self.tableWidgetBonTravail.setRowCount(len(record))
+
+                self.horizontal_header = self.tableWidgetBonTravail.horizontalHeader()     
+                self.horizontal_header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(6, QtWidgets.QHeaderView.ResizeToContents)
+                for row in range(len(record)):
+                        for col in range(7):
+                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
+                                self.tableWidgetBonTravail.setItem(row,col,item)
+                                if col ==0:
+                                        item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+                                        item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                self.ButtonModifier.clicked.connect(self.getSelectedRow)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -150,12 +181,3 @@ class Ui_Dialog(object):
         self.ButtonSupprimer.setText(_translate("Dialog", "Supprimer"))
         self.ButtonImprimer.setText(_translate("Dialog", "Imprimer"))
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())

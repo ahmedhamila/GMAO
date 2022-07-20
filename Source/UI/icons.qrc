@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/two-colleagues-factory.jpg</file>
     <file>icons/request.png</file>
     <file>icons/cargo.png</file>
     <file>icons/service.png</file>

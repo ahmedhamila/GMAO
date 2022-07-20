@@ -1,0 +1,32 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import *
+from .MainWindow import Ui_MainWindow
+from Models.ConnectionServices import UserConnection
+
+
+
+class Ui_Dialog(object):
+    def handleClick(self):
+        matricule = self.lineEdit.text()
+        password=self.lineEdit_2.text()
+
+        Connection,record = UserConnection(matricule,password)
+
+        if(Connection):
+            self.window=QMainWindow()
+            self.ui=Ui_MainWindow(record[0][0],record[0][2],self.d)
+            self.ui.setupUi(self.window)
+            self.window.show()
+            self.d.hide()
+            self.ErrorLabel.setVisible(False)
+            self.lineEdit.setText('')
+            self.lineEdit_2.setText('')
+        else:
+            self.ErrorLabel.setVisible(True)
+
+
+
+
+self.ErrorLabel.setVisible(False)
+        self.d=Dialog
+        self.LogIn.clicked.connect(self.handleClick)

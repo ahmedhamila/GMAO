@@ -24,14 +24,14 @@ class Ui_Dialog(object):
         else:
             self.ErrorLabel.setVisible(True)
 
-
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(341, 622)
+        Dialog.resize(1105, 715)
         Dialog.setStyleSheet("background-color : #22333B;\n"
 "")
-        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
-        self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+        self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(Dialog)
         self.frame.setStyleSheet("background-color : #FEFDFC;")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -96,15 +96,13 @@ class Ui_Dialog(object):
 "border: 1px solid back;")
         self.lineEdit.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.lineEdit.setObjectName("lineEdit")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.lineEdit)
-        
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.SpanningRole, self.lineEdit)
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame_3)
         self.lineEdit_2.setStyleSheet("width : 250px;height : 25px;\n"
 "border: 1px solid back;")
         self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.lineEdit_2)
-        
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.SpanningRole, self.lineEdit_2)
         self.verticalLayout_2.addWidget(self.frame_3)
         self.frame_2 = QtWidgets.QFrame(self.frame)
         self.frame_2.setStyleSheet("QPushButton:hover{\n"
@@ -143,11 +141,26 @@ class Ui_Dialog(object):
         self.verticalLayout_2.setStretch(0, 1)
         self.verticalLayout_2.setStretch(1, 2)
         self.verticalLayout_2.setStretch(2, 1)
-        self.verticalLayout.addWidget(self.frame)
+        self.horizontalLayout.addWidget(self.frame)
+        self.frame_5 = QtWidgets.QFrame(Dialog)
+        self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_5.setObjectName("frame_5")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_5)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_3 = QtWidgets.QLabel(self.frame_5)
+        self.label_3.setMaximumSize(QtCore.QSize(769, 677))
+        self.label_3.setText("")
+        self.label_3.setPixmap(QtGui.QPixmap(":/icons/icons/two-colleagues-factory.jpg"))
+        self.label_3.setScaledContents(True)
+        self.label_3.setWordWrap(False)
+        self.label_3.setObjectName("label_3")
+        self.horizontalLayout_2.addWidget(self.label_3)
+        self.horizontalLayout.addWidget(self.frame_5)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        
+
         self.ErrorLabel.setVisible(False)
         self.d=Dialog
         self.LogIn.clicked.connect(self.handleClick)
