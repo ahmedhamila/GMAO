@@ -167,7 +167,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Log In"))
         self.label.setText(_translate("Dialog", "GMAO"))
         self.label_2.setText(_translate("Dialog", "Log In"))
         self.Matricule.setText(_translate("Dialog", "Matricule"))

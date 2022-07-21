@@ -10,7 +10,7 @@ from .EquipementConsulter import Ui_Dialog as EquipementConsulter_UI
 from .BonApprovisionnementList import Ui_Dialog as BonApprovisionment_UI
 from .BonApprovisionnementConsulter import Ui_Dialog as BonApprovisionmentConsulter_UI
 from .ListeUser import Ui_Dialog as ListeUser2
-
+from .Dashboard import Ui_Dialog as Dashboard_UI
 from .Components.CollapsibleBox import CollapsibleBox
 
 
@@ -31,6 +31,12 @@ class Ui_MainWindow(object):
         self.uiBonTravail.setupUi(self.dialogBonTravail)
         self.stackedWidget.addWidget(self.dialogBonTravail)
         self.stackedWidget.setCurrentWidget(self.dialogBonTravail)
+    def displayDashboard(self):
+        self.dialogDashboard = QtWidgets.QDialog()
+        self.uiDashboard = Dashboard_UI()
+        self.uiDashboard.setupUi(self.dialogDashboard)
+        self.stackedWidget.addWidget(self.dialogDashboard)
+        self.stackedWidget.setCurrentWidget(self.dialogDashboard)
     def displayBonTravailConsulter(self):
         self.dialogBonTravailConsulter = QtWidgets.QDialog()
         self.uiBonTravailConsulter = BontravailConsulter_UI()
@@ -270,12 +276,18 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.main_footer)
         MainWindow.setCentralWidget(self.centralwidget)
 
+
+
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
         self.mainwindow=MainWindow
-        
+        self.dashboard = QtWidgets.QDialog()
+        self.ui_dashboard =Dashboard_UI()
+        self.ui_dashboard.setupUi(self.dashboard)
+        self.stackedWidget.addWidget(self.dashboard)
+        self.stackedWidget.setCurrentWidget(self.dashboard)
         
 
         ##############################################################################################################################################################################
@@ -286,6 +298,9 @@ class Ui_MainWindow(object):
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
+
+            
+
             self.DashboardBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.DashboardBox.setStyleSheet("background-image: url(:/icons/icons/dashboard.png);\n"
     "background-repeat: none;\n"
@@ -295,6 +310,8 @@ class Ui_MainWindow(object):
     "height: 22px;\n"
     "font-weight : bold;\n"
     "background-position: center left;")
+
+            self.DashboardBox.clicked.connect(self.displayDashboard)
             self.formLayout.addWidget(self.DashboardBox)
 
             self.MaintenanceBox = CollapsibleBox('Maintenance',self.left_menu_top_buttons,2,":/icons/icons/tools.png")
@@ -512,6 +529,8 @@ class Ui_MainWindow(object):
             "font-weight: bold;\n"
             "height: 22px;\n"
             "background-position: center left;")
+
+            self.DashboardBox.clicked.connect(self.displayDashboard)
             self.formLayout.addWidget(self.DashboardBox)
 
 
@@ -626,6 +645,7 @@ class Ui_MainWindow(object):
         ################################################################################################################
         self.left_menu_toggle_btn.clicked.connect(self.slideLeftMenu)
         self.SignOut.clicked.connect(self.signOut)
+        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
