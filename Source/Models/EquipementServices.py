@@ -1,21 +1,19 @@
-
 import mysql.connector
 from mysql.connector import Error
 
-
-def getBonTravailList(matriculeRM):
+def getEquipements():
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """select * from bon_travail where matricule_RM = %s """
+            query = "select * from equipement "
             cursor = connection.cursor()
-            cursor.execute(query,(matriculeRM,))
+            cursor.execute(query)
             record = cursor.fetchall()
             print(record)
-            if len(record) >= 1 :
+            if len(record) >0 :
                 return True,record
             else :
                 return False,False
@@ -27,5 +25,3 @@ def getBonTravailList(matriculeRM):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
-
-

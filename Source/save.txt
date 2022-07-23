@@ -1,32 +1,43 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import *
-from .MainWindow import Ui_MainWindow
-from Models.ConnectionServices import UserConnection
-
-
-
+from datetime import datetime
+from Models import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices
 class Ui_Dialog(object):
-    def handleClick(self):
-        matricule = self.lineEdit.text()
-        password=self.lineEdit_2.text()
-
-        Connection,record = UserConnection(matricule,password)
-
-        if(Connection):
-            self.window=QMainWindow()
-            self.ui=Ui_MainWindow(record[0][0],record[0][2],self.d)
-            self.ui.setupUi(self.window)
-            self.window.show()
-            self.d.hide()
-            self.ErrorLabel.setVisible(False)
-            self.lineEdit.setText('')
-            self.lineEdit_2.setText('')
-        else:
-            self.ErrorLabel.setVisible(True)
+    def __init__(self,mainWindowSelf) -> None:
+        self.mainWindowSelf=mainWindowSelf
+    
+    def radioButtonClicked(self):
+        if self.radioButtonPreventif.isChecked() :
+            self.lineEditPreventif.setVisible(True)
+            self.checkBoxActive.setVisible(True)
+            self.lineEditCorrectif.setVisible(False)
+        if self.radioButtonCorrectif.isChecked() :
+            self.lineEditPreventif.setVisible(False)
+            self.checkBoxActive.setVisible(False)
+            self.lineEditCorrectif.setVisible(True)
 
 
 
 
-self.ErrorLabel.setVisible(False)
-        self.d=Dialog
-        self.LogIn.clicked.connect(self.handleClick)
+
+#Initialization
+        self.dateLiberation.setText("Date : "+datetime.date(datetime.now()).__str__())
+        state,record = ResponsableMaintenanceServices.getResponsableMaintenance(self.mainWindowSelf.matricule)
+        if state:
+            self.labelEmetteur.setText(record[0][0]+" "+record[0][1]+" "+record[0][2])
+        
+        state,record = AgentMaintenanceServices.getAgentMaintenance()
+        if state:
+            for rec in record :
+                self.comboBoxDestinateur.addItem(rec[0]+" "+rec[1]+" "+rec[2])
+
+        state,record = EquipementServices.getEquipements()
+        if state:
+            for rec in record :
+                self.comboBoxEquipement.addItem(rec[0]+" "+rec[1]+" "+rec[2])
+        
+        self.lineEditCorrectif.setVisible(False)
+        self.lineEditPreventif.setVisible(False)
+        self.checkBoxActive.setVisible(False)
+
+        self.radioButtonCorrectif.clicked.connect(self.radioButtonClicked)
+        self.radioButtonPreventif.clicked.connect(self.radioButtonClicked)
