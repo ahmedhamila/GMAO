@@ -48,6 +48,7 @@ II) Instalation & Configuration
 		version : 5.7
 		build : 64 bits
 		site web : https://dev.mysql.com/doc/relnotes/mysql/5.7/en/
+	2- DB Name : gmao_db
 
 
 
