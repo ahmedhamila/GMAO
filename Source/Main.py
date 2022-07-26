@@ -7,7 +7,7 @@ class Main:
         self.window=QDialog()
         self.ui=LogIn()
         self.ui.setupUi(self.window)
-        self.window.show()    
+        self.window.show()     
 
 
 app=QtWidgets.QApplication(sys.argv)

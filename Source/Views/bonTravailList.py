@@ -1,19 +1,86 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from .BonTravail import Ui_Dialog as Bontravail_UI
-from Models.BonTravailServices import getBonTravailList
+from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
+from Models.BonTravailServices import getBonTravailList,deleteBonTravail
 class Ui_Dialog(object):
     def getSelectedRow(self):
+        rows=[]
         for row in range(self.tableWidgetBonTravail.rowCount()):
                 if self.tableWidgetBonTravail.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
-                        print(" ".join([self.tableWidgetBonTravail.item(row,col).text() for col in range(self.tableWidgetBonTravail.columnCount())]))
+                        rows.append(self.tableWidgetBonTravail.item(row,0).text())
+        return rows
+    def modifierBonTravial(self):
+        ids=self.getSelectedRow()
+        if len(ids)>1:
+                self.showDialog("Error","Impossible d'effectuer cette action sur plus d'une ligne",False)
+                return 
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner une ligne",False)
+                return 
+        self.RedirectBonTravailModify(ids[0])
+    def RedirectBonTravailModify(self,id):
+        self.dialogBonTravail = QtWidgets.QDialog()
+        self.uiBonTravail = BonTravail_Modif_UI(self.mainWindowSelf,id,self.BonTravailDLG,self)
+        self.uiBonTravail.setupUi(self.dialogBonTravail)
+        self.mainWindowSelf.stackedWidget.addWidget(self.dialogBonTravail)
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogBonTravail)
+    def supprimerbonTravail(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return 
+        deleteBonTravail(ids)
+        self.fetchRows()
+    def imprimerBonTravail(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return 
+    def fetchRows(self):
+        status,record = getBonTravailList(self.mainWindowSelf.matricule)
+        if status :
+                self.tableWidgetBonTravail.setColumnCount(8)
+                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","Type","Code equipement"])
+                self.tableWidgetBonTravail.setRowCount(len(record))
+
+                self.horizontal_header = self.tableWidgetBonTravail.horizontalHeader()     
+                self.horizontal_header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(6, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(7, QtWidgets.QHeaderView.ResizeToContents)
+                for row in range(len(record)):
+                        for col in range(8):
+                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
+                                self.tableWidgetBonTravail.setItem(row,col,item)
+                                if col ==0:
+                                        item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+                                        item.setCheckState(QtCore.Qt.CheckState.Unchecked) 
     def RedirectBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
         self.uiBonTravail = Bontravail_UI(self.mainWindowSelf)
         self.uiBonTravail.setupUi(self.dialogBonTravail)
         self.mainWindowSelf.stackedWidget.addWidget(self.dialogBonTravail)
         self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogBonTravail)
-    def __init__(self,mainWindowSelf) -> None:
+
+    def showDialog(self,title,str,bool):
+        msgBox = QMessageBox()
+        if bool==False:
+            msgBox.setIcon(QMessageBox.Warning)
+        else:
+            msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(str)
+        msgBox.setWindowTitle(title)
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+
+    def __init__(self,mainWindowSelf,bontravdlg) -> None:
         self.mainWindowSelf=mainWindowSelf
+        self.BonTravailDLG=bontravdlg
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1015, 811)
@@ -142,29 +209,10 @@ class Ui_Dialog(object):
         
         self.ButtonCreerBonTravail.clicked.connect(self.RedirectBonTravail)
 
-        status,record = getBonTravailList(self.mainWindowSelf.matricule)
-        if status :
-                print(record)
-                self.tableWidgetBonTravail.setColumnCount(7)
-                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","code equipement"])
-                self.tableWidgetBonTravail.setRowCount(len(record))
-
-                self.horizontal_header = self.tableWidgetBonTravail.horizontalHeader()     
-                self.horizontal_header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-                self.horizontal_header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-                self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
-                self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
-                self.horizontal_header.setSectionResizeMode(6, QtWidgets.QHeaderView.ResizeToContents)
-                for row in range(len(record)):
-                        for col in range(7):
-                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
-                                self.tableWidgetBonTravail.setItem(row,col,item)
-                                if col ==0:
-                                        item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
-                                        item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-                self.ButtonModifier.clicked.connect(self.getSelectedRow)
+        self.fetchRows()
+        self.ButtonModifier.clicked.connect(self.modifierBonTravial)
+        self.ButtonSupprimer.clicked.connect(self.supprimerbonTravail)
+        self.ButtonImprimer.clicked.connect(self.imprimerBonTravail)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

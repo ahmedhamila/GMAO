@@ -1,24 +1,70 @@
-from msilib.schema import RadioButton
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from Models import BonTravailServices,ResponsableMaintenanceServices,AgentMaintenanceServices,EquipementServices
 from datetime import datetime
-from Models import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices
+from PyQt5.QtWidgets import QMessageBox
 class Ui_Dialog(object):
-    def __init__(self,mainWindowSelf) -> None:
+    def __init__(self,mainWindowSelf,id,BonTravailDLG,BonTravailUI) -> None:
+        self.id=id
         self.mainWindowSelf=mainWindowSelf
-    
-    def radioButtonClicked(self):
-        if self.radioButtonPreventif.isChecked() :
-            self.lineEditPreventif.setVisible(True)
-            self.checkBoxActive.setVisible(True)
-            self.lineEditCorrectif.setVisible(False)
-        if self.radioButtonCorrectif.isChecked() :
-            self.lineEditPreventif.setVisible(False)
-            self.checkBoxActive.setVisible(False)
-            self.lineEditCorrectif.setVisible(True)
-    def comboChange(self):
-        self.labelCodeEquipement.setText(self.codes[self.comboBoxEquipement.currentIndex()])
-    def addBonTravail(self):
+        self.BonTravailDLG=BonTravailDLG
+        self.BonTravailUI=BonTravailUI
+    def initialiseBonTravail(self):
+        status,record=BonTravailServices.getBonTravail(self.id)
+        if status :
+            self.dateLiberation.setText("Date : "+record[0][5].__str__())
+
+            state1,record1 = ResponsableMaintenanceServices.getResponsableMaintenance(self.mainWindowSelf.matricule)
+            if state1:
+                self.labelEmetteur.setText(record1[0][0]+" "+record1[0][1]+" "+record1[0][2])
+            
+            state2,record2 = AgentMaintenanceServices.getAgentMaintenance()
+            self.comboBoxDestinateur.clear()
+            index=0
+            i=0
+            if state2:
+                for rec in record2 :
+                    if rec[0]==record[0][3] :
+                        index = i
+                    self.comboBoxDestinateur.addItem(rec[0]+" "+rec[1]+" "+rec[2])
+                    i+=1
+            self.comboBoxDestinateur.setCurrentIndex(index)
+
+            state3,record3 = EquipementServices.getEquipements()
+            self.comboBoxEquipement.clear()
+            self.codes=[rec[0] for rec in record3]
+            index=0
+            i=0
+            if state3:
+                for rec in record3 :
+                    self.comboBoxEquipement.addItem(rec[1]+" "+rec[2])
+
+            self.comboBoxEquipement.setCurrentIndex(self.codes.index(record[0][7]))
+            self.labelCodeEquipement.setText(record3[self.codes.index(record[0][7])][0])
+
+            self.lineEditSection.setText(record[0][4])
+            self.textEditDescription.setText(record[0][3])
+
+            if record[0][6] == "Preventif" :
+                self.radioButtonCorrectif.setChecked(False)
+                self.radioButtonPreventif.setChecked(True)
+
+                self.lineEditCorrectif.setText("")
+                self.lineEditPreventif.setText("")
+                self.checkBoxActive.setChecked(False)
+                self.lineEditCorrectif.setVisible(False)
+                self.lineEditPreventif.setVisible(True)
+                self.checkBoxActive.setVisible(False)
+            else :
+                self.radioButtonCorrectif.setChecked(True)
+                self.radioButtonPreventif.setChecked(False)
+
+                self.lineEditCorrectif.setText("")
+                self.lineEditPreventif.setText("")
+                self.checkBoxActive.setChecked(False)
+                self.lineEditCorrectif.setVisible(True)
+                self.lineEditPreventif.setVisible(False)
+                self.checkBoxActive.setVisible(True)
+    def modifierBonTravail(self):
         if self.radioButtonPreventif.isChecked() :
             refDIM = self.lineEditPreventif.text()
             type="Preventif"
@@ -32,43 +78,11 @@ class Ui_Dialog(object):
         codeEquipement=self.labelCodeEquipement.text()
         section=self.lineEditSection.text()
         description=self.textEditDescription.toPlainText()
-        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement)
-        BonTravailServices.addBonTravail(record)
-        self.showDialog('Success',"Bon de travail ajouté avec succé",True)
-        self.initialiseBonTravail()
-    def initialiseBonTravail(self):
-        #Initialization
-        self.dateLiberation.setText("Date : "+datetime.date(datetime.now()).__str__())
-        state,record = ResponsableMaintenanceServices.getResponsableMaintenance(self.mainWindowSelf.matricule)
-        if state:
-            self.labelEmetteur.setText(record[0][0]+" "+record[0][1]+" "+record[0][2])
-        
-        state,record = AgentMaintenanceServices.getAgentMaintenance()
-        self.comboBoxDestinateur.clear()
-        if state:
-            for rec in record :
-                self.comboBoxDestinateur.addItem(rec[0]+" "+rec[1]+" "+rec[2])
-
-        state,record = EquipementServices.getEquipements()
-        self.comboBoxEquipement.clear()
-        self.codes=[rec[0] for rec in record]
-        self.labelCodeEquipement.setText(record[0][0])
-        if state:
-            for rec in record :
-                self.comboBoxEquipement.addItem(rec[1]+" "+rec[2])
-        
-        self.lineEditSection.setText("")
-        self.textEditDescription.setText("")
-
-        self.radioButtonCorrectif.setChecked(False)
-        self.radioButtonPreventif.setChecked(False)
-
-        self.lineEditCorrectif.setText("")
-        self.lineEditPreventif.setText("")
-        self.checkBoxActive.setChecked(False)
-        self.lineEditCorrectif.setVisible(False)
-        self.lineEditPreventif.setVisible(False)
-        self.checkBoxActive.setVisible(False)
+        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement,self.id)
+        BonTravailServices.updateBonTravail(record)
+        self.showDialog('Success',"Bon de travail Modifié avec succé",True)
+        self.BonTravailUI.fetchRows()
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.BonTravailDLG)
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:
@@ -78,8 +92,7 @@ class Ui_Dialog(object):
         msgBox.setText(str)
         msgBox.setWindowTitle(title)
         msgBox.setStandardButtons(QMessageBox.Ok)
-        msgBox.exec()
-        
+        msgBox.exec()   
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(850, 825)
@@ -347,13 +360,13 @@ class Ui_Dialog(object):
         self.textEditDescription.setObjectName("textEditDescription")
         self.verticalLayout_3.addWidget(self.textEditDescription)
         self.verticalLayout.addWidget(self.frame_4)
-        self.buttonEnvoyer = QtWidgets.QPushButton(self.frame)
+        self.buttonModifier = QtWidgets.QPushButton(self.frame)
         font = QtGui.QFont()
         font.setFamily("Modern No. 20")
         font.setPointSize(18)
-        self.buttonEnvoyer.setFont(font)
-        self.buttonEnvoyer.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.buttonEnvoyer.setStyleSheet("QPushButton{\n"
+        self.buttonModifier.setFont(font)
+        self.buttonModifier.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.buttonModifier.setStyleSheet("QPushButton{\n"
 "height : 25px;\n"
 "background-color :#00A8E8;\n"
 "}\n"
@@ -362,8 +375,8 @@ class Ui_Dialog(object):
 "QPushButton:hover{\n"
 "    background-color: rgb(0, 92, 157);\n"
 "};")
-        self.buttonEnvoyer.setObjectName("buttonEnvoyer")
-        self.verticalLayout.addWidget(self.buttonEnvoyer)
+        self.buttonModifier.setObjectName("buttonModifier")
+        self.verticalLayout.addWidget(self.buttonModifier)
         self.verticalLayout.setStretch(3, 1)
         self.verticalLayout.setStretch(4, 1)
         self.verticalLayout.setStretch(5, 1)
@@ -373,13 +386,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
         self.initialiseBonTravail()
-
-        self.comboBoxEquipement.currentTextChanged.connect(self.comboChange)
-        self.radioButtonCorrectif.clicked.connect(self.radioButtonClicked)
-        self.radioButtonPreventif.clicked.connect(self.radioButtonClicked)
-
-        self.buttonEnvoyer.clicked.connect(self.addBonTravail)
-    
+        self.buttonModifier.clicked.connect(self.modifierBonTravail)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -398,14 +405,4 @@ class Ui_Dialog(object):
         self.label_10.setText(_translate("Dialog", "Section :"))
         self.label_9.setText(_translate("Dialog", "Code :"))
         self.label_11.setText(_translate("Dialog", "Travaux à exécuter ( voir fiche d\'action) :"))
-        self.buttonEnvoyer.setText(_translate("Dialog", "Envoyer"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
+        self.buttonModifier.setText(_translate("Dialog", "Modifier"))

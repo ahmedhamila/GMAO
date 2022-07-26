@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
         self.stackedWidget.setCurrentWidget(self.adduser)
     def displayBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
-        self.uiBonTravail = Bontravail_UI(self)
+        self.uiBonTravail = Bontravail_UI(self,self.dialogBonTravail)
         self.uiBonTravail.setupUi(self.dialogBonTravail)
         self.stackedWidget.addWidget(self.dialogBonTravail)
         self.stackedWidget.setCurrentWidget(self.dialogBonTravail)
