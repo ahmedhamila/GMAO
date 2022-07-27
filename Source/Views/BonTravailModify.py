@@ -49,8 +49,8 @@ class Ui_Dialog(object):
                 self.radioButtonPreventif.setChecked(True)
 
                 self.lineEditCorrectif.setText("")
-                self.lineEditPreventif.setText("")
-                self.checkBoxActive.setChecked(False)
+                self.lineEditPreventif.setText(record[0][9])
+                self.checkBoxActive.setChecked(False if record[0][10]==0 else True)
                 self.lineEditCorrectif.setVisible(False)
                 self.lineEditPreventif.setVisible(True)
                 self.checkBoxActive.setVisible(False)
@@ -58,19 +58,32 @@ class Ui_Dialog(object):
                 self.radioButtonCorrectif.setChecked(True)
                 self.radioButtonPreventif.setChecked(False)
 
-                self.lineEditCorrectif.setText("")
+                self.lineEditCorrectif.setText(record[0][8])
                 self.lineEditPreventif.setText("")
                 self.checkBoxActive.setChecked(False)
                 self.lineEditCorrectif.setVisible(True)
                 self.lineEditPreventif.setVisible(False)
                 self.checkBoxActive.setVisible(True)
-    def modifierBonTravail(self):
+    def radioButtonClicked(self):
         if self.radioButtonPreventif.isChecked() :
-            refDIM = self.lineEditPreventif.text()
+            self.lineEditPreventif.setVisible(True)
+            self.checkBoxActive.setVisible(True)
+            self.lineEditCorrectif.setVisible(False)
+        if self.radioButtonCorrectif.isChecked() :
+            self.lineEditPreventif.setVisible(False)
+            self.checkBoxActive.setVisible(False)
+            self.lineEditCorrectif.setVisible(True)
+    def modifierBonTravail(self):
+        refDIM=""
+        frequence=""
+        active=""
+        if self.radioButtonPreventif.isChecked() :
+            frequence = self.lineEditPreventif.text()
+            active = self.checkBoxActive.isChecked()
             type="Preventif"
         elif self.radioButtonCorrectif.isChecked():
             type="Correctif"
-            frequence = self.lineEditCorrectif.text()
+            refDIM = self.lineEditCorrectif.text()
         else:
             print("error")
         matriculeRM=self.labelEmetteur.text().split(" ")[0]
@@ -78,7 +91,7 @@ class Ui_Dialog(object):
         codeEquipement=self.labelCodeEquipement.text()
         section=self.lineEditSection.text()
         description=self.textEditDescription.toPlainText()
-        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement,self.id)
+        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement,refDIM,frequence,1 if active else 0,self.id)
         BonTravailServices.updateBonTravail(record)
         self.showDialog('Success',"Bon de travail Modifié avec succé",True)
         self.BonTravailUI.fetchRows()
@@ -387,6 +400,9 @@ class Ui_Dialog(object):
 
         self.initialiseBonTravail()
         self.buttonModifier.clicked.connect(self.modifierBonTravail)
+        
+        self.radioButtonCorrectif.clicked.connect(self.radioButtonClicked)
+        self.radioButtonPreventif.clicked.connect(self.radioButtonClicked)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

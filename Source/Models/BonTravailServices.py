@@ -33,8 +33,11 @@ def updateBonTravail(record):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """update bon_travail set Matricule_RM = %s,Matricule_AM = %s,Description = %s,Section = %s,DateLiberation = %s,type = %s,CodeEquipement = %s where id = %s"""
+            query = """update bon_travail set Matricule_RM = %s,Matricule_AM = %s,Description = %s,Section = %s,DateLiberation = %s,type = %s,CodeEquipement = %s,RefDIM = %s,Frequence = %s,Active = %s where id = %s"""
             cursor = connection.cursor()
+            print("######################################•")
+            print(query,record)
+            print("######################################•")
             cursor.execute(query,record)
             record = cursor.fetchall()
             print(cursor.rowcount)
@@ -80,7 +83,11 @@ def addBonTravail(record):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """insert into bon_travail(Matricule_RM,Matricule_AM,Description,Section,DateLiberation,type,CodeEquipement) values (%s,%s,%s,%s,%s,%s,%s) """
+            query = """insert into bon_travail(Matricule_RM,Matricule_AM,Description,Section,DateLiberation,type,CodeEquipement,RefDIM,Frequence,Active) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+            
+            print("######################################•")
+            print(query,record)
+            print("######################################•")
             cursor = connection.cursor()
             cursor.execute(query,record)
             print(cursor.rowcount)

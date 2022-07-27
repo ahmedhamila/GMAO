@@ -40,8 +40,8 @@ class Ui_Dialog(object):
     def fetchRows(self):
         status,record = getBonTravailList(self.mainWindowSelf.matricule)
         if status :
-                self.tableWidgetBonTravail.setColumnCount(8)
-                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","Type","Code equipement"])
+                self.tableWidgetBonTravail.setColumnCount(11)
+                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","Type","Code equipement","RefDIM","Frequence","Active"])
                 self.tableWidgetBonTravail.setRowCount(len(record))
 
                 self.horizontal_header = self.tableWidgetBonTravail.horizontalHeader()     
@@ -53,13 +53,21 @@ class Ui_Dialog(object):
                 self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(6, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(7, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(8, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(9, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(10, QtWidgets.QHeaderView.ResizeToContents)
                 for row in range(len(record)):
-                        for col in range(8):
-                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
-                                self.tableWidgetBonTravail.setItem(row,col,item)
+                        for col in range(11):
+                                if col==10 :
+                                        item=QtWidgets.QTableWidgetItem('False' if record[row][col]==0 else 'True')
+                                        self.tableWidgetBonTravail.setItem(row,col,item)
+                                else :
+                                        item=QtWidgets.QTableWidgetItem(str(record[row][col]))
+                                        self.tableWidgetBonTravail.setItem(row,col,item)
                                 if col ==0:
                                         item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                                         item.setCheckState(QtCore.Qt.CheckState.Unchecked) 
+
     def RedirectBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
         self.uiBonTravail = Bontravail_UI(self.mainWindowSelf)

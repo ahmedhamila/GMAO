@@ -19,12 +19,17 @@ class Ui_Dialog(object):
     def comboChange(self):
         self.labelCodeEquipement.setText(self.codes[self.comboBoxEquipement.currentIndex()])
     def addBonTravail(self):
+        refDIM=""
+        frequence=""
+        active=""
         if self.radioButtonPreventif.isChecked() :
-            refDIM = self.lineEditPreventif.text()
+            frequence = self.lineEditPreventif.text()
+            active = self.checkBoxActive.isChecked()
             type="Preventif"
         elif self.radioButtonCorrectif.isChecked():
             type="Correctif"
-            frequence = self.lineEditCorrectif.text()
+            refDIM = self.lineEditCorrectif.text()
+            
         else:
             print("error")
         matriculeRM=self.labelEmetteur.text().split(" ")[0]
@@ -32,7 +37,8 @@ class Ui_Dialog(object):
         codeEquipement=self.labelCodeEquipement.text()
         section=self.lineEditSection.text()
         description=self.textEditDescription.toPlainText()
-        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement)
+        print("---------------",refDIM,'-',frequence,'-',active)
+        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement,refDIM,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
         BonTravailServices.addBonTravail(record)
         self.showDialog('Success',"Bon de travail ajouté avec succé",True)
         self.initialiseBonTravail()

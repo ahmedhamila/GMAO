@@ -16,6 +16,8 @@ class Ui_Dialog(object):
             self.window=QMainWindow()
             self.ui=Ui_MainWindow(record[0][0],record[0][2],self.d)
             self.ui.setupUi(self.window)
+            self.resize()
+            self.center()
             self.window.show()
             self.d.hide()
             self.ErrorLabel.setVisible(False)
@@ -23,10 +25,18 @@ class Ui_Dialog(object):
             self.lineEdit_2.setText('')
         else:
             self.ErrorLabel.setVisible(True)
-
+    def center(self):
+        qr = self.window.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.window.move(qr.topLeft())
+    def resize(self):
+        qr = self.window.frameGeometry()
+        cp = QDesktopWidget().availableGeometry()
+        self.window.setMinimumSize(int(cp.width()*0.7),int(cp.height()*0.8))
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(1105, 715)
+        Dialog.resize(250, 640)
         Dialog.setStyleSheet("background-color : #22333B;\n"
 "")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)

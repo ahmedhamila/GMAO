@@ -94,6 +94,7 @@ class Ui_MainWindow(object):
         self.animation.setStartValue(width)
         self.animation.setEndValue(newwidth)
         self.animation.start()
+        
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1225, 717)
