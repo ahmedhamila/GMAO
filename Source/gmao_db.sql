@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2022 at 01:44 PM
+-- Generation Time: Jul 27, 2022 at 11:42 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -66,7 +66,7 @@ CREATE TABLE `bon_approvisionnement` (
 --
 
 CREATE TABLE `bon_travail` (
-  `Id` varchar(25) NOT NULL,
+  `Id` int(25) NOT NULL,
   `Matricule_RM` varchar(50) NOT NULL,
   `Matricule_AM` varchar(50) NOT NULL,
   `Description` text NOT NULL,
@@ -81,9 +81,8 @@ CREATE TABLE `bon_travail` (
 --
 
 INSERT INTO `bon_travail` (`Id`, `Matricule_RM`, `Matricule_AM`, `Description`, `Section`, `DateLiberation`, `type`, `CodeEquipement`) VALUES
-('1', 'AAA00001', 'AAA00009', 'bon de test', '1', '2022-07-20', 'Correctif', 'EEE00001'),
-('2', 'AAA00001', 'AAA00009', 'jhhjv test', '1', '2022-07-20', 'Correctif', 'EEE00001'),
-('3', 'AAA00001', 'AAA00009', 'kjbf test', '1', '2022-07-20', 'Correctif', 'EEE00001');
+(5, 'AAA00001', 'AAA00009', 'a:kjfnakfkanf\nahdakdkabdd\nddddddddddd', 'C', '2022-07-26', 'Correctif', 'EEE00001'),
+(6, 'AAA00001', 'AAA00009', 'a:kjfnakfkanf\nakfjbkafbkabfka', 'B', '2022-07-26', 'Correctif', 'EEE00002');
 
 -- --------------------------------------------------------
 
@@ -350,6 +349,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `bon_travail`
+--
+ALTER TABLE `bon_travail`
+  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `piece_rechange_bon_approvisionnement`
