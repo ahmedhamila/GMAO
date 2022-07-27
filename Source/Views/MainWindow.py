@@ -1,4 +1,3 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from . import icons_rc
 from .bonTravailList import Ui_Dialog as Bontravail_UI
@@ -10,21 +9,71 @@ from .EquipementConsulter import Ui_Dialog as EquipementConsulter_UI
 from .BonApprovisionnementList import Ui_Dialog as BonApprovisionment_UI
 from .BonApprovisionnementConsulter import Ui_Dialog as BonApprovisionmentConsulter_UI
 from .ListeUser import Ui_Dialog as ListeUser2
+from .Dashboard import Ui_Dialog as dashboard
+from PyQt5.QtWidgets import *
+
 from .Dashboard import Ui_Dialog as Dashboard_UI
 from .Components.CollapsibleBox import CollapsibleBox
 
 
 class Ui_MainWindow(object):
+    
     def __init__(self,matricule,role,dialogSignIn) -> None:
         self.matricule = matricule
         self.role = role
         self.dialogSignIn=dialogSignIn
+    
+    def slideLeftMenu(self,x):
+        if x=="1":
+            width=self.left_side_menu.width()
+            if width ==75:
+                    newwidth=285
+            else:
+                newwidth=75
+            self.animation=QtCore.QPropertyAnimation(self.left_side_menu,b"minimumWidth")
+            self.animation.setDuration(250)
+            self.animation.setStartValue(width)
+            self.animation.setEndValue(newwidth)
+            self.animation.start()
+        if x=="2":
+            width=self.left_side_menu.width()
+            if width ==75:
+                    newwidth=285
+                    self.animation=QtCore.QPropertyAnimation(self.left_side_menu,b"minimumWidth")
+                    self.animation.setDuration(250)
+                    self.animation.setStartValue(width)
+                    self.animation.setEndValue(newwidth)
+                    self.animation.start()
+        if x=="3":
+            width=self.left_side_menu.width()
+            if width ==285:
+                    newwidth=75
+                    self.animation=QtCore.QPropertyAnimation(self.left_side_menu,b"minimumWidth")
+                    self.animation.setDuration(250)
+                    self.animation.setStartValue(width)
+                    self.animation.setEndValue(newwidth)
+                    self.animation.start()
+
+
+    
+        
+
     def handleadd(self):
         self.adduser = QtWidgets.QDialog()
         self.ui_adduser =ListeUser2(self.stackedWidget)
         self.ui_adduser.setupUi(self.adduser)
         self.stackedWidget.addWidget(self.adduser)
         self.stackedWidget.setCurrentWidget(self.adduser)
+
+    def affdash(self):
+        
+        self.affda = QtWidgets.QDialog()
+        self.ui_affda =dashboard()
+        self.ui_affda.setupUi(self.affda)
+        self.stackedWidget.addWidget(self.affda)
+        self.stackedWidget.setCurrentWidget(self.affda)
+
+
     def displayBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
         self.uiBonTravail = Bontravail_UI(self,self.dialogBonTravail)
@@ -83,18 +132,8 @@ class Ui_MainWindow(object):
     def signOut(self):
         self.dialogSignIn.show()
         self.mainwindow.hide()
-    def slideLeftMenu(self):
-        width=self.left_side_menu.width()
-        if width ==75:
-                newwidth=285
-        else:
-            newwidth=75
-        self.animation=QtCore.QPropertyAnimation(self.left_side_menu,b"minimumWidth")
-        self.animation.setDuration(250)
-        self.animation.setStartValue(width)
-        self.animation.setEndValue(newwidth)
-        self.animation.start()
-        
+
+     
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1225, 717)
@@ -290,12 +329,15 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.dashboard)
         self.stackedWidget.setCurrentWidget(self.dashboard)
         
+        
 
         ##############################################################################################################################################################################
                                                                             # Responsable Maintenance #
         ##############################################################################################################################################################################
 
         if self.role == 'ResponsableMaintenance':
+            
+            self.affdash()
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
@@ -315,15 +357,27 @@ class Ui_MainWindow(object):
             self.DashboardBox.clicked.connect(self.displayDashboard)
             self.formLayout.addWidget(self.DashboardBox)
 
+            self.DashboardBox.clicked.connect(self.affdash)
+            self.DashboardBox.clicked.connect(lambda:self.slideLeftMenu("2"))
+
             self.MaintenanceBox = CollapsibleBox('Maintenance',self.left_menu_top_buttons,2,":/icons/icons/tools.png")
             lay = QtWidgets.QVBoxLayout()
+            self.MaintenanceBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
+
+            
+            
+
+            
+            
             
         
             MaintenanceBonTravailPreventifCurative = QtWidgets.QPushButton("Bon de Travail")
+            MaintenanceBonTravailPreventifCurative.clicked.connect(lambda:self.slideLeftMenu("3"))
+            
             MaintenanceBonTravailPreventifCurative.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             MaintenanceBonTravailPreventifCurative.setStyleSheet("height : 17px ;font-weight:bold;")
             lay.addWidget(MaintenanceBonTravailPreventifCurative)
-
+            
             MaintenanceBonTravailPreventifCurative.clicked.connect(self.displayBonTravail)
             
             self.MaintenanceBox.setContentLayout(lay)
@@ -332,8 +386,10 @@ class Ui_MainWindow(object):
 
             
             self.NotificationsBox = CollapsibleBox('Notifications',self.left_menu_top_buttons,2,":/icons/icons/notification.png")
+            self.NotificationsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
             NotificationsConsulterDemandesInterventions = QtWidgets.QPushButton("Demandes d'Interventions")
+            NotificationsConsulterDemandesInterventions.clicked.connect(lambda:self.slideLeftMenu("3"))
             NotificationsConsulterDemandesInterventions.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             NotificationsConsulterDemandesInterventions.setStyleSheet("height : 17px ;font-weight:bold;")
             
@@ -342,9 +398,11 @@ class Ui_MainWindow(object):
             self.formLayout.addWidget(self.NotificationsBox)
 
             self.EquipementsBox = CollapsibleBox('Equipements',self.left_menu_top_buttons,2,":/icons/icons/truck.png")
+            self.EquipementsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             EquipementsConsulter = QtWidgets.QPushButton("Liste Équipements")
+            EquipementsConsulter.clicked.connect(lambda:self.slideLeftMenu("3"))
             EquipementsConsulter.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             EquipementsConsulter.setStyleSheet("height : 17px ;font-weight:bold;")
 
@@ -352,6 +410,7 @@ class Ui_MainWindow(object):
             lay.addWidget(EquipementsConsulter)
 
             EquipementsDemandeApprovisionnement = QtWidgets.QPushButton("Demande d'Approvisionnement")
+            EquipementsDemandeApprovisionnement.clicked.connect(lambda:self.slideLeftMenu("3"))
             EquipementsDemandeApprovisionnement.setStyleSheet("height : 17px ;font-weight:bold;")
             EquipementsDemandeApprovisionnement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
@@ -372,6 +431,7 @@ class Ui_MainWindow(object):
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
+            self.DashboardBox.clicked.connect(lambda:self.slideLeftMenu("2"))
             self.DashboardBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.DashboardBox.setStyleSheet("background-image: url(:/icons/icons/dashboard.png);\n"
     "background-repeat: none;\n"
@@ -384,10 +444,12 @@ class Ui_MainWindow(object):
             self.formLayout.addWidget(self.DashboardBox)
 
             self.MaintenanceBox = CollapsibleBox('Maintenance',self.left_menu_top_buttons,2,":/icons/icons/tools.png")
+            self.MaintenanceBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
             
         
             MaintenanceBonTravailPreventif = QtWidgets.QPushButton("Bons de Travails")
+            MaintenanceBonTravailPreventif.clicked.connect(lambda:self.slideLeftMenu("3"))
             MaintenanceBonTravailPreventif.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             MaintenanceBonTravailPreventif.setStyleSheet("height : 17px ;font-weight:bold;")
             lay.addWidget(MaintenanceBonTravailPreventif)
@@ -395,6 +457,7 @@ class Ui_MainWindow(object):
             MaintenanceBonTravailPreventif.clicked.connect(self.displayBonTravailConsulter)
 
             MaintenanceDemandesInterventions = QtWidgets.QPushButton("Demandes d'Interventions")
+            MaintenanceDemandesInterventions.clicked.connect(lambda:self.slideLeftMenu("3"))
             MaintenanceDemandesInterventions.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             MaintenanceDemandesInterventions.setStyleSheet("height : 17px ;font-weight:bold;")
             lay.addWidget(MaintenanceDemandesInterventions)
@@ -409,9 +472,11 @@ class Ui_MainWindow(object):
 
 
             self.UsersBox = CollapsibleBox('Utilisateurs',self.left_menu_top_buttons,2,":/icons/icons/group.png")
+            self.UsersBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             UtilisateursConsulter = QtWidgets.QPushButton("Responsables Chaines-Productions")
+            UtilisateursConsulter.clicked.connect(lambda:self.slideLeftMenu("3"))
             UtilisateursConsulter.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             UtilisateursConsulter.setStyleSheet("height : 17px ;font-weight:bold;")
             lay.addWidget(UtilisateursConsulter)
@@ -422,9 +487,11 @@ class Ui_MainWindow(object):
 
 
             self.EquipementsBox = CollapsibleBox('Equipements',self.left_menu_top_buttons,2,":/icons/icons/truck.png")
+            self.EquipementsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             EquipementsConsulter = QtWidgets.QPushButton("Liste Équipements")
+            EquipementsConsulter.clicked.connect(lambda:self.slideLeftMenu("3"))
             EquipementsConsulter.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             EquipementsConsulter.setStyleSheet("height : 17px ;font-weight:bold;")
             lay.addWidget(EquipementsConsulter)
@@ -432,6 +499,7 @@ class Ui_MainWindow(object):
             EquipementsConsulter.clicked.connect(self.displayEquipementConsulter)
 
             EquipementsBonApprovisionnement = QtWidgets.QPushButton("Demandes d'Approvisionnements")
+            EquipementsBonApprovisionnement.clicked.connect(lambda:self.slideLeftMenu("3"))
             EquipementsBonApprovisionnement.setStyleSheet("height : 17px ;font-weight:bold;")
             EquipementsBonApprovisionnement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             lay.addWidget(EquipementsBonApprovisionnement)
@@ -451,6 +519,7 @@ class Ui_MainWindow(object):
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
+            self.DashboardBox.clicked.connect(lambda:self.slideLeftMenu("2"))
             self.DashboardBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.DashboardBox.setStyleSheet("background-image: url(:/icons/icons/dashboard.png);\n"
             "background-repeat: none;\n"
@@ -464,9 +533,11 @@ class Ui_MainWindow(object):
 
 
             self.MaintenanceBox = CollapsibleBox('Maintenance',self.left_menu_top_buttons,1,":/icons/icons/tools.png")
+            self.MaintenanceBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             MaintenanceDemandeIntervention = QtWidgets.QPushButton("Demandes d'Interventions")
+            MaintenanceDemandeIntervention.clicked.connect(lambda:self.slideLeftMenu("3"))
             MaintenanceDemandeIntervention.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             MaintenanceDemandeIntervention.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(MaintenanceDemandeIntervention)
@@ -476,9 +547,11 @@ class Ui_MainWindow(object):
 
 
             self.NotificationsBox = CollapsibleBox('Notifications',self.left_menu_top_buttons,1,":/icons/icons/notification.png")
+            self.NotificationsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             NotificationValidation = QtWidgets.QPushButton("Validation de Réception")
+            NotificationValidation.clicked.connect(lambda:self.slideLeftMenu("3"))
             NotificationValidation.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             NotificationValidation.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(NotificationValidation)
@@ -488,9 +561,11 @@ class Ui_MainWindow(object):
 
 
             self.EquipementsBox = CollapsibleBox('Equipements',self.left_menu_top_buttons,1,":/icons/icons/truck.png")
+            self.EquipementsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             ConsulterEquipement = QtWidgets.QPushButton("Liste Equipements")
+            ConsulterEquipement.clicked.connect(lambda:self.slideLeftMenu("3"))
             ConsulterEquipement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             ConsulterEquipement.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(ConsulterEquipement)
@@ -521,6 +596,7 @@ class Ui_MainWindow(object):
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
+            self.DashboardBox.clicked.connect(lambda:self.slideLeftMenu("2"))
             self.DashboardBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.DashboardBox.setStyleSheet("background-image: url(:/icons/icons/dashboard.png);\n"
             "background-repeat: none;\n"
@@ -536,10 +612,12 @@ class Ui_MainWindow(object):
 
 
             self.MaintenanceBox = CollapsibleBox('Maintenance',self.left_menu_top_buttons,2,":/icons/icons/tools.png")
+            self.MaintenanceBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
         
             MaintenanceBonTravail = QtWidgets.QPushButton("Bons de Travails")
+            MaintenanceBonTravail.clicked.connect(lambda:self.slideLeftMenu("3"))
             MaintenanceBonTravail.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             MaintenanceBonTravail.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(MaintenanceBonTravail)
@@ -547,6 +625,7 @@ class Ui_MainWindow(object):
             MaintenanceBonTravail.clicked.connect(self.displayBonTravailConsulter)
 
             DemandeInterventioon = QtWidgets.QPushButton("Demande Interventions")
+            DemandeInterventioon.clicked.connect(lambda:self.slideLeftMenu("3"))
             DemandeInterventioon.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             DemandeInterventioon.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(DemandeInterventioon)
@@ -559,9 +638,11 @@ class Ui_MainWindow(object):
 
 
             self.UtilisateurBox = CollapsibleBox('Utilisateurs',self.left_menu_top_buttons,2,":/icons/icons/group.png")
+            self.UtilisateurBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             CRUDUtilisateur = QtWidgets.QPushButton("Liste D'utilisateurs")
+            CRUDUtilisateur.clicked.connect(lambda:self.slideLeftMenu("3"))
             CRUDUtilisateur.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             CRUDUtilisateur.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(CRUDUtilisateur)
@@ -571,9 +652,11 @@ class Ui_MainWindow(object):
 
 
             self.EquipementsBox = CollapsibleBox('Equipements',self.left_menu_top_buttons,2,":/icons/icons/truck.png")
+            self.EquipementsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             ListeEquipement = QtWidgets.QPushButton("Liste d'Equipements")
+            ListeEquipement.clicked.connect(lambda:self.slideLeftMenu("3"))
             ListeEquipement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             ListeEquipement.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(ListeEquipement)
@@ -581,6 +664,7 @@ class Ui_MainWindow(object):
             ListeEquipement.clicked.connect(self.displayEquipementConsulter)
 
             EquipementsDemandeApprovisionnement = QtWidgets.QPushButton("Demande d'Approvisionnements")
+            EquipementsDemandeApprovisionnement.clicked.connect(lambda:self.slideLeftMenu("3"))
             EquipementsDemandeApprovisionnement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             EquipementsDemandeApprovisionnement.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(EquipementsDemandeApprovisionnement)
@@ -600,6 +684,7 @@ class Ui_MainWindow(object):
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
+            self.DashboardBox.clicked.connect(lambda:self.slideLeftMenu("3"))
             self.DashboardBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.DashboardBox.setStyleSheet("background-image: url(:/icons/icons/dashboard.png);\n"
             "background-repeat: none;\n"
@@ -613,9 +698,11 @@ class Ui_MainWindow(object):
 
 
             self.NotificationsBox = CollapsibleBox('Notifications',self.left_menu_top_buttons,1,":/icons/icons/notification.png")
+            self.NotificationsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             NotificationValidation = QtWidgets.QPushButton("Validation de Réception")
+            NotificationValidation.clicked.connect(lambda:self.slideLeftMenu("3"))
             NotificationValidation.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             NotificationValidation.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(NotificationValidation)
@@ -625,14 +712,17 @@ class Ui_MainWindow(object):
 
 
             self.EquipementsBox = CollapsibleBox('Equipements',self.left_menu_top_buttons,2,":/icons/icons/truck.png")
+            self.EquipementsBox.toggle_button.pressed.connect(lambda:self.slideLeftMenu("2"))
             lay = QtWidgets.QVBoxLayout()
 
             ListeEquipement = QtWidgets.QPushButton("Liste Piéces de Rechanges")
+            ListeEquipement.clicked.connect(lambda:self.slideLeftMenu("3"))
             ListeEquipement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             ListeEquipement.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(ListeEquipement)
 
             EquipementsDemandeApprovisionnement = QtWidgets.QPushButton("Demande d'Approvisionnements")
+            EquipementsDemandeApprovisionnement.clicked.connect(lambda:self.slideLeftMenu("3"))
             EquipementsDemandeApprovisionnement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             EquipementsDemandeApprovisionnement.setStyleSheet("height: 17px;font-weight: bold;")
             lay.addWidget(EquipementsDemandeApprovisionnement)
@@ -644,9 +734,9 @@ class Ui_MainWindow(object):
 
 
         ################################################################################################################
-        self.left_menu_toggle_btn.clicked.connect(self.slideLeftMenu)
+        self.left_menu_toggle_btn.clicked.connect(lambda:self.slideLeftMenu("1"))
         self.SignOut.clicked.connect(self.signOut)
-        
+    
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
