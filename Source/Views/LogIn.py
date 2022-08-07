@@ -14,7 +14,7 @@ class Ui_Dialog(object):
 
         if(Connection):
             self.window=QMainWindow()
-            self.ui=Ui_MainWindow(record[0][0],record[0][2],self.d)
+            self.ui=Ui_MainWindow(record[0][0],record[0][2],self.d,self.window)
             self.ui.setupUi(self.window)
             self.resize()
             self.center()

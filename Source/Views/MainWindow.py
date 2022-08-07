@@ -15,14 +15,59 @@ from PyQt5.QtWidgets import *
 from .Dashboard import Ui_Dialog as Dashboard_UI
 from .Components.CollapsibleBox import CollapsibleBox
 
+import QNotifications
+import sys
+import qtpy
+class Ui_MainWindow(QtCore.QObject):
 
-class Ui_MainWindow(object):
-    
-    def __init__(self,matricule,role,dialogSignIn) -> None:
+    notify = qtpy.QtCore.Signal(
+		['QString', 'QString', int, bool],
+		['QString', 'QString', int, bool, 'QString']
+	)
+    def __init__(self,matricule,role,dialogSignIn,window) -> None:
+        super(Ui_MainWindow,self).__init__()
         self.matricule = matricule
         self.role = role
         self.dialogSignIn=dialogSignIn
-    
+        self.window=window
+        self.notification_area = self.__setup_notification_area(self.window)
+    def __submit_message(self):
+        textvalue = "Jetek bon ya 5raaaaaaa"
+        typevalue = "danger"
+        if textvalue:
+            duration = 5000
+            autohide = False
+            entry_effect = "fadeIn"
+            exit_effect = "fadeOut"
+            if entry_effect != "None":
+                self.notification_area.setEntryEffect(entry_effect,
+                    500)
+            else:
+                self.notification_area.setEntryEffect(None)
+            if exit_effect != "None":
+                self.notification_area.setExitEffect(exit_effect,
+                    500)
+            else:
+                self.notification_area.setExitEffect(None)
+
+            buttontext = "Ok"
+            if buttontext:
+                self.notify['QString', 'QString', int, bool, 'QString'].emit(
+                    textvalue, typevalue, duration, autohide, buttontext
+                )
+            else:
+                self.notify['QString', 'QString', int, bool].emit(
+                    textvalue, typevalue, duration, autohide
+                )    
+    def __setup_notification_area(self, targetWidget):
+        notification_area = QNotifications.QNotificationArea(targetWidget)
+        self.notify['QString', 'QString', int, bool].connect(
+            notification_area.display
+        )
+        self.notify['QString', 'QString', int, bool, 'QString'].connect(
+            notification_area.display
+        )
+        return notification_area
     def slideLeftMenu(self,x):
         if x=="1":
             width=self.left_side_menu.width()
@@ -392,6 +437,7 @@ class Ui_MainWindow(object):
             NotificationsConsulterDemandesInterventions.clicked.connect(lambda:self.slideLeftMenu("3"))
             NotificationsConsulterDemandesInterventions.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             NotificationsConsulterDemandesInterventions.setStyleSheet("height : 17px ;font-weight:bold;")
+            NotificationsConsulterDemandesInterventions.clicked.connect(self.__submit_message)
             
             lay.addWidget(NotificationsConsulterDemandesInterventions)
             self.NotificationsBox.setContentLayout(lay)
