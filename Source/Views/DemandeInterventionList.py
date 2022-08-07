@@ -1,7 +1,68 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
+from PyQt5.QtWidgets import QMessageBox
+from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
+from Models.DemandeInterventionServices import getDemandeInterventionList,deleteDemandeIntervention
 
 class Ui_Dialog(object):
+
+    def getSelectedRow(self):
+        rows=[]
+        for row in range(self.tableWidgetDemandeIntervention.rowCount()):
+                if self.tableWidgetDemandeIntervention.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
+                        rows.append(self.tableWidgetDemandeIntervention.item(row,0).text())
+        return rows
+    def modifierDemandeIntervention(self):
+        ids=self.getSelectedRow()
+        if len(ids)>1:
+                self.showDialog("Error","Impossible d'effectuer cette action sur plus d'une ligne",False)
+                return 
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner une ligne",False)
+                return 
+        #self.RedirectBonTravailModify(ids[0])
+
+    def supprimerDemandeIntervention(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return 
+        deleteDemandeIntervention(ids)
+        self.fetchRows()
+
+    def imprimerDemandeIntervention(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return 
+
+    def fetchRows(self):
+        status,record = getDemandeInterventionList(self.mainWindowSelf.matricule)
+        if status :
+                self.tableWidgetDemandeIntervention.setColumnCount(8)
+                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','Matricule de Responsable Chaine Production',"Matricule de Responsable Maintenance","Code Equipement","Section","Date","Motif","Description"])
+                self.tableWidgetDemandeIntervention.setRowCount(len(record))
+
+                self.horizontal_header = self.tableWidgetDemandeIntervention.horizontalHeader()     
+                self.horizontal_header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(6, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(7, QtWidgets.QHeaderView.Stretch)
+                
+                for row in range(len(record)):
+                        for col in range(8):
+                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
+                                self.tableWidgetDemandeIntervention.setItem(row,col,item)
+                                if col ==0:
+                                        item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+                                        item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+
+
+
     def RedirectDemandeIntervention(self):
         self.dialogDemandeIntervention = QtWidgets.QDialog()
         self.uiDemandeIntervention = DemandeIntervention_UI()
@@ -122,9 +183,12 @@ class Ui_Dialog(object):
         self.ButtonImprimer.setObjectName("ButtonImprimer")
         self.horizontalLayout_2.addWidget(self.ButtonImprimer)
         self.verticalLayout_3.addWidget(self.frame_4)
-        self.tableViewDemandeIntervention = QtWidgets.QTableView(self.frame)
-        self.tableViewDemandeIntervention.setObjectName("tableViewDemandeIntervention")
-        self.verticalLayout_3.addWidget(self.tableViewDemandeIntervention)
+        self.tableWidgetDemandeIntervention = QtWidgets.QTableWidget(self.frame)
+        self.tableWidgetDemandeIntervention.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tableWidgetDemandeIntervention.setRowCount(0)
+        self.tableWidgetDemandeIntervention.setColumnCount(0)
+        self.tableWidgetDemandeIntervention.setObjectName("tableWidgetDemandeIntervention")
+        self.verticalLayout_3.addWidget(self.tableWidgetDemandeIntervention)
         self.verticalLayout.addWidget(self.frame)
         self.verticalLayout.setStretch(0, 1)
         self.verticalLayout.setStretch(1, 2)
@@ -133,6 +197,10 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
         self.ButtonCreerDemandeIntervention.clicked.connect(self.RedirectDemandeIntervention)
+        self.fetchRows()
+        self.ButtonModifier.clicked.connect(self.modifierDemandeIntervention)
+        self.ButtonSupprimer.clicked.connect(self.supprimerDemandeIntervention)
+        self.ButtonImprimer.clicked.connect(self.imprimerDemandeIntervention)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

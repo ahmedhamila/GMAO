@@ -2,12 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Models import BonTravailServices,ResponsableMaintenanceServices,AgentMaintenanceServices,EquipementServices
 from datetime import datetime
 from PyQt5.QtWidgets import QMessageBox
+
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf,id,BonTravailDLG,BonTravailUI) -> None:
         self.id=id
         self.mainWindowSelf=mainWindowSelf
         self.BonTravailDLG=BonTravailDLG
         self.BonTravailUI=BonTravailUI
+
     def initialiseBonTravail(self):
         status,record=BonTravailServices.getBonTravail(self.id)
         if status :
@@ -96,6 +98,7 @@ class Ui_Dialog(object):
         self.showDialog('Success',"Bon de travail Modifié avec succé",True)
         self.BonTravailUI.fetchRows()
         self.mainWindowSelf.stackedWidget.setCurrentWidget(self.BonTravailDLG)
+        
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:
