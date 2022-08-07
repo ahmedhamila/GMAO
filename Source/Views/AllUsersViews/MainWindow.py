@@ -1,19 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from . import icons_rc
-from .bonTravailList import Ui_Dialog as Bontravail_UI
-from .BonTravailConsulter import Ui_Dialog as BontravailConsulter_UI
-from .DemandeInterventionList import Ui_Dialog as DemandeIntervention_UI
-from .DemandeInterventionConsulter import Ui_Dialog as DemandeInterventionConsulter_UI
-from .equipementList import Ui_Dialog as Equipement_UI
-from .EquipementConsulter import Ui_Dialog as EquipementConsulter_UI
-from .BonApprovisionnementList import Ui_Dialog as BonApprovisionment_UI
-from .BonApprovisionnementConsulter import Ui_Dialog as BonApprovisionmentConsulter_UI
+from .. import icons_rc
+from ..BonTravailViews.bonTravailList import Ui_Dialog as Bontravail_UI
+from ..BonTravailViews.BonTravailConsulter import Ui_Dialog as BontravailConsulter_UI
+from ..DemandeInterventionViews.DemandeInterventionList import Ui_Dialog as DemandeIntervention_UI
+from ..DemandeInterventionViews.DemandeInterventionConsulter import Ui_Dialog as DemandeInterventionConsulter_UI
+from ..EquipementViews.equipementList import Ui_Dialog as Equipement_UI
+from ..EquipementViews.EquipementConsulter import Ui_Dialog as EquipementConsulter_UI
+from ..BonApprovisonnementViews.BonApprovisionnementList import Ui_Dialog as BonApprovisionment_UI
+from ..BonApprovisonnementViews.BonApprovisionnementConsulter import Ui_Dialog as BonApprovisionmentConsulter_UI
 from .ListeUser import Ui_Dialog as ListeUser2
 from .Dashboard import Ui_Dialog as dashboard
 from PyQt5.QtWidgets import *
 
 from .Dashboard import Ui_Dialog as Dashboard_UI
-from .Components.CollapsibleBox import CollapsibleBox
+from ..Components.CollapsibleBox import CollapsibleBox
 
 import QNotifications
 import sys

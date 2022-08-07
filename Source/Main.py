@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 import sys
-from Views.LogIn import Ui_Dialog as LogIn
+from Views.AllUsersViews.LogIn import Ui_Dialog as LogIn
 
 class Main:
     def __init__(self) -> None:
