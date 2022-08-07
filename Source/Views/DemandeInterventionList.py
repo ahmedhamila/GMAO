@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
 from PyQt5.QtWidgets import QMessageBox
-from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
+from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
 from Models.DemandeInterventionServices import getDemandeInterventionList,deleteDemandeIntervention
 
 class Ui_Dialog(object):
@@ -20,7 +20,13 @@ class Ui_Dialog(object):
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner une ligne",False)
                 return 
-        #self.RedirectBonTravailModify(ids[0])
+        self.RedirectDemandeInterventionModify(ids[0])
+    def RedirectDemandeInterventionModify(self,id):
+        self.dialogDemandeIntervention = QtWidgets.QDialog()
+        self.uiDemandeIntervention = DemandeIntervention_Modif_UI(self.mainWindowSelf,id,self.DemandeInterventionDLG,self)
+        self.uiDemandeIntervention.setupUi(self.dialogDemandeIntervention)
+        self.mainWindowSelf.stackedWidget.addWidget(self.dialogDemandeIntervention)
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogDemandeIntervention)
 
     def supprimerDemandeIntervention(self):
         ids=self.getSelectedRow()
@@ -65,12 +71,23 @@ class Ui_Dialog(object):
 
     def RedirectDemandeIntervention(self):
         self.dialogDemandeIntervention = QtWidgets.QDialog()
-        self.uiDemandeIntervention = DemandeIntervention_UI()
+        self.uiDemandeIntervention = DemandeIntervention_UI(self.mainWindowSelf)
         self.uiDemandeIntervention.setupUi(self.dialogDemandeIntervention)
         self.mainWindowSelf.stackedWidget.addWidget(self.dialogDemandeIntervention)
         self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogDemandeIntervention)
-    def __init__(self,mainWindowSelf) -> None:
+    def __init__(self,mainWindowSelf,DemandeInterventionDLG) -> None:
         self.mainWindowSelf=mainWindowSelf
+        self.DemandeInterventionDLG=DemandeInterventionDLG
+    def showDialog(self,title,str,bool):
+        msgBox = QMessageBox()
+        if bool==False:
+            msgBox.setIcon(QMessageBox.Warning)
+        else:
+            msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(str)
+        msgBox.setWindowTitle(title)
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1014, 813)

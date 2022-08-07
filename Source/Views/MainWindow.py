@@ -18,8 +18,36 @@ from .Components.CollapsibleBox import CollapsibleBox
 import QNotifications
 import sys
 import qtpy
+import time
+from Models.DemandeInterventionServices import getDemandeInterventionListRM
+class NotificationThread(QtCore.QThread):
+    def __init__(self,matricule_RM) -> None:
+        super().__init__()
+        self.matricule_RM=matricule_RM
+    update_notif=QtCore.pyqtSignal(int)
+    def run(self):
+        old_num=0
+        num=0
+        while True:
+            old_num=num
+            status,rec = getDemandeInterventionListRM(self.matricule_RM)
+            num = len(rec)
+            print("Checking Notifs")
+            if status and num > old_num :
+                self.update_notif.emit(num-old_num)
+            print("Sleeping ...")
+            time.sleep(30)
 class Ui_MainWindow(QtCore.QObject):
 
+    def start_Thread(self,matricule):
+        self.worker=NotificationThread(matricule)
+        self.worker.start()
+        self.worker.update_notif.connect(self.updateNotif)
+    
+    def updateNotif(self,num):
+        for i in range(num):
+            self.__submit_message()
+    ################################""""
     notify = qtpy.QtCore.Signal(
 		['QString', 'QString', int, bool],
 		['QString', 'QString', int, bool, 'QString']
@@ -31,26 +59,18 @@ class Ui_MainWindow(QtCore.QObject):
         self.dialogSignIn=dialogSignIn
         self.window=window
         self.notification_area = self.__setup_notification_area(self.window)
-    def __submit_message(self):
-        textvalue = "Jetek bon ya 5raaaaaaa"
-        typevalue = "danger"
+    def __submit_message(self,textvalue="You Have A New Notification",typevalue="info",duration=5000,autohide=False,entryeffect="fadeIn",exiteffect="fadeOut",entryduration=500,exitduration=500,buttontext="OK"):
         if textvalue:
-            duration = 5000
-            autohide = False
-            entry_effect = "fadeIn"
-            exit_effect = "fadeOut"
-            if entry_effect != "None":
-                self.notification_area.setEntryEffect(entry_effect,
-                    500)
+            if entryeffect != "None":
+                self.notification_area.setEntryEffect(entryeffect,
+                    entryduration)
             else:
                 self.notification_area.setEntryEffect(None)
-            if exit_effect != "None":
-                self.notification_area.setExitEffect(exit_effect,
-                    500)
+            if exiteffect != "None":
+                self.notification_area.setExitEffect(exiteffect,
+                    exitduration)
             else:
                 self.notification_area.setExitEffect(None)
-
-            buttontext = "Ok"
             if buttontext:
                 self.notify['QString', 'QString', int, bool, 'QString'].emit(
                     textvalue, typevalue, duration, autohide, buttontext
@@ -163,7 +183,7 @@ class Ui_MainWindow(QtCore.QObject):
         self.stackedWidget.setCurrentWidget(self.dialogBonApprovisionmentConsulter)
     def displayDemandeIntervention(self):
         self.dialogDemandeIntervention = QtWidgets.QDialog()
-        self.uiDemandeIntervention = DemandeIntervention_UI(self)
+        self.uiDemandeIntervention = DemandeIntervention_UI(self,self.dialogDemandeIntervention)
         self.uiDemandeIntervention.setupUi(self.dialogDemandeIntervention)
         self.stackedWidget.addWidget(self.dialogDemandeIntervention)
         self.stackedWidget.setCurrentWidget(self.dialogDemandeIntervention)
@@ -437,7 +457,7 @@ class Ui_MainWindow(QtCore.QObject):
             NotificationsConsulterDemandesInterventions.clicked.connect(lambda:self.slideLeftMenu("3"))
             NotificationsConsulterDemandesInterventions.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             NotificationsConsulterDemandesInterventions.setStyleSheet("height : 17px ;font-weight:bold;")
-            NotificationsConsulterDemandesInterventions.clicked.connect(self.__submit_message)
+            
             
             lay.addWidget(NotificationsConsulterDemandesInterventions)
             self.NotificationsBox.setContentLayout(lay)
@@ -465,6 +485,8 @@ class Ui_MainWindow(QtCore.QObject):
 
             self.EquipementsBox.setContentLayout(lay)
             self.formLayout.addWidget(self.EquipementsBox)
+
+            self.start_Thread(self.matricule)
         ##############################################################################################################################################################################
 
 
@@ -782,6 +804,7 @@ class Ui_MainWindow(QtCore.QObject):
         ################################################################################################################
         self.left_menu_toggle_btn.clicked.connect(lambda:self.slideLeftMenu("1"))
         self.SignOut.clicked.connect(self.signOut)
+        
     
 
     def retranslateUi(self, MainWindow):

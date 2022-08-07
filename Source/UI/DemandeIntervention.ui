@@ -26,7 +26,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,4,1">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,6,1">
       <item>
        <widget class="QWidget" name="widget_3" native="true">
         <property name="styleSheet">
@@ -290,6 +290,9 @@
               <property name="text">
                <string>Arret Complet</string>
               </property>
+              <attribute name="buttonGroup">
+               <string notr="true">buttonGroup</string>
+              </attribute>
              </widget>
             </item>
             <item>
@@ -305,6 +308,9 @@
               <property name="text">
                <string>Anomalie Pouvant Entrainer une Panne</string>
               </property>
+              <attribute name="buttonGroup">
+               <string notr="true">buttonGroup</string>
+              </attribute>
              </widget>
             </item>
            </layout>
@@ -357,43 +363,7 @@
         <property name="styleSheet">
          <string notr="true">background-color : #FEFDFC;</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QWidget" name="widget_10" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="font">
-               <font>
-                <family>Arial</family>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Visa Production :</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="font">
-               <font>
-                <family>Arial</family>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Nom : </string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
+        <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0">
          <item>
           <widget class="QPushButton" name="Sumbit">
            <property name="font">
@@ -433,4 +403,7 @@ QPushButton:hover{
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

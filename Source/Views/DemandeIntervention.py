@@ -1,8 +1,66 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QMessageBox
+from datetime import datetime
+from Models import AgentMaintenanceServices,ResponsableChaineProductionServices,EquipementServices,DemandeInterventionServices
 
 class Ui_Dialog(object):
+    def __init__(self,mainWindowSelf) -> None:
+        self.mainWindowSelf=mainWindowSelf
+    def comboChange(self):
+        self.label_7.setText(self.codes[self.comboBox.currentIndex()])
+    def addDemandeIntervention(self):
+        Matricule_RCP=self.mainWindowSelf.matricule
+        matriculeRM="AAA00001"
+        codeEquipement=self.label_7.text()
+        section=self.Section.text()
+        dateLiberation=self.Date.text()
+        motif = "ArretComplet" if self.ArretComplet.isChecked() else "ArretComplet"
+        description = self.Observation.toPlainText()
+            
+        
+        
+        print("---------------",Matricule_RCP,'-',matriculeRM,'-',codeEquipement,'-',section,'-',dateLiberation,'-',motif,'-',description)
+        record = (Matricule_RCP,matriculeRM,codeEquipement,section,dateLiberation,motif,description)
+        DemandeInterventionServices.addDemandeIntervention(record)
+        self.showDialog('Success',"Bon de travail ajouté avec succé",True)
+        self.initialiseDemandeIntervention()
+    def initialiseDemandeIntervention(self):
+        #Initialization
+        self.Date.setText(datetime.date(datetime.now()).__str__())
+        state,record = ResponsableChaineProductionServices.getResponsableChaineProduction(self.mainWindowSelf.matricule)
+        if state:
+            self.label_3.setText("Emetteur : "+record[0][0])
+            self.NomEmetteur.setText("Nom : "+record[0][1])
+            self.NumeroChaine.setText("Chaine : "+record[0][3])
+        
+        
+
+        state,record = EquipementServices.getEquipements()
+        self.comboBox.clear()
+        self.codes=[rec[0]for rec in record]
+        
+        if state:
+            self.label_7.setText(record[0][0])
+            for rec in record :
+                self.comboBox.addItem(rec[1]+" "+rec[2])
+        
+        self.Section.setText("")
+        self.Observation.setText("")
+
+        self.ArretComplet.setChecked(False)
+        self.Anomalie.setChecked(False)
+
+        
+    def showDialog(self,title,str,bool):
+        msgBox = QMessageBox()
+        if bool==False:
+            msgBox.setIcon(QMessageBox.Warning)
+        else:
+            msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(str)
+        msgBox.setWindowTitle(title)
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(918, 840)
@@ -178,6 +236,9 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.ArretComplet.setFont(font)
         self.ArretComplet.setObjectName("ArretComplet")
+        self.buttonGroup = QtWidgets.QButtonGroup(Dialog)
+        self.buttonGroup.setObjectName("buttonGroup")
+        self.buttonGroup.addButton(self.ArretComplet)
         self.horizontalLayout_5.addWidget(self.ArretComplet)
         self.Anomalie = QtWidgets.QRadioButton(self.widget_5)
         font = QtGui.QFont()
@@ -187,6 +248,7 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.Anomalie.setFont(font)
         self.Anomalie.setObjectName("Anomalie")
+        self.buttonGroup.addButton(self.Anomalie)
         self.horizontalLayout_5.addWidget(self.Anomalie)
         self.verticalLayout_3.addWidget(self.widget_5)
         self.widget_6 = QtWidgets.QWidget(self.widget_2)
@@ -223,29 +285,6 @@ class Ui_Dialog(object):
         self.widget.setObjectName("widget")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.widget_10 = QtWidgets.QWidget(self.widget)
-        self.widget_10.setObjectName("widget_10")
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.widget_10)
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.label_5 = QtWidgets.QLabel(self.widget_10)
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayout_6.addWidget(self.label_5)
-        self.label_4 = QtWidgets.QLabel(self.widget_10)
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.horizontalLayout_6.addWidget(self.label_4)
-        self.verticalLayout_6.addWidget(self.widget_10)
         self.Sumbit = QtWidgets.QPushButton(self.widget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -267,12 +306,18 @@ class Ui_Dialog(object):
         self.verticalLayout_6.addWidget(self.Sumbit)
         self.verticalLayout.addWidget(self.widget)
         self.verticalLayout.setStretch(0, 1)
-        self.verticalLayout.setStretch(1, 4)
+        self.verticalLayout.setStretch(1, 6)
         self.verticalLayout.setStretch(2, 1)
         self.horizontalLayout_2.addWidget(self.frame)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+
+        self.initialiseDemandeIntervention()
+
+        self.comboBox.currentTextChanged.connect(self.comboChange)
+        self.Sumbit.clicked.connect(self.addDemandeIntervention)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -292,7 +337,4 @@ class Ui_Dialog(object):
         self.ArretComplet.setText(_translate("Dialog", "Arret Complet"))
         self.Anomalie.setText(_translate("Dialog", "Anomalie Pouvant Entrainer une Panne"))
         self.label_2.setText(_translate("Dialog", "Constat (symptôme observés) / Observations :"))
-        self.label_5.setText(_translate("Dialog", "Visa Production :"))
-        self.label_4.setText(_translate("Dialog", "Nom : "))
         self.Sumbit.setText(_translate("Dialog", "Envoyer"))
-

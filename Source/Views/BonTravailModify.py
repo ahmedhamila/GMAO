@@ -9,7 +9,8 @@ class Ui_Dialog(object):
         self.mainWindowSelf=mainWindowSelf
         self.BonTravailDLG=BonTravailDLG
         self.BonTravailUI=BonTravailUI
-
+    def comboChange(self):
+        self.labelCodeEquipement.setText(self.codes[self.comboBoxEquipement.currentIndex()])
     def initialiseBonTravail(self):
         status,record=BonTravailServices.getBonTravail(self.id)
         if status :
@@ -404,6 +405,7 @@ class Ui_Dialog(object):
         self.initialiseBonTravail()
         self.buttonModifier.clicked.connect(self.modifierBonTravail)
         
+        self.comboBoxEquipement.currentTextChanged.connect(self.comboChange)
         self.radioButtonCorrectif.clicked.connect(self.radioButtonClicked)
         self.radioButtonPreventif.clicked.connect(self.radioButtonClicked)
 

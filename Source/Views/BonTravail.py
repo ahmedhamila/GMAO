@@ -1,4 +1,3 @@
-from msilib.schema import RadioButton
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
@@ -58,8 +57,9 @@ class Ui_Dialog(object):
         state,record = EquipementServices.getEquipements()
         self.comboBoxEquipement.clear()
         self.codes=[rec[0] for rec in record]
-        self.labelCodeEquipement.setText(record[0][0])
+        
         if state:
+            self.labelCodeEquipement.setText(record[0][0])
             for rec in record :
                 self.comboBoxEquipement.addItem(rec[1]+" "+rec[2])
         
