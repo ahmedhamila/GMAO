@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 from .BonTravail import Ui_Dialog as Bontravail_UI
 from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
 from Models.BonTravailServices import getBonTravailList,deleteBonTravail
+
 class Ui_Dialog(object):
     def getSelectedRow(self):
         rows=[]
