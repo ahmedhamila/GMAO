@@ -1,11 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor
 from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
 from PyQt5.QtWidgets import QMessageBox
 from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
 from Models.DemandeInterventionServices import getDemandeInterventionListRCP,deleteDemandeIntervention
 
 class Ui_Dialog(object):
-
+    def setColortoRow(self,table, rowIndex, color):
+        for j in range(table.columnCount()):
+                table.item(rowIndex, j).setBackground(color)
     def getSelectedRow(self):
         rows=[]
         for row in range(self.tableWidgetDemandeIntervention.rowCount()):
@@ -67,6 +70,10 @@ class Ui_Dialog(object):
                                 if col ==0:
                                         item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                                         item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                        if str(record[row][8])=="Traitee":
+                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(202,225,183))
+                        if str(record[row][8])=="NonTraitee":
+                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(246,173,158))
 
 
 

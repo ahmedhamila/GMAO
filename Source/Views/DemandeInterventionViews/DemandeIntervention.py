@@ -13,8 +13,8 @@ class Ui_Dialog(object):
         matriculeRM="AAA00001"
         codeEquipement=self.label_7.text()
         section=self.Section.text()
-        dateLiberation=self.Date.text()
-        motif = "ArretComplet" if self.ArretComplet.isChecked() else "ArretComplet"
+        dateLiberation=datetime.now().__str__()
+        motif = "ArretComplet" if self.ArretComplet.isChecked() else "AnomaliePouvantEntrainerunePanne"
         description = self.Observation.toPlainText()
             
         

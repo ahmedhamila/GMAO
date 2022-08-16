@@ -94,7 +94,7 @@ class Ui_Dialog(object):
         codeEquipement=self.labelCodeEquipement.text()
         section=self.lineEditSection.text()
         description=self.textEditDescription.toPlainText()
-        record = (matriculeRM,matriculeAM,description,section,datetime.date(datetime.now()).strftime('%Y-%m-%d'),type,codeEquipement,refDIM,frequence,1 if active else 0,self.id)
+        record = (matriculeRM,matriculeAM,description,section.strftime('%Y-%m-%d'),type,codeEquipement,refDIM,frequence,1 if active else 0,self.id)
         BonTravailServices.updateBonTravail(record)
         self.showDialog('Success',"Bon de travail Modifié avec succé",True)
         self.BonTravailUI.fetchRows()

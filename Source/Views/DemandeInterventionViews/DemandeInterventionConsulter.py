@@ -44,9 +44,9 @@ class Ui_Dialog(object):
                                         item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                                         item.setCheckState(QtCore.Qt.CheckState.Unchecked)
                         if str(record[row][8])=="Traitee":
-                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(93,184,153))
+                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(202,225,183))
                         if str(record[row][8])=="NonTraitee":
-                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(247,8,74))
+                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(246,173,158))
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:

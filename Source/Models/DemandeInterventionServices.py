@@ -33,7 +33,7 @@ def updateDemandeIntervention(record):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """update demande_intervention set Matricule_RCP = %s,Matricule_RM = %s,CodeEquipement = %s,Section = %s,DateLiberation = %s,Motif = %s ,Description= %s where id = %s"""
+            query = """update demande_intervention set Matricule_RCP = %s,Matricule_RM = %s,CodeEquipement = %s,Section = %s,Motif = %s ,Description= %s where id = %s"""
             cursor = connection.cursor()
             print("######################################•")
             print(query,record)
