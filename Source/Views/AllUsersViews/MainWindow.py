@@ -189,7 +189,7 @@ class Ui_MainWindow(QtCore.QObject):
         self.stackedWidget.setCurrentWidget(self.dialogDemandeIntervention)
     def displayDemandeInterventionConsulter(self):
         self.dialogDemandeInterventionConsulter = QtWidgets.QDialog()
-        self.uiDemandeInterventionConsulter = DemandeInterventionConsulter_UI()
+        self.uiDemandeInterventionConsulter = DemandeInterventionConsulter_UI(self)
         self.uiDemandeInterventionConsulter.setupUi(self.dialogDemandeInterventionConsulter)
         self.stackedWidget.addWidget(self.dialogDemandeInterventionConsulter)
         self.stackedWidget.setCurrentWidget(self.dialogDemandeInterventionConsulter)
@@ -457,6 +457,8 @@ class Ui_MainWindow(QtCore.QObject):
             NotificationsConsulterDemandesInterventions.clicked.connect(lambda:self.slideLeftMenu("3"))
             NotificationsConsulterDemandesInterventions.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             NotificationsConsulterDemandesInterventions.setStyleSheet("height : 17px ;font-weight:bold;")
+
+            NotificationsConsulterDemandesInterventions.clicked.connect(self.displayDemandeInterventionConsulter)
             
             
             lay.addWidget(NotificationsConsulterDemandesInterventions)

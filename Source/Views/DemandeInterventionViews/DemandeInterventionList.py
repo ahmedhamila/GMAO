@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
 from PyQt5.QtWidgets import QMessageBox
 from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
-from Models.DemandeInterventionServices import getDemandeInterventionList,deleteDemandeIntervention
+from Models.DemandeInterventionServices import getDemandeInterventionListRCP,deleteDemandeIntervention
 
 class Ui_Dialog(object):
 
@@ -43,10 +43,10 @@ class Ui_Dialog(object):
                 return 
 
     def fetchRows(self):
-        status,record = getDemandeInterventionList(self.mainWindowSelf.matricule)
+        status,record = getDemandeInterventionListRCP(self.mainWindowSelf.matricule)
         if status :
-                self.tableWidgetDemandeIntervention.setColumnCount(8)
-                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','Matricule de Responsable Chaine Production',"Matricule de Responsable Maintenance","Code Equipement","Section","Date","Motif","Description"])
+                self.tableWidgetDemandeIntervention.setColumnCount(9)
+                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','Matricule de Responsable Chaine Production',"Matricule de Responsable Maintenance","Code Equipement","Section","Date","Motif","Description","Status"])
                 self.tableWidgetDemandeIntervention.setRowCount(len(record))
 
                 self.horizontal_header = self.tableWidgetDemandeIntervention.horizontalHeader()     
@@ -58,9 +58,10 @@ class Ui_Dialog(object):
                 self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(6, QtWidgets.QHeaderView.Stretch)
                 self.horizontal_header.setSectionResizeMode(7, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(8, QtWidgets.QHeaderView.Stretch)
                 
                 for row in range(len(record)):
-                        for col in range(8):
+                        for col in range(9):
                                 item=QtWidgets.QTableWidgetItem(str(record[row][col]))
                                 self.tableWidgetDemandeIntervention.setItem(row,col,item)
                                 if col ==0:

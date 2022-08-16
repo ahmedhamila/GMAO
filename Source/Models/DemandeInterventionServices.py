@@ -50,8 +50,33 @@ def updateDemandeIntervention(record):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
+            
+def getDemandeInterventionListAll():
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='gmao_db',
+                                            user='root',
+                                            password='')
+        if connection.is_connected():
+            query = """select * from demande_intervention"""
+            cursor = connection.cursor()
+            cursor.execute(query)
+            record = cursor.fetchall()
+            print(record)
+            if len(record) >= 1 :
+                return True,record
+            else :
+                return False,False
 
-def getDemandeInterventionList(matriculeRCP):
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
+            
+def getDemandeInterventionListRCP(matriculeRCP):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',

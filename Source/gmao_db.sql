@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 07, 2022 at 02:23 PM
+-- Generation Time: Aug 16, 2022 at 03:26 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -132,18 +132,19 @@ CREATE TABLE `demande_intervention` (
   `Section` varchar(25) NOT NULL,
   `DateLiberation` date NOT NULL,
   `Motif` enum('ArretComplet','AnomaliePouvantEntrainerUnePanne','','') NOT NULL,
-  `Description` text NOT NULL
+  `Description` text NOT NULL,
+  `Status` enum('Traitee','NonTraitee','','') NOT NULL DEFAULT 'NonTraitee'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `demande_intervention`
 --
 
-INSERT INTO `demande_intervention` (`Id`, `Matricule_RCP`, `Matricule_RM`, `CodeEquipement`, `Section`, `DateLiberation`, `Motif`, `Description`) VALUES
-(1, 'AAA00003', 'AAA00001', 'EEE00002', '2', '2022-08-08', 'ArretComplet', 'ajgvdkahbdabdibaidad'),
-(2, 'AAA00003', 'AAA00001', 'EEE00002', '2', '2022-08-07', 'AnomaliePouvantEntrainerUnePanne', 'adljalkdbabd'),
-(3, 'AAA00003', 'AAA00001', 'EEE00003', '2', '2022-08-07', 'ArretComplet', 'akhfbkajhbfkabfabf'),
-(4, 'AAA00003', 'AAA00001', 'EEE00002', '3', '2022-08-07', 'ArretComplet', 'dafjkhakhfjkahbfjba');
+INSERT INTO `demande_intervention` (`Id`, `Matricule_RCP`, `Matricule_RM`, `CodeEquipement`, `Section`, `DateLiberation`, `Motif`, `Description`, `Status`) VALUES
+(1, 'AAA00003', 'AAA00001', 'EEE00002', '2', '2022-08-08', 'ArretComplet', 'ajgvdkahbdabdibaidad', 'Traitee'),
+(2, 'AAA00003', 'AAA00001', 'EEE00002', '2', '2022-08-07', 'ArretComplet', 'adljalkdbabd', 'Traitee'),
+(3, 'AAA00003', 'AAA00001', 'EEE00003', '2', '2022-08-07', 'ArretComplet', 'akhfbkajhbfkabfabf', 'Traitee'),
+(4, 'AAA00003', 'AAA00001', 'EEE00002', '3', '2022-08-07', 'ArretComplet', 'dafjkhakhfjkahbfjba', 'NonTraitee');
 
 -- --------------------------------------------------------
 
