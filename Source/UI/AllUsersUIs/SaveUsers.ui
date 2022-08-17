@@ -41,7 +41,7 @@
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">color:DarkCyan;</string>
+            <string notr="true">color :#00A8E8;</string>
            </property>
            <property name="text">
             <string>Enregistrement</string>
@@ -72,7 +72,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,3">
          <item>
           <widget class="QLabel" name="label_2">
            <property name="font">
@@ -146,64 +146,8 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="0">
-          <widget class="QLabel" name="l5">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Age</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="l2">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Nom    </string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="l1">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Matricule</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="l3">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Prenom</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QLineEdit" name="e4">
+         <item row="1" column="5">
+          <widget class="QLineEdit" name="e5">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
@@ -215,19 +159,18 @@
             <string notr="true">QLineEdit{
 border-style: outset;
 background-color:white;
-    border-radius: 10px;
+border-radius: 7px;
 height:30;
 border:0.5px solid
 }
 QLineEdit:focus{
 border:1.5px solid
-}
-</string>
+}</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="l6">
+         <item row="1" column="7">
+          <widget class="QSpinBox" name="s2">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
@@ -235,8 +178,19 @@ border:1.5px solid
              <bold>true</bold>
             </font>
            </property>
-           <property name="text">
-            <string>Sexe</string>
+           <property name="styleSheet">
+            <string notr="true">QSpinBox,QComboBox{
+border-style: outset;
+background-color:white;
+height:30;
+border:0.5px solid
+}
+QSpinBox:focus{
+border:1.5px solid
+}
+QComboBox:focus{
+border:1.5px solid
+}</string>
            </property>
           </widget>
          </item>
@@ -253,141 +207,7 @@ border:1.5px solid
             <string notr="true">QLineEdit{
 border-style: outset;
 background-color:white;
-    border-radius: 10px;
-height:30;
-border:0.5px solid
-}
-QLineEdit:focus{
-border:1.5px solid
-}
-</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="e1">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLineEdit{
-border-style: outset;
-background-color:white;
-    border-radius: 10px;
-height:30;
-border:0.5px solid
-}
-QLineEdit:focus{
-border:1.5px solid
-}
-</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="l4">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Mot de Passe</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5">
-          <widget class="QLineEdit" name="e5">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLineEdit{
-border-style: outset;
-background-color:white;
-    border-radius: 10px;
-height:30;
-border:0.5px solid
-}
-QLineEdit:focus{
-border:1.5px solid
-}
-</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="s1"/>
-         </item>
-         <item row="1" column="4">
-          <widget class="QLabel" name="l7">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Niv. éducation</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="6">
-          <widget class="QLabel" name="l8">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>  Expérience Prof</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="7">
-          <widget class="QSpinBox" name="s2"/>
-         </item>
-         <item row="1" column="3">
-          <widget class="QComboBox" name="c1">
-           <item>
-            <property name="text">
-             <string>Mâle</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Femelle</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLineEdit" name="e3">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLineEdit{
-border-style: outset;
-background-color:white;
-    border-radius: 10px;
+border-radius: 7px;
 height:30;
 border:0.5px solid
 }
@@ -425,7 +245,7 @@ border:1.5px solid
             <string notr="true">QLineEdit{
 border-style: outset;
 background-color:white;
-    border-radius: 10px;
+border-radius: 7px;
 height:30;
 border:0.5px solid
 }
@@ -433,6 +253,248 @@ QLineEdit:focus{
 border:1.5px solid
 }
 </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QLabel" name="l8">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>  Expérience Prof</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="l1">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Matricule</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="l2">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Nom    </string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="l3">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Prenom</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="l5">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Age</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLineEdit" name="e3">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{
+border-style: outset;
+background-color:white;
+border-radius: 7px;
+height:30;
+border:0.5px solid
+}
+QLineEdit:focus{
+border:1.5px solid
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="s1">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSpinBox,QComboBox{
+border-style: outset;
+background-color:white;
+border-radius: 7px;
+height:30;
+border:0.5px solid
+}
+QSpinBox:focus{
+border:1.5px solid
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="l4">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Mot de Passe</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="e1">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{
+border-style: outset;
+background-color:white;
+border-radius: 7px;
+height:30;
+border:0.5px solid
+}
+QLineEdit:focus{
+border:1.5px solid
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="7">
+          <widget class="QLineEdit" name="e4">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{
+border-style: outset;
+background-color:white;
+border-radius: 7px;
+height:30;
+border:0.5px solid
+}
+QLineEdit:focus{
+border:1.5px solid
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="l6">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Sexe</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QComboBox" name="c1">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSpinBox,QComboBox{
+border-style: outset;
+background-color:white;
+height:30;
+border:0.5px solid
+}
+QSpinBox:focus{
+border:1.5px solid
+}
+QComboBox:focus{
+border:1.5px solid
+}</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Mâle</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Femelle</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QLabel" name="l7">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Niv. éducation</string>
            </property>
           </widget>
          </item>
@@ -459,13 +521,14 @@ border:1.5px solid
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{
-border-style: outset;
-background-color:DarkCyan;
-    border-radius: 10px;
+height : 25px;
+background-color :#00A8E8;
 }
+
+
 QPushButton:hover{
-background-color:MediumSeaGreen
-}</string>
+	background-color: rgb(0, 92, 157);
+};</string>
            </property>
            <property name="text">
             <string>Valider</string>
