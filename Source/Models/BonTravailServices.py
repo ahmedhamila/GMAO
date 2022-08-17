@@ -33,7 +33,7 @@ def updateBonTravail(record):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """update bon_travail set Matricule_RM = %s,Matricule_AM = %s,Description = %s,Section = %s,DateLiberation = %s,type = %s,CodeEquipement = %s,RefDIM = %s,Frequence = %s,Active = %s where id = %s"""
+            query = """update bon_travail set Matricule_RM = %s,Matricule_AM = %s,Description = %s,Section = %s,type = %s,CodeEquipement = %s,RefDIM = %s,Frequence = %s,Active = %s where id = %s"""
             cursor = connection.cursor()
             print("######################################•")
             print(query,record)

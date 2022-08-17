@@ -52,11 +52,10 @@ class Ui_Dialog(object):
         matriculeRM="AAA00001"
         codeEquipement=self.label_7.text()
         section=self.Section.text()
-        dateLiberation=self.Date.text()
-        motif = "ArretComplet" if self.ArretComplet.isChecked() else "ArretComplet"
+        motif = "ArretComplet" if self.ArretComplet.isChecked() else "AnomaliePouvantEntrainerunePanne"
         description = self.Observation.toPlainText()
-        print("---------------",Matricule_RCP,'-',matriculeRM,'-',codeEquipement,'-',section,'-',dateLiberation,'-',motif,'-',description)
-        record = (Matricule_RCP,matriculeRM,codeEquipement,section,dateLiberation,motif,description,self.id)
+        print("---------------",Matricule_RCP,'-',matriculeRM,'-',codeEquipement,'-',section,'-','-',motif,'-',description)
+        record = (Matricule_RCP,matriculeRM,codeEquipement,section,motif,description,self.id)
         DemandeInterventionServices.updateDemandeIntervention(record)
         self.showDialog('Success',"Demande d'Intervention Modifié avec succé",True)
         self.DemandeInterventionUI.fetchRows()

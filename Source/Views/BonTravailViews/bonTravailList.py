@@ -1,10 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMessageBox
 from .BonTravail import Ui_Dialog as Bontravail_UI
 from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
 from Models.BonTravailServices import getBonTravailList,deleteBonTravail
 
 class Ui_Dialog(object):
+    def setColortoRow(self,table, rowIndex, color):
+        for j in range(table.columnCount()):
+                table.item(rowIndex, j).setBackground(color)
     def getSelectedRow(self):
         rows=[]
         for row in range(self.tableWidgetBonTravail.rowCount()):
@@ -41,7 +45,7 @@ class Ui_Dialog(object):
     def fetchRows(self):
         status,record = getBonTravailList(self.mainWindowSelf.matricule)
         if status :
-                self.tableWidgetBonTravail.setColumnCount(11)
+                self.tableWidgetBonTravail.setColumnCount(12)
                 self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","Type","Code equipement","RefDIM","Frequence","Active"])
                 self.tableWidgetBonTravail.setRowCount(len(record))
 
@@ -57,8 +61,9 @@ class Ui_Dialog(object):
                 self.horizontal_header.setSectionResizeMode(8, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(9, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(10, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(11, QtWidgets.QHeaderView.ResizeToContents)
                 for row in range(len(record)):
-                        for col in range(11):
+                        for col in range(12):
                                 if col==10 :
                                         item=QtWidgets.QTableWidgetItem('False' if record[row][col]==0 else 'True')
                                         self.tableWidgetBonTravail.setItem(row,col,item)
@@ -68,6 +73,10 @@ class Ui_Dialog(object):
                                 if col ==0:
                                         item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                                         item.setCheckState(QtCore.Qt.CheckState.Unchecked) 
+                        if str(record[row][11])=="Traitee":
+                                self.setColortoRow(self.tableWidgetBonTravail,row,QColor(202,225,183))
+                        if str(record[row][11])=="NonTraitee":
+                                self.setColortoRow(self.tableWidgetBonTravail,row,QColor(246,173,158))
 
     def RedirectBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
