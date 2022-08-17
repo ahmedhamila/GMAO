@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore, QtGui, QtWidgets
-from .SaveUser import Ui_Dialog as SaveUser2
+from .SaveUsers import Ui_Dialog as SaveUser2
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 from Models.ConnectionServices import *
