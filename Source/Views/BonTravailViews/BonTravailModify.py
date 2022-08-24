@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Models import BonTravailServices,ResponsableMaintenanceServices,AgentMaintenanceServices,EquipementServices
+from Services import BonTravailServices,ResponsableMaintenanceServices,AgentMaintenanceServices,EquipementServices
 from datetime import datetime
 from PyQt5.QtWidgets import QMessageBox
 

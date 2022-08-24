@@ -22,7 +22,7 @@ import sys
 import qtpy
 import time
 from datetime import datetime, timedelta
-from Models.NotificationServices import getNotifications,getDemandeInterventionUntreated
+from Services.NotificationServices import getNotifications,getDemandeInterventionUntreated
 class NotificationThread(QtCore.QThread):
     def __init__(self,matricule_RM) -> None:
         super().__init__()

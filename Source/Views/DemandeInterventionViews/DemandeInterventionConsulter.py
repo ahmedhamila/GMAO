@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QColor
-from Models.DemandeInterventionServices import * 
+from Services.DemandeInterventionServices import * 
 from .DemandeInterventionConsulterDetaille import Ui_Dialog as DemandeIntervention_Consulter_Detaille_UI
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf,selfDLG) -> None:

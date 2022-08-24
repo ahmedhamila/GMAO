@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Models import ResponsableChaineProductionServices,EquipementServices,DemandeInterventionServices
+from Services import ResponsableChaineProductionServices,EquipementServices,DemandeInterventionServices
 from datetime import datetime
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets

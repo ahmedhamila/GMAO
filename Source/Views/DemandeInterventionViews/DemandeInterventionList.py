@@ -3,7 +3,7 @@ from PyQt5.QtGui import QColor
 from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
 from PyQt5.QtWidgets import QMessageBox
 from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
-from Models.DemandeInterventionServices import getDemandeInterventionListRCP,deleteDemandeIntervention
+from Services.DemandeInterventionServices import getDemandeInterventionListRCP,deleteDemandeIntervention
 
 class Ui_Dialog(object):
     def setColortoRow(self,table, rowIndex, color):

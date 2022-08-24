@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Models.DemandeInterventionServices import getDemandeIntervention
-from Models.ResponsableChaineProductionServices import getResponsableChaineProduction
-from Models.EquipementServices import getEquipement
+from Services.DemandeInterventionServices import getDemandeIntervention
+from Services.ResponsableChaineProductionServices import getResponsableChaineProduction
+from Services.EquipementServices import getEquipement
 from ..BonTravailViews.BonTravail import Ui_Dialog as Bontravail_UI
 from datetime import datetime
 class Ui_Dialog(object):

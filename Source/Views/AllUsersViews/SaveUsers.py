@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Models.ConnectionServices import Registration
+from Services.ConnectionServices import Registration
 from PyQt5.QtWidgets import *
 
 class Ui_Dialog(object):

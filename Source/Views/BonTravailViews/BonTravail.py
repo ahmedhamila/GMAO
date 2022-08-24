@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
-from Models import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices,DemandeInterventionServices
+from Services import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices,DemandeInterventionServices
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf,redirectFrom,refDIM=None,returnTo=None) -> None:
         self.mainWindowSelf=mainWindowSelf

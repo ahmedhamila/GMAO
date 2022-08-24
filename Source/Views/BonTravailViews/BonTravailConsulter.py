@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QColor
-from Models.BonTravailServices import getBonTravailListAM,getBonTravailListAll
+from Services.BonTravailServices import getBonTravailListAM,getBonTravailListAll
 
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf) -> None:
