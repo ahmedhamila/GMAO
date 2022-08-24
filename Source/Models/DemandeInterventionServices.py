@@ -25,7 +25,27 @@ def getDemandeIntervention(id):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
+def setTraiteeDemandeIntervention(id):
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='gmao_db',
+                                            user='root',
+                                            password='')
+        if connection.is_connected():
+            query = """update demande_intervention set status = %s where id = %s"""
+            cursor = connection.cursor()
+            
+            cursor.execute(query,("Traitee",id))
+            connection.commit()
 
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
+    
 def updateDemandeIntervention(record):
     try:
         connection = mysql.connector.connect(host='localhost',

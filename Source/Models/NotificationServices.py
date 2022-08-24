@@ -1,19 +1,20 @@
 import mysql.connector
 from mysql.connector import Error
 
-def getEquipements():
+
+def getNotifications(matriculeRecepteur,type):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = "select * from equipement "
+            query = """select * from notification where Recepteur = %s and Type = %s """
             cursor = connection.cursor()
-            cursor.execute(query)
+            cursor.execute(query,(matriculeRecepteur,type))
             record = cursor.fetchall()
             print(record)
-            if len(record) >0 :
+            if len(record) >= 1 :
                 return True,record
             else :
                 return False,False
@@ -25,19 +26,20 @@ def getEquipements():
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
-def getEquipement(code):
+
+def getDemandeInterventionUntreated(matriculeRM):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = "select * from equipement where Code = %s"
+            query = """select * from demande_intervention where matricule_RM = %s and Status = %s"""
             cursor = connection.cursor()
-            cursor.execute(query,(code,))
+            cursor.execute(query,(matriculeRM,"NonTraitee"))
             record = cursor.fetchall()
             print(record)
-            if len(record) >0 :
+            if len(record) >= 1 :
                 return True,record
             else :
                 return False,False

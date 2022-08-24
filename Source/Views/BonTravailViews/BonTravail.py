@@ -1,11 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
-from Models import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices
+from Models import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices,DemandeInterventionServices
 class Ui_Dialog(object):
-    def __init__(self,mainWindowSelf) -> None:
+    def __init__(self,mainWindowSelf,redirectFrom,refDIM=None,returnTo=None) -> None:
         self.mainWindowSelf=mainWindowSelf
-    
+        self.redirectFrom=redirectFrom
+        self.refDIM=refDIM
+        self.returnTo=returnTo
     def radioButtonClicked(self):
         if self.radioButtonPreventif.isChecked() :
             self.lineEditPreventif.setVisible(True)
@@ -41,6 +43,10 @@ class Ui_Dialog(object):
         record = (matriculeRM,matriculeAM,description,section,dateLiberation,type,codeEquipement,refDIM,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
         BonTravailServices.addBonTravail(record)
         self.showDialog('Success',"Bon de travail ajouté avec succé",True)
+        if self.redirectFrom == "DemandeInterventionConsulterDetaille":
+            DemandeInterventionServices.setTraiteeDemandeIntervention(self.refDIM)
+            self.returnTo[0].fetchRows()
+            self.mainWindowSelf.stackedWidget.setCurrentWidget(self.returnTo[1])
         self.initialiseBonTravail()
     def initialiseBonTravail(self):
         #Initialization
@@ -67,15 +73,25 @@ class Ui_Dialog(object):
         self.lineEditSection.setText("")
         self.textEditDescription.setText("")
 
-        self.radioButtonCorrectif.setChecked(False)
-        self.radioButtonPreventif.setChecked(False)
-
         self.lineEditCorrectif.setText("")
         self.lineEditPreventif.setText("")
         self.checkBoxActive.setChecked(False)
         self.lineEditCorrectif.setVisible(False)
         self.lineEditPreventif.setVisible(False)
         self.checkBoxActive.setVisible(False)
+        
+        if self.redirectFrom =="BonTravailList":
+            self.radioButtonCorrectif.setEnabled(False)
+            
+        elif self.redirectFrom == "DemandeInterventionConsulterDetaille":
+            self.radioButtonPreventif.setEnabled(False)
+            self.lineEditCorrectif.setText(self.refDIM)
+            self.lineEditCorrectif.setEnabled(False)
+
+        self.radioButtonCorrectif.setChecked(False)
+        self.radioButtonPreventif.setChecked(False)
+
+        
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:

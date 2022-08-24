@@ -1,3 +1,5 @@
+from tokenize import String
+from xmlrpc.client import boolean
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .. import icons_rc
 from ..BonTravailViews.bonTravailList import Ui_Dialog as Bontravail_UI
@@ -19,24 +21,30 @@ import QNotifications
 import sys
 import qtpy
 import time
-from Models.DemandeInterventionServices import getDemandeInterventionListRM
+from datetime import datetime, timedelta
+from Models.NotificationServices import getNotifications,getDemandeInterventionUntreated
 class NotificationThread(QtCore.QThread):
     def __init__(self,matricule_RM) -> None:
         super().__init__()
         self.matricule_RM=matricule_RM
-    update_notif=QtCore.pyqtSignal(int)
+    update_notif=QtCore.pyqtSignal(str)
     def run(self):
-        old_num=0
-        num=0
+        self.update_notif.emit("NonTraitee")
         while True:
-            old_num=num
-            status,rec = getDemandeInterventionListRM(self.matricule_RM)
-            num = len(rec)
+            
+            status,rec = getNotifications(self.matricule_RM,'DemandeIntervention')
+            
             print("Checking Notifs")
-            if status and num > old_num :
-                self.update_notif.emit(num-old_num)
+            for r in rec :
+                timeNow = datetime.time(datetime.now())
+                timeBefore1Min = datetime.time(datetime.now()-timedelta(minutes=1))
+                print(timeNow)
+                print("---",datetime.time(r[3]))
+                print(timeBefore1Min)
+                if timeBefore1Min<=datetime.time(r[3]) <=timeNow : 
+                    self.update_notif.emit("Notification")
             print("Sleeping ...")
-            time.sleep(30)
+            time.sleep(25)
 class Ui_MainWindow(QtCore.QObject):
 
     def start_Thread(self,matricule):
@@ -44,9 +52,13 @@ class Ui_MainWindow(QtCore.QObject):
         self.worker.start()
         self.worker.update_notif.connect(self.updateNotif)
     
-    def updateNotif(self,num):
-        for i in range(num):
+    def updateNotif(self,type):
+        if(type == "Notification"):
             self.__submit_message()
+        else:
+            status,rec = getDemandeInterventionUntreated(self.matricule)
+            if status :
+                self.__submit_message("Vous avez "+str(len(rec))+" notifications non traitées !","danger")
     ################################""""
     notify = qtpy.QtCore.Signal(
 		['QString', 'QString', int, bool],
@@ -59,7 +71,7 @@ class Ui_MainWindow(QtCore.QObject):
         self.dialogSignIn=dialogSignIn
         self.window=window
         self.notification_area = self.__setup_notification_area(self.window)
-    def __submit_message(self,textvalue="You Have A New Notification",typevalue="info",duration=5000,autohide=False,entryeffect="fadeIn",exiteffect="fadeOut",entryduration=500,exitduration=500,buttontext="OK"):
+    def __submit_message(self,textvalue="Vous avez une nouvelle notification",typevalue="primary",duration=5000,autohide=False,entryeffect="fadeIn",exiteffect="fadeOut",entryduration=500,exitduration=500,buttontext="OK"):
         if textvalue:
             if entryeffect != "None":
                 self.notification_area.setEntryEffect(entryeffect,
@@ -153,7 +165,7 @@ class Ui_MainWindow(QtCore.QObject):
         self.stackedWidget.setCurrentWidget(self.dialogDashboard)
     def displayBonTravailConsulter(self):
         self.dialogBonTravailConsulter = QtWidgets.QDialog()
-        self.uiBonTravailConsulter = BontravailConsulter_UI()
+        self.uiBonTravailConsulter = BontravailConsulter_UI(self)
         self.uiBonTravailConsulter.setupUi(self.dialogBonTravailConsulter)
         self.stackedWidget.addWidget(self.dialogBonTravailConsulter)
         self.stackedWidget.setCurrentWidget(self.dialogBonTravailConsulter)
@@ -189,7 +201,7 @@ class Ui_MainWindow(QtCore.QObject):
         self.stackedWidget.setCurrentWidget(self.dialogDemandeIntervention)
     def displayDemandeInterventionConsulter(self):
         self.dialogDemandeInterventionConsulter = QtWidgets.QDialog()
-        self.uiDemandeInterventionConsulter = DemandeInterventionConsulter_UI(self)
+        self.uiDemandeInterventionConsulter = DemandeInterventionConsulter_UI(self,self.dialogDemandeInterventionConsulter)
         self.uiDemandeInterventionConsulter.setupUi(self.dialogDemandeInterventionConsulter)
         self.stackedWidget.addWidget(self.dialogDemandeInterventionConsulter)
         self.stackedWidget.setCurrentWidget(self.dialogDemandeInterventionConsulter)

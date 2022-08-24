@@ -14,7 +14,7 @@ class Ui_Dialog(object):
     def initialiseBonTravail(self):
         status,record=BonTravailServices.getBonTravail(self.id)
         if status :
-            self.dateLiberation.setText("Date : "+record[0][5].__str__())
+            self.dateLiberation.setText("Date : "+datetime.date(record[0][5]).__str__())
 
             state1,record1 = ResponsableMaintenanceServices.getResponsableMaintenance(self.mainWindowSelf.matricule)
             if state1:

@@ -50,7 +50,7 @@ def updateBonTravail(record):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
-def getBonTravailList(matriculeRM):
+def getBonTravailListRM(matriculeRM):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
@@ -60,6 +60,54 @@ def getBonTravailList(matriculeRM):
             query = """select * from bon_travail where matricule_RM = %s """
             cursor = connection.cursor()
             cursor.execute(query,(matriculeRM,))
+            record = cursor.fetchall()
+            print(record)
+            if len(record) >= 1 :
+                return True,record
+            else :
+                return False,False
+
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
+def getBonTravailListAM(matriculeAM):
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='gmao_db',
+                                            user='root',
+                                            password='')
+        if connection.is_connected():
+            query = """select * from bon_travail where matricule_AM = %s """
+            cursor = connection.cursor()
+            cursor.execute(query,(matriculeAM,))
+            record = cursor.fetchall()
+            print(record)
+            if len(record) >= 1 :
+                return True,record
+            else :
+                return False,False
+
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
+def getBonTravailListAll():
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='gmao_db',
+                                            user='root',
+                                            password='')
+        if connection.is_connected():
+            query = """select * from bon_travail """
+            cursor = connection.cursor()
+            cursor.execute(query)
             record = cursor.fetchall()
             print(record)
             if len(record) >= 1 :

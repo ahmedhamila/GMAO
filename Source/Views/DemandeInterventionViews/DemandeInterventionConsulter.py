@@ -2,10 +2,26 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QColor
 from Models.DemandeInterventionServices import * 
-
+from .DemandeInterventionConsulterDetaille import Ui_Dialog as DemandeIntervention_Consulter_Detaille_UI
 class Ui_Dialog(object):
-    def __init__(self,mainWindowSelf) -> None:
+    def __init__(self,mainWindowSelf,selfDLG) -> None:
         self.mainWindowSelf=mainWindowSelf
+        self.selfDLG=selfDLG
+    def ConsulterDetaille(self):
+        ids=self.getSelectedRow()
+        if len(ids)>1:
+                self.showDialog("Error","Impossible d'effectuer cette action sur plus d'une ligne",False)
+                return 
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner une ligne",False)
+                return 
+        self.RedirectConsulterDetaille(ids[0])
+    def RedirectConsulterDetaille(self,id):
+        self.dialogDIConsulterDetaille = QtWidgets.QDialog()
+        self.uiDIConsulterDetaille = DemandeIntervention_Consulter_Detaille_UI(self.mainWindowSelf,id,(self,self.selfDLG))
+        self.uiDIConsulterDetaille.setupUi(self.dialogDIConsulterDetaille)
+        self.mainWindowSelf.stackedWidget.addWidget(self.dialogDIConsulterDetaille)
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogDIConsulterDetaille)
     def setColortoRow(self,table, rowIndex, color):
         for j in range(table.columnCount()):
                 table.item(rowIndex, j).setBackground(color)
@@ -156,6 +172,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
         self.fetchRows()
+        self.ButtonConsulter.clicked.connect(self.ConsulterDetaille)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

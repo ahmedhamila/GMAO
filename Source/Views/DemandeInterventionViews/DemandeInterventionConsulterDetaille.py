@@ -1,79 +1,42 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Models import ResponsableChaineProductionServices,EquipementServices,DemandeInterventionServices
+from Models.DemandeInterventionServices import getDemandeIntervention
+from Models.ResponsableChaineProductionServices import getResponsableChaineProduction
+from Models.EquipementServices import getEquipement
+from ..BonTravailViews.BonTravail import Ui_Dialog as Bontravail_UI
 from datetime import datetime
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5 import QtCore, QtGui, QtWidgets
-
-
 class Ui_Dialog(object):
-    def __init__(self,mainWindowSelf,id,DemandeInterventionDLG,DemandeInterventionUI) -> None:
-        self.id=id
+    def __init__(self,mainWindowSelf,id,returnTo) -> None:
         self.mainWindowSelf=mainWindowSelf
-        self.DemandeInterventionUI=DemandeInterventionUI
-        self.DemandeInterventionDLG=DemandeInterventionDLG
-    def comboChange(self):
-        self.label_7.setText(self.codes[self.comboBox.currentIndex()])
+        self.id=id
+        self.returnTo=returnTo
     def initialiseDemandeIntervention(self):
-        state,record = ResponsableChaineProductionServices.getResponsableChaineProduction(self.mainWindowSelf.matricule)
-        if state:
-            self.label_3.setText("Emetteur : "+record[0][0])
-            self.NomEmetteur.setText("Nom : "+record[0][1])
-            self.NumeroChaine.setText("Chaine : "+record[0][3])
-        
-        state,record = DemandeInterventionServices.getDemandeIntervention(self.id)
-        if state :
-            self.Date.setText(datetime.date(record[0][5]).__str__())
+        state,record = getDemandeIntervention(self.id)
+        if state : 
+                state1,record1 = getResponsableChaineProduction(record[0][1])
+                if state1:
+                        self.label_3.setText("Emetteur : "+record1[0][0])
+                        self.NomEmetteur.setText("Nom : "+record1[0][1])
+                        self.NumeroChaine.setText("Chaine : "+record1[0][3])
+                
+                
+                self.Date.setText(datetime.date(record[0][5]).__str__())
 
-            state3,record3 = EquipementServices.getEquipements()
-            self.comboBox.clear()
-            self.codes=[rec[0] for rec in record3]
-            index=0
-            i=0
-            if state3:
-                for rec in record3 :
-                    self.comboBox.addItem(rec[1]+" "+rec[2])
-
-            self.comboBox.setCurrentIndex(self.codes.index(record[0][3]))
-            self.label_7.setText(record3[self.codes.index(record[0][3])][0])
-            
-            
-            self.Section.setText(record[0][4])
-            self.Observation.setText(record[0][7])
-            if record[0][6]=="ArretComplet":
-                self.ArretComplet.setChecked(True)
-                self.Anomalie.setChecked(False)
-            else :
-                self.ArretComplet.setChecked(False)
-                self.Anomalie.setChecked(True)
-        
-    
-    def modifierDemandeIntervention(self):
-        Matricule_RCP=self.mainWindowSelf.matricule
-        matriculeRM="AAA00001"
-        codeEquipement=self.label_7.text()
-        section=self.Section.text()
-        motif = "ArretComplet" if self.ArretComplet.isChecked() else "AnomaliePouvantEntrainerunePanne"
-        description = self.Observation.toPlainText()
-        print("---------------",Matricule_RCP,'-',matriculeRM,'-',codeEquipement,'-',section,'-','-',motif,'-',description)
-        record = (Matricule_RCP,matriculeRM,codeEquipement,section,motif,description,self.id)
-        DemandeInterventionServices.updateDemandeIntervention(record)
-        self.showDialog('Success',"Demande d'Intervention Modifié avec succé",True)
-        self.DemandeInterventionUI.fetchRows()
-        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.DemandeInterventionDLG)
-        
-    def showDialog(self,title,str,bool):
-        msgBox = QMessageBox()
-        if bool==False:
-            msgBox.setIcon(QMessageBox.Warning)
-        else:
-            msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText(str)
-        msgBox.setWindowTitle(title)
-        msgBox.setStandardButtons(QMessageBox.Ok)
-        msgBox.exec()   
+                state3,record3 = getEquipement(record[0][3])
+                if state3:
+                        self.EquipementNom.setText("Equipement : "+record3[0][1])
+                        self.EquipementCode.setText("Code : "+record3[0][0])
+                self.Section.setText("Section : "+record[0][4])
+                self.label.setText("Motif de l'appel : "+record[0][6])
+                self.Observation.setPlainText(record[0][7])
+    def redirectBonTravail(self):
+        self.dialogBonTravail = QtWidgets.QDialog()
+        self.uiBonTravail = Bontravail_UI(self.mainWindowSelf,"DemandeInterventionConsulterDetaille",str(self.id),self.returnTo)
+        self.uiBonTravail.setupUi(self.dialogBonTravail)
+        self.mainWindowSelf.stackedWidget.addWidget(self.dialogBonTravail)
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogBonTravail)        
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(918, 840)
+        Dialog.resize(883, 875)
         Dialog.setStyleSheet("background-color : #22333B;\n"
 "")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(Dialog)
@@ -183,44 +146,37 @@ class Ui_Dialog(object):
         self.widget_9.setObjectName("widget_9")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_9)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.label_6 = QtWidgets.QLabel(self.widget_9)
+        self.EquipementNom = QtWidgets.QLabel(self.widget_9)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_6.setFont(font)
-        self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_6.setObjectName("label_6")
-        self.horizontalLayout_4.addWidget(self.label_6)
-        self.comboBox = QtWidgets.QComboBox(self.widget_9)
-        self.comboBox.setStyleSheet("border: 1px solid back;height:25px;")
-        self.comboBox.setCurrentText("")
-        self.comboBox.setObjectName("comboBox")
-        self.horizontalLayout_4.addWidget(self.comboBox)
-        self.label_7 = QtWidgets.QLabel(self.widget_9)
+        self.EquipementNom.setFont(font)
+        self.EquipementNom.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.EquipementNom.setObjectName("EquipementNom")
+        self.horizontalLayout_4.addWidget(self.EquipementNom)
+        self.EquipementCode = QtWidgets.QLabel(self.widget_9)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_7.setFont(font)
-        self.label_7.setObjectName("label_7")
-        self.horizontalLayout_4.addWidget(self.label_7)
-        self.Section = QtWidgets.QLineEdit(self.widget_9)
+        self.EquipementCode.setFont(font)
+        self.EquipementCode.setObjectName("EquipementCode")
+        self.horizontalLayout_4.addWidget(self.EquipementCode)
+        self.Section = QtWidgets.QLabel(self.widget_9)
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(11)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.Section.setFont(font)
-        self.Section.setStyleSheet("border : 1px solid black;")
         self.Section.setObjectName("Section")
         self.horizontalLayout_4.addWidget(self.Section)
         self.horizontalLayout_4.setStretch(0, 1)
-        self.horizontalLayout_4.setStretch(1, 2)
+        self.horizontalLayout_4.setStretch(1, 1)
         self.horizontalLayout_4.setStretch(2, 1)
-        self.horizontalLayout_4.setStretch(3, 2)
         self.verticalLayout_4.addWidget(self.widget_9)
         self.verticalLayout_3.addWidget(self.widget_7)
         self.widget_5 = QtWidgets.QWidget(self.widget_2)
@@ -238,28 +194,6 @@ class Ui_Dialog(object):
         self.label.setStyleSheet("margin-left:6px;")
         self.label.setObjectName("label")
         self.horizontalLayout_5.addWidget(self.label)
-        self.ArretComplet = QtWidgets.QRadioButton(self.widget_5)
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.ArretComplet.setFont(font)
-        self.ArretComplet.setObjectName("ArretComplet")
-        self.buttonGroup = QtWidgets.QButtonGroup(Dialog)
-        self.buttonGroup.setObjectName("buttonGroup")
-        self.buttonGroup.addButton(self.ArretComplet)
-        self.horizontalLayout_5.addWidget(self.ArretComplet)
-        self.Anomalie = QtWidgets.QRadioButton(self.widget_5)
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.Anomalie.setFont(font)
-        self.Anomalie.setObjectName("Anomalie")
-        self.buttonGroup.addButton(self.Anomalie)
-        self.horizontalLayout_5.addWidget(self.Anomalie)
         self.verticalLayout_3.addWidget(self.widget_5)
         self.widget_6 = QtWidgets.QWidget(self.widget_2)
         self.widget_6.setStyleSheet("")
@@ -283,6 +217,7 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.Observation.setFont(font)
         self.Observation.setStyleSheet("border : 1px solid black;")
+        self.Observation.setReadOnly(True)
         self.Observation.setObjectName("Observation")
         self.verticalLayout_5.addWidget(self.Observation)
         self.verticalLayout_3.addWidget(self.widget_6)
@@ -322,11 +257,9 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        
-        self.initialiseDemandeIntervention()
 
-        self.Sumbit.clicked.connect(self.modifierDemandeIntervention)
-        self.comboBox.currentTextChanged.connect(self.comboChange)
+        self.initialiseDemandeIntervention()
+        self.Sumbit.clicked.connect(self.redirectBonTravail)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -339,11 +272,14 @@ class Ui_Dialog(object):
         self.label_3.setText(_translate("Dialog", "Emetteur :"))
         self.NomEmetteur.setText(_translate("Dialog", "Nom :"))
         self.NumeroChaine.setText(_translate("Dialog", "Chaine :"))
-        self.label_6.setText(_translate("Dialog", "Equipement :"))
-        self.label_7.setText(_translate("Dialog", "Code : "))
-        self.Section.setPlaceholderText(_translate("Dialog", "Section"))
+        self.EquipementNom.setText(_translate("Dialog", "Equipement :"))
+        self.EquipementCode.setText(_translate("Dialog", "Code : "))
+        self.Section.setText(_translate("Dialog", "Section :"))
         self.label.setText(_translate("Dialog", "Motif de l\'appel :"))
-        self.ArretComplet.setText(_translate("Dialog", "Arret Complet"))
-        self.Anomalie.setText(_translate("Dialog", "Anomalie Pouvant Entrainer une Panne"))
         self.label_2.setText(_translate("Dialog", "Constat (symptôme observés) / Observations :"))
-        self.Sumbit.setText(_translate("Dialog", "Envoyer"))
+        self.Observation.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.Sumbit.setText(_translate("Dialog", "Créer un Bon de Travail "))
