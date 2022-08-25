@@ -28,6 +28,8 @@ class Ui_Dialog(object):
                 self.Section.setText("Section : "+record[0][4])
                 self.label.setText("Motif de l'appel : "+record[0][6])
                 self.Observation.setPlainText(record[0][7])
+                if record[0][8]=="Traitee":
+                        self.widget.setVisible(False)
     def redirectBonTravail(self):
         self.dialogBonTravail = QtWidgets.QDialog()
         self.uiBonTravail = Bontravail_UI(self.mainWindowSelf,"DemandeInterventionConsulterDetaille",str(self.id),self.returnTo)

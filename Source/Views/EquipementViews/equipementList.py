@@ -1,7 +1,72 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QMessageBox
+from Services.EquipementServices import getEquipements,deleteEquipement
 #from .Equipement import Equipement_UI
-
+#from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
 class Ui_Dialog(object):
+    def setColortoRow(self,table, rowIndex, color):
+        for j in range(table.columnCount()):
+                table.item(rowIndex, j).setBackground(color)
+    def getSelectedRow(self):
+        rows=[]
+        for row in range(self.tableWidgetEquipement.rowCount()):
+                if self.tableWidgetEquipement.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
+                        rows.append(self.tableWidgetEquipement.item(row,0).text())
+        return rows
+    def modifierEquipement(self):
+        ids=self.getSelectedRow()
+        if len(ids)>1:
+                self.showDialog("Error","Impossible d'effectuer cette action sur plus d'une ligne",False)
+                return 
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner une ligne",False)
+                return 
+        #self.RedirectEquipementModify(ids[0])
+    '''def RedirectEquipementModify(self,id):
+        self.dialogEquipement = QtWidgets.QDialog()
+        self.uiEquipement = Equipement_Modif_UI(self.mainWindowSelf,id,self.EquipementDLG,self)
+        self.uiEquipement.setupUi(self.dialogEquipement)
+        self.mainWindowSelf.stackedWidget.addWidget(self.dialogEquipement)
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogEquipement)'''
+    def supprimerEquipement(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return 
+        deleteEquipement(ids)
+        self.fetchRows()
+    def fetchRows(self):
+        status,record = getEquipements()
+        if status :
+                self.tableWidgetEquipement.setColumnCount(5)
+                self.tableWidgetEquipement.setHorizontalHeaderLabels(["Code","Nom","Type","DateFabriquation","DateMiseEnMarche"])
+                self.tableWidgetEquipement.setRowCount(len(record))
+
+                self.horizontal_header = self.tableWidgetEquipement.horizontalHeader()     
+                self.horizontal_header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+                for row in range(len(record)):
+                        for col in range(5):
+                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
+                                self.tableWidgetEquipement.setItem(row,col,item)
+                                if col ==0:
+                                        item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+                                        item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                        self.setColortoRow(self.tableWidgetEquipement,row,QColor(202,225,183))        
+    def showDialog(self,title,str,bool):
+        msgBox = QMessageBox()
+        if bool==False:
+            msgBox.setIcon(QMessageBox.Warning)
+        else:
+            msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(str)
+        msgBox.setWindowTitle(title)
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
     '''def RedirectEquipement(self):
         self.dialogEquipement = QtWidgets.QDialog()
         self.uiEquipement = Equipement_UI()
@@ -109,15 +174,22 @@ class Ui_Dialog(object):
         self.ButtonSupprimer.setObjectName("ButtonSupprimer")
         self.horizontalLayout_2.addWidget(self.ButtonSupprimer)
         self.verticalLayout_3.addWidget(self.frame_4)
-        self.tableViewEquipement = QtWidgets.QTableView(self.frame)
-        self.tableViewEquipement.setObjectName("tableViewEquipement")
-        self.verticalLayout_3.addWidget(self.tableViewEquipement)
+        self.tableWidgetEquipement = QtWidgets.QTableWidget(self.frame)
+        self.tableWidgetEquipement.setObjectName("tableWidgetEquipement")
+        self.tableWidgetEquipement.setColumnCount(0)
+        self.tableWidgetEquipement.setRowCount(0)
+        self.verticalLayout_3.addWidget(self.tableWidgetEquipement)
         self.verticalLayout.addWidget(self.frame)
         self.verticalLayout.setStretch(0, 1)
         self.verticalLayout.setStretch(1, 2)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+        self.fetchRows()
+        
+        self.ButtonModifier.clicked.connect(self.modifierEquipement)
+        self.ButtonSupprimer.clicked.connect(self.supprimerEquipement)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -131,13 +203,3 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Actions :"))
         self.ButtonModifier.setText(_translate("Dialog", "Modifier"))
         self.ButtonSupprimer.setText(_translate("Dialog", "Supprimer"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())

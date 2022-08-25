@@ -49,3 +49,27 @@ def getEquipement(code):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
+
+def deleteEquipement(ids):
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='gmao_db',
+                                            user='root',
+                                            password='')
+        if connection.is_connected():
+            query = """delete from equipement where Code = %s"""
+            for i in range(len(ids)-1):
+                query+=" or Code = %s"
+            cursor = connection.cursor()
+            print(query,tuple(ids))
+            cursor.execute(query,tuple(ids))
+            print(cursor.rowcount)
+            connection.commit()
+
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
