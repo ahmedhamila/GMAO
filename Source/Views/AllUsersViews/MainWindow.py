@@ -177,7 +177,7 @@ class Ui_MainWindow(QtCore.QObject):
         self.stackedWidget.setCurrentWidget(self.dialogEquipement)
     def displayEquipementConsulter(self):
         self.dialogEquipementConsulter = QtWidgets.QDialog()
-        self.uiEquipementConsulter = EquipementConsulter_UI()
+        self.uiEquipementConsulter = EquipementConsulter_UI(self)
         self.uiEquipementConsulter.setupUi(self.dialogEquipementConsulter)
         self.stackedWidget.addWidget(self.dialogEquipementConsulter)
         self.stackedWidget.setCurrentWidget(self.dialogEquipementConsulter)
