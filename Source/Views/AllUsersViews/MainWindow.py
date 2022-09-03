@@ -1,5 +1,3 @@
-from tokenize import String
-from xmlrpc.client import boolean
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .. import icons_rc
 from ..BonTravailViews.BonTravailList import Ui_Dialog as Bontravail_UI
@@ -13,6 +11,7 @@ from ..BonApprovisonnementViews.BonApprovisionnementConsulter import Ui_Dialog a
 from .ListeUser import Ui_Dialog as ListeUser2
 from .Dashboard import Ui_Dialog as dashboard
 from PyQt5.QtWidgets import *
+from Services import ResponsableMaintenanceServices,ResponsableProductionServices,ResponsableChaineProductionServices,MagasinierServices
 
 from .Dashboard import Ui_Dialog as Dashboard_UI
 from ..Components.CollapsibleBox import CollapsibleBox
@@ -209,210 +208,17 @@ class Ui_MainWindow(QtCore.QObject):
     def signOut(self):
         self.dialogSignIn.show()
         self.mainwindow.hide()
-
-     
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1225, 717)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("")
-        self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.main_header = QtWidgets.QFrame(self.centralwidget)
-        self.main_header.setMaximumSize(QtCore.QSize(16777215, 50))
-        self.main_header.setStyleSheet("QFrame{\n"
-"    \n"
-"    background-color: #22333B;\n"
-"}")
-        self.main_header.setFrameShape(QtWidgets.QFrame.WinPanel)
-        self.main_header.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.main_header.setObjectName("main_header")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.main_header)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.tittle_bar_container = QtWidgets.QFrame(self.main_header)
-        self.tittle_bar_container.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.tittle_bar_container.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.tittle_bar_container.setObjectName("tittle_bar_container")
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tittle_bar_container)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_5.setSpacing(0)
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.left_menu_toggle = QtWidgets.QFrame(self.tittle_bar_container)
-        self.left_menu_toggle.setMinimumSize(QtCore.QSize(50, 0))
-        self.left_menu_toggle.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.left_menu_toggle.setStyleSheet("QFrame{\n"
-"\n"
-"}\n"
-"QPushButton{\n"
-"    padding: 5px 10px;\n"
-"    border: none;\n"
-"    border-radius: 5px;\n"
-"    background-color: #00A8E8;\n"
-"    color: white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(0, 92, 157);\n"
-"}")
-        self.left_menu_toggle.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.left_menu_toggle.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.left_menu_toggle.setObjectName("left_menu_toggle")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.left_menu_toggle)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_4.setSpacing(0)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.left_menu_toggle_btn = QtWidgets.QPushButton(self.left_menu_toggle)
-        self.left_menu_toggle_btn.setMinimumSize(QtCore.QSize(0, 40))
-        self.left_menu_toggle_btn.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.left_menu_toggle_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.left_menu_toggle_btn.setStyleSheet("background-image: url(:/icons/icons/menu.png);\n"
-"background-repeat: none;\n"
-"padding-left: 50px;\n"
-"background-position: center ;")
-        self.left_menu_toggle_btn.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/icons/cil-menu.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.left_menu_toggle_btn.setIcon(icon)
-        self.left_menu_toggle_btn.setIconSize(QtCore.QSize(24, 24))
-        self.left_menu_toggle_btn.setObjectName("left_menu_toggle_btn")
-        self.horizontalLayout_4.addWidget(self.left_menu_toggle_btn)
-        self.horizontalLayout_5.addWidget(self.left_menu_toggle)
-        self.tittle_bar = QtWidgets.QFrame(self.tittle_bar_container)
-        self.tittle_bar.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.tittle_bar.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.tittle_bar.setObjectName("tittle_bar")
-        self.horizontalLayout_5.addWidget(self.tittle_bar)
-        self.horizontalLayout_2.addWidget(self.tittle_bar_container)
-        self.verticalLayout.addWidget(self.main_header)
-        self.main_body = QtWidgets.QFrame(self.centralwidget)
-        self.main_body.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.main_body.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.main_body.setObjectName("main_body")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.main_body)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.left_side_menu = QtWidgets.QFrame(self.main_body)
-        self.left_side_menu.setMaximumSize(QtCore.QSize(75, 16777215))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.left_side_menu.setFont(font)
-        self.left_side_menu.setStyleSheet("background-color: #22333B;")
-        self.left_side_menu.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.left_side_menu.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.left_side_menu.setObjectName("left_side_menu")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.left_side_menu)
-        self.verticalLayout_3.setContentsMargins(7, 0, 0, 0)
-        self.verticalLayout_3.setSpacing(0)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.scrollArea = QtWidgets.QScrollArea(self.left_side_menu)
-        self.scrollArea.setStyleSheet("")
-        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
-        self.left_menu_top_buttons = QtWidgets.QWidget()
-        self.left_menu_top_buttons.setGeometry(QtCore.QRect(0, 0, 66, 569))
-        self.left_menu_top_buttons.setStyleSheet("QPushButton{\n"
-"    padding: 20px 10px;\n"
-"    border: none;\n"
-"    border-radius: 10px;\n"
-"    background-color: #00A8E8;\n"
-"    color: white;\n"
-"    margin : 10px 5px; \n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(0, 92, 157);\n"
-"}")
-        self.left_menu_top_buttons.setObjectName("left_menu_top_buttons")
-        self.formLayout = QtWidgets.QFormLayout(self.left_menu_top_buttons)
-        self.formLayout.setObjectName("formLayout")
-        self.scrollArea.setWidget(self.left_menu_top_buttons)
-        self.verticalLayout_3.addWidget(self.scrollArea)
-        self.SignOut = QtWidgets.QPushButton(self.left_side_menu)
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(16)
-        font.setBold(True)
-        font.setWeight(75)
-        self.SignOut.setFont(font)
-        self.SignOut.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.SignOut.setStyleSheet("\n"
-"\n"
-"QPushButton{\n"
-"    padding: 20px 10px;\n"
-"    border: none;\n"
-"    border-radius: 10px;\n"
-"    background-color: #00A8E8;\n"
-"    color: white;\n"
-"    margin : 10px 5px; \n"
-"    background-image: url(:/icons/icons/sign-out.png);\n"
-"    background-repeat: none;\n"
-"    padding-left: 50px;\n"
-"    background-position: left center ;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(0, 92, 157);\n"
-"}")
-        self.SignOut.setObjectName("SignOut")
-        self.verticalLayout_3.addWidget(self.SignOut)
-        self.horizontalLayout.addWidget(self.left_side_menu)
-        self.center_main_items = QtWidgets.QFrame(self.main_body)
-        self.center_main_items.setStyleSheet("")
-        self.center_main_items.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.center_main_items.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.center_main_items.setObjectName("center_main_items")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.center_main_items)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.stackedWidget = QtWidgets.QStackedWidget(self.center_main_items)
-        self.stackedWidget.setStyleSheet("background-color: #FEFDFC;")
-        self.stackedWidget.setObjectName("stackedWidget")
-        self.page = QtWidgets.QWidget()
-        self.page.setObjectName("page")
-        self.stackedWidget.addWidget(self.page)
-        self.page_2 = QtWidgets.QWidget()
-        self.page_2.setObjectName("page_2")
-        self.stackedWidget.addWidget(self.page_2)
-        self.verticalLayout_2.addWidget(self.stackedWidget)
-        self.horizontalLayout.addWidget(self.center_main_items)
-        self.verticalLayout.addWidget(self.main_body)
-        self.main_footer = QtWidgets.QFrame(self.centralwidget)
-        self.main_footer.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.main_footer.setStyleSheet("QFrame{\n"
-"    background-color: grey;\n"
-"}")
-        self.main_footer.setFrameShape(QtWidgets.QFrame.WinPanel)
-        self.main_footer.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.main_footer.setObjectName("main_footer")
-        self.verticalLayout.addWidget(self.main_footer)
-        MainWindow.setCentralWidget(self.centralwidget)
-
-
-
-        self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
-        self.mainwindow=MainWindow
-        self.dashboard = QtWidgets.QDialog()
-        self.ui_dashboard =Dashboard_UI()
-        self.ui_dashboard.setupUi(self.dashboard)
-        self.stackedWidget.addWidget(self.dashboard)
-        self.stackedWidget.setCurrentWidget(self.dashboard)
-        
-        
-
+    def initialiseRM(self):
         ##############################################################################################################################################################################
                                                                             # Responsable Maintenance #
         ##############################################################################################################################################################################
 
         if self.role == 'ResponsableMaintenance':
+
+            status,record = ResponsableMaintenanceServices.getResponsableMaintenance(self.matricule)
+            if status:
+                self.nom=record[0][1]
+                self.prenom=record[0][2]
             
             self.affdash()
             self.DashboardBox = QtWidgets.QPushButton(
@@ -502,13 +308,17 @@ class Ui_MainWindow(QtCore.QObject):
 
             self.start_Thread(self.matricule)
         ##############################################################################################################################################################################
-
-
+    def initialiseRP(self):
         ##############################################################################################################################################################################
                                                                             # Responsable Production #
         ##############################################################################################################################################################################
 
         if self.role == 'ResponsableProduction':
+
+            status,record = ResponsableProductionServices.getResponsableProduction(self.matricule)
+            if status:
+                self.nom=record[0][1]
+                self.prenom=record[0][2]
             
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
@@ -591,12 +401,17 @@ class Ui_MainWindow(QtCore.QObject):
             self.EquipementsBox.setContentLayout(lay)
             self.formLayout.addWidget(self.EquipementsBox)
         ##############################################################################################################################################################################
-
+    def initialiseRCP(self):
         ##############################################################################################################################################################################
                                                                             # Responsable Chaine Production #
         ##############################################################################################################################################################################
 
         if self.role=="ResponsableChaineProduction":
+
+            status,record = ResponsableChaineProductionServices.getResponsableChaineProduction(self.matricule)
+            if status:
+                self.nom=record[0][1]
+                self.prenom=record[0][2]
 
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
@@ -667,14 +482,21 @@ class Ui_MainWindow(QtCore.QObject):
 
 
         ################################################################################################################################################################
-
-
+    def initialiseAdmin(self):
         ###############################################################################################################################################################
                                                                     # Administrateur #
         ###############################################################################################################################################################
 
 
         if self.role=="Administrateur":
+
+            '''status,record = ResponsableChaineProductionServices.getResponsableChaineProduction(self.matricule)
+            if status:
+                self.nom=record[0][1]
+                self.prenom=record[0][2]'''
+            self.nom=""
+            self.prenom=""
+            
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
@@ -758,11 +580,18 @@ class Ui_MainWindow(QtCore.QObject):
             self.formLayout.addWidget(self.EquipementsBox)
 
             CRUDUtilisateur.clicked.connect(self.handleadd)
-
+    def initialiseMagasinier(self):
         ################################################################################################################
                                             #Magasiner
         #################################################################################################################
         if self.role=="Magasinier":
+
+            status,record = MagasinierServices.getMagasinier(self.matricule)
+            if status:
+                self.nom=record[0][1]
+                self.prenom=record[0][2]
+
+                
             self.DashboardBox = QtWidgets.QPushButton(
             text="Dashboard", checkable=True, checked=False
         )
@@ -816,22 +645,221 @@ class Ui_MainWindow(QtCore.QObject):
 
 
         ################################################################################################################
+    def initialiseMainWindow(self):
+        self.initialiseRM()
+        self.initialiseRP()
+        self.initialiseRCP()
+        self.initialiseAdmin()
+        self.initialiseMagasinier()
+        self.LabesSpace.setText("Space "+self.role+"( "+self.matricule +" "+self.nom+" "+self.prenom+" )")
+        
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1225, 717)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setStyleSheet("")
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.main_header = QtWidgets.QFrame(self.centralwidget)
+        self.main_header.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.main_header.setStyleSheet("QFrame{\n"
+"    \n"
+"    background-color: #22333B;\n"
+"}")
+        self.main_header.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.main_header.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.main_header.setObjectName("main_header")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.main_header)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.tittle_bar_container = QtWidgets.QFrame(self.main_header)
+        self.tittle_bar_container.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.tittle_bar_container.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.tittle_bar_container.setObjectName("tittle_bar_container")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.tittle_bar_container)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.left_menu_toggle = QtWidgets.QFrame(self.tittle_bar_container)
+        self.left_menu_toggle.setMinimumSize(QtCore.QSize(50, 0))
+        self.left_menu_toggle.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.left_menu_toggle.setStyleSheet("QFrame{\n"
+"\n"
+"}\n"
+"QPushButton{\n"
+"    padding: 5px 10px;\n"
+"    border: none;\n"
+"    border-radius: 5px;\n"
+"    background-color: #00A8E8;\n"
+"    color: white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(0, 92, 157);\n"
+"}")
+        self.left_menu_toggle.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.left_menu_toggle.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.left_menu_toggle.setObjectName("left_menu_toggle")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.left_menu_toggle)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.left_menu_toggle_btn = QtWidgets.QPushButton(self.left_menu_toggle)
+        self.left_menu_toggle_btn.setMinimumSize(QtCore.QSize(0, 40))
+        self.left_menu_toggle_btn.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.left_menu_toggle_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.left_menu_toggle_btn.setStyleSheet("background-image: url(:/icons/icons/menu.png);\n"
+"background-repeat: none;\n"
+"padding-left: 50px;\n"
+"background-position: center ;")
+        self.left_menu_toggle_btn.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/cil-menu.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.left_menu_toggle_btn.setIcon(icon)
+        self.left_menu_toggle_btn.setIconSize(QtCore.QSize(24, 24))
+        self.left_menu_toggle_btn.setObjectName("left_menu_toggle_btn")
+        self.horizontalLayout_4.addWidget(self.left_menu_toggle_btn)
+        self.horizontalLayout_5.addWidget(self.left_menu_toggle)
+        self.tittle_bar = QtWidgets.QFrame(self.tittle_bar_container)
+        self.tittle_bar.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.tittle_bar.setStyleSheet("")
+        self.tittle_bar.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.tittle_bar.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.tittle_bar.setObjectName("tittle_bar")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tittle_bar)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.LabesSpace = QtWidgets.QLabel(self.tittle_bar)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.LabesSpace.setFont(font)
+        self.LabesSpace.setStyleSheet("color:white;")
+        self.LabesSpace.setText("")
+        self.LabesSpace.setAlignment(QtCore.Qt.AlignCenter)
+        self.LabesSpace.setObjectName("LabesSpace")
+        self.horizontalLayout_3.addWidget(self.LabesSpace)
+        self.horizontalLayout_5.addWidget(self.tittle_bar)
+        self.horizontalLayout_2.addWidget(self.tittle_bar_container)
+        self.verticalLayout.addWidget(self.main_header)
+        self.main_body = QtWidgets.QFrame(self.centralwidget)
+        self.main_body.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.main_body.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.main_body.setObjectName("main_body")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.main_body)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.left_side_menu = QtWidgets.QFrame(self.main_body)
+        self.left_side_menu.setMaximumSize(QtCore.QSize(75, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.left_side_menu.setFont(font)
+        self.left_side_menu.setStyleSheet("background-color: #22333B;")
+        self.left_side_menu.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.left_side_menu.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.left_side_menu.setObjectName("left_side_menu")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.left_side_menu)
+        self.verticalLayout_3.setContentsMargins(7, 0, 0, 0)
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.scrollArea = QtWidgets.QScrollArea(self.left_side_menu)
+        self.scrollArea.setStyleSheet("")
+        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.left_menu_top_buttons = QtWidgets.QWidget()
+        self.left_menu_top_buttons.setGeometry(QtCore.QRect(0, 0, 66, 571))
+        self.left_menu_top_buttons.setStyleSheet("QPushButton{\n"
+"    padding: 20px 10px;\n"
+"    border: none;\n"
+"    border-radius: 10px;\n"
+"    background-color: #00A8E8;\n"
+"    color: white;\n"
+"    margin : 10px 5px; \n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(0, 92, 157);\n"
+"}")
+        self.left_menu_top_buttons.setObjectName("left_menu_top_buttons")
+        self.formLayout = QtWidgets.QFormLayout(self.left_menu_top_buttons)
+        self.formLayout.setObjectName("formLayout")
+        self.scrollArea.setWidget(self.left_menu_top_buttons)
+        self.verticalLayout_3.addWidget(self.scrollArea)
+        self.SignOut = QtWidgets.QPushButton(self.left_side_menu)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.SignOut.setFont(font)
+        self.SignOut.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.SignOut.setStyleSheet("\n"
+"\n"
+"QPushButton{\n"
+"    padding: 20px 10px;\n"
+"    border: none;\n"
+"    border-radius: 10px;\n"
+"    background-color: #00A8E8;\n"
+"    color: white;\n"
+"    margin : 10px 5px; \n"
+"    background-image: url(:/icons/icons/sign-out.png);\n"
+"    background-repeat: none;\n"
+"    padding-left: 50px;\n"
+"    background-position: left center ;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(0, 92, 157);\n"
+"}")
+        self.SignOut.setObjectName("SignOut")
+        self.verticalLayout_3.addWidget(self.SignOut)
+        self.horizontalLayout.addWidget(self.left_side_menu)
+        self.center_main_items = QtWidgets.QFrame(self.main_body)
+        self.center_main_items.setStyleSheet("")
+        self.center_main_items.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.center_main_items.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.center_main_items.setObjectName("center_main_items")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.center_main_items)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.stackedWidget = QtWidgets.QStackedWidget(self.center_main_items)
+        self.stackedWidget.setStyleSheet("background-color: #FEFDFC;")
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.page = QtWidgets.QWidget()
+        self.page.setObjectName("page")
+        self.stackedWidget.addWidget(self.page)
+        self.page_2 = QtWidgets.QWidget()
+        self.page_2.setObjectName("page_2")
+        self.stackedWidget.addWidget(self.page_2)
+        self.verticalLayout_2.addWidget(self.stackedWidget)
+        self.horizontalLayout.addWidget(self.center_main_items)
+        self.verticalLayout.addWidget(self.main_body)
+        self.main_footer = QtWidgets.QFrame(self.centralwidget)
+        self.main_footer.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.main_footer.setStyleSheet("QFrame{\n"
+"    background-color: grey;\n"
+"}")
+        self.main_footer.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.main_footer.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.main_footer.setObjectName("main_footer")
+        self.verticalLayout.addWidget(self.main_footer)
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        self.stackedWidget.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+        self.mainwindow=MainWindow
+        self.initialiseMainWindow()
         self.left_menu_toggle_btn.clicked.connect(lambda:self.slideLeftMenu("1"))
         self.SignOut.clicked.connect(self.signOut)
-        
-    
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.SignOut.setText(_translate("MainWindow", "Sign Out"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
