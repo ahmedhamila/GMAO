@@ -32,7 +32,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="icons.qrc">:/icons/icons/pencil.png</pixmap>
+         <pixmap resource="../icons.qrc">:/icons/icons/pencil.png</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -218,6 +218,7 @@ QPushButton:hover{
   </layout>
  </widget>
  <resources>
+  <include location="../icons.qrc"/>
   <include location="icons.qrc"/>
  </resources>
  <connections/>

@@ -16,89 +16,20 @@ from Services import ResponsableMaintenanceServices,ResponsableProductionService
 from .Dashboard import Ui_Dialog as Dashboard_UI
 from ..Components.CollapsibleBox import CollapsibleBox
 
-import QNotifications
-import sys
-import qtpy
-import time
-from datetime import datetime, timedelta
-from Services.NotificationServices import getNotifications,getDemandeInterventionUntreated
-class NotificationThread(QtCore.QThread):
-    def __init__(self,matricule_RM) -> None:
-        super().__init__()
-        self.matricule_RM=matricule_RM
-    update_notif=QtCore.pyqtSignal(str)
-    def run(self):
-        self.update_notif.emit("NonTraitee")
-        while True:
-            
-            status,rec = getNotifications(self.matricule_RM,'DemandeIntervention')
-            
-            print("Checking Notifs")
-            for r in rec :
-                timeNow = datetime.time(datetime.now())
-                timeBefore1Min = datetime.time(datetime.now()-timedelta(minutes=1))
-                print(timeNow)
-                print("---",datetime.time(r[3]))
-                print(timeBefore1Min)
-                if timeBefore1Min<=datetime.time(r[3]) <=timeNow : 
-                    self.update_notif.emit("Notification")
-            print("Sleeping ...")
-            time.sleep(25)
+
+
+from ..Components.Notifications import NotificationThread,Notification
 class Ui_MainWindow(QtCore.QObject):
 
-    def start_Thread(self,matricule):
-        self.worker=NotificationThread(matricule)
-        self.worker.start()
-        self.worker.update_notif.connect(self.updateNotif)
     
-    def updateNotif(self,type):
-        if(type == "Notification"):
-            self.__submit_message()
-        else:
-            status,rec = getDemandeInterventionUntreated(self.matricule)
-            if status :
-                self.__submit_message("Vous avez "+str(len(rec))+" notifications non traitées !","danger")
-    ################################""""
-    notify = qtpy.QtCore.Signal(
-		['QString', 'QString', int, bool],
-		['QString', 'QString', int, bool, 'QString']
-	)
     def __init__(self,matricule,role,dialogSignIn,window) -> None:
         super(Ui_MainWindow,self).__init__()
         self.matricule = matricule
         self.role = role
         self.dialogSignIn=dialogSignIn
         self.window=window
-        self.notification_area = self.__setup_notification_area(self.window)
-    def __submit_message(self,textvalue="Vous avez une nouvelle notification",typevalue="primary",duration=5000,autohide=False,entryeffect="fadeIn",exiteffect="fadeOut",entryduration=500,exitduration=500,buttontext="OK"):
-        if textvalue:
-            if entryeffect != "None":
-                self.notification_area.setEntryEffect(entryeffect,
-                    entryduration)
-            else:
-                self.notification_area.setEntryEffect(None)
-            if exiteffect != "None":
-                self.notification_area.setExitEffect(exiteffect,
-                    exitduration)
-            else:
-                self.notification_area.setExitEffect(None)
-            if buttontext:
-                self.notify['QString', 'QString', int, bool, 'QString'].emit(
-                    textvalue, typevalue, duration, autohide, buttontext
-                )
-            else:
-                self.notify['QString', 'QString', int, bool].emit(
-                    textvalue, typevalue, duration, autohide
-                )    
-    def __setup_notification_area(self, targetWidget):
-        notification_area = QNotifications.QNotificationArea(targetWidget)
-        self.notify['QString', 'QString', int, bool].connect(
-            notification_area.display
-        )
-        self.notify['QString', 'QString', int, bool, 'QString'].connect(
-            notification_area.display
-        )
-        return notification_area
+        self.NotificationObject=Notification(self.window,self.matricule)
+    
     def slideLeftMenu(self,x):
         if x=="1":
             width=self.left_side_menu.width()
@@ -306,7 +237,7 @@ class Ui_MainWindow(QtCore.QObject):
             self.EquipementsBox.setContentLayout(lay)
             self.formLayout.addWidget(self.EquipementsBox)
 
-            self.start_Thread(self.matricule)
+            self.NotificationObject.start_Thread(self.matricule)
         ##############################################################################################################################################################################
     def initialiseRP(self):
         ##############################################################################################################################################################################
