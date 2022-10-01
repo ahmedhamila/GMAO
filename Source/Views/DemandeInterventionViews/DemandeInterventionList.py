@@ -3,7 +3,7 @@ from PyQt5.QtGui import QColor
 from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
 from PyQt5.QtWidgets import QMessageBox
 from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
-from Services.DemandeInterventionServices import getDemandeInterventionListRCP,deleteDemandeIntervention
+from Services.DemandeInterventionServices import getDemandeIntervention, getDemandeInterventionListRCP,deleteDemandeIntervention
 
 class Ui_Dialog(object):
     def setColortoRow(self,table, rowIndex, color):
@@ -22,8 +22,15 @@ class Ui_Dialog(object):
                 return 
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner une ligne",False)
-                return 
+                return
+        x,y=getDemandeIntervention(ids[0])
+        etat=str(y[0][8])
+        
+        if (etat=="EnCours" or etat=="Traitee"):
+                self.showDialog("Error","Impossible d'effectuer cette action",False)
+                return
         self.RedirectDemandeInterventionModify(ids[0])
+
     def RedirectDemandeInterventionModify(self,id):
         self.dialogDemandeIntervention = QtWidgets.QDialog()
         self.uiDemandeIntervention = DemandeIntervention_Modif_UI(self.mainWindowSelf,id,self.DemandeInterventionDLG,self)
@@ -35,10 +42,17 @@ class Ui_Dialog(object):
         ids=self.getSelectedRow()
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return
+        x,y=getDemandeIntervention(ids[0])
+        etat=str(y[0][8])
+        
+        if (etat=="EnCours" or etat=="Traitee"):
+                self.showDialog("Error","Impossible d'effectuer cette action",False)
                 return 
         deleteDemandeIntervention(ids)
         self.fetchRows()
-
+    def receptionDemandeIntervention(self):
+        pass
     def imprimerDemandeIntervention(self):
         ids=self.getSelectedRow()
         if len(ids)<1:
@@ -74,6 +88,8 @@ class Ui_Dialog(object):
                                 self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(202,225,183))
                         if str(record[row][8])=="NonTraitee":
                                 self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(246,173,158))
+                        if str(record[row][8])=="EnCours":
+                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(238,220,52))
 
 
 
@@ -168,6 +184,19 @@ class Ui_Dialog(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
+        self.pushButton = QtWidgets.QPushButton(self.frame_4)
+        self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton.setStyleSheet("QPushButton{\n"
+"height : 20px;\n"
+"background-color :#00A8E8;\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(0, 92, 157);\n"
+"};")
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_2.addWidget(self.pushButton)
         self.ButtonModifier = QtWidgets.QPushButton(self.frame_4)
         self.ButtonModifier.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.ButtonModifier.setStyleSheet("QPushButton{\n"
@@ -209,10 +238,9 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addWidget(self.ButtonImprimer)
         self.verticalLayout_3.addWidget(self.frame_4)
         self.tableWidgetDemandeIntervention = QtWidgets.QTableWidget(self.frame)
-        self.tableWidgetDemandeIntervention.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.tableWidgetDemandeIntervention.setRowCount(0)
-        self.tableWidgetDemandeIntervention.setColumnCount(0)
         self.tableWidgetDemandeIntervention.setObjectName("tableWidgetDemandeIntervention")
+        self.tableWidgetDemandeIntervention.setColumnCount(0)
+        self.tableWidgetDemandeIntervention.setRowCount(0)
         self.verticalLayout_3.addWidget(self.tableWidgetDemandeIntervention)
         self.verticalLayout.addWidget(self.frame)
         self.verticalLayout.setStretch(0, 1)
@@ -226,6 +254,7 @@ class Ui_Dialog(object):
         self.ButtonModifier.clicked.connect(self.modifierDemandeIntervention)
         self.ButtonSupprimer.clicked.connect(self.supprimerDemandeIntervention)
         self.ButtonImprimer.clicked.connect(self.imprimerDemandeIntervention)
+        self.pushButton.clicked.connect(self.receptionDemandeIntervention)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -233,12 +262,23 @@ class Ui_Dialog(object):
         self.textEdit.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Tahoma,Calibri,Helvetica\'; font-size:10pt; font-weight:600; color:#888888;\">Les pièces sont une liste non seulement de ce que vous avez, mais aussi de ce que vous devriez avoir. Pour mettre les choses en perspective, vous pourriez avoir une entrée pour des ampoules de 60 watts, mais n\'en avoir aucune en stock.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Tahoma,Calibri,Helvetica\'; font-size:10pt; font-weight:600; color:#888888;\">Garder une liste exhaustive des pièces servira son objectif lorsque vous devrez passer des commandes.</span></p></body></html>"))
         self.ButtonCreerDemandeIntervention.setText(_translate("Dialog", "Créer une Demande d\'Intervention"))
         self.label.setText(_translate("Dialog", "Actions :"))
+        self.pushButton.setText(_translate("Dialog", "Reception Intervenant"))
         self.ButtonModifier.setText(_translate("Dialog", "Modifier"))
         self.ButtonSupprimer.setText(_translate("Dialog", "Supprimer"))
         self.ButtonImprimer.setText(_translate("Dialog", "Imprimer"))
 
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
