@@ -1,15 +1,14 @@
 import mysql.connector
 from mysql.connector import Error
 
-
-def getChaineProduction():
+def getLubrification():
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """select * from chaine_production """
+            query = """select * from lubrification """
             cursor = connection.cursor()
             cursor.execute(query)
             record = cursor.fetchall()
@@ -28,38 +27,14 @@ def getChaineProduction():
             print("MySQL connection is closed")
 
 
-def getResponsableChaineProduction(id):
+def addLubrificationOper(record):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """select * from responsable_chaine_production where Matricule=%s """
-            cursor = connection.cursor()
-            cursor.execute(query,(id))
-            record = cursor.fetchall()
-            print(record)
-            if len(record) == 1 :
-                return True,record
-            else :
-                return False,False
-    except Error as e:
-        print("Error while connecting to MySQL", e)
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed")
-def addChaineProduction(record):
-    try:
-        connection = mysql.connector.connect(host='localhost',
-                                            database='gmao_db',
-                                            user='root',
-                                            password='')
-        if connection.is_connected():
-            
-            query = """insert into chaine_production(RefChaine,NbEquipement) values (%s,%s) """
+            query = """insert into oper_lubri(oper,lubri) values (%s,%s) """
             print("######################################•")
             print(query,record)
             print("######################################•")
