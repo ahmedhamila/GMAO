@@ -45,7 +45,7 @@ class Ui_Dialog(object):
         self.showDialog('Success',"Bon de travail ajouté avec succé",True)
         
         if self.redirectFrom == "DemandeInterventionConsulterDetaille":
-            DemandeInterventionServices.setTraiteeDemandeIntervention(self.refDIM)
+            DemandeInterventionServices.setEnCoursDemandeIntervention(self.refDIM)
             self.returnTo[0].fetchRows()
             self.mainWindowSelf.stackedWidget.setCurrentWidget(self.returnTo[1])
         self.initialiseBonTravail()

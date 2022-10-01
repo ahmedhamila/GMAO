@@ -32,7 +32,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="icons.qrc">:/icons/icons/request.png</pixmap>
+         <pixmap>:/icons/icons/request.png</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -67,7 +67,7 @@ border : none;</string>
             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Tahoma,Calibri,Helvetica'; font-size:10pt; font-weight:600; color:#888888;&quot;&gt;Les pièces sont une liste non seulement de ce que vous avez, mais aussi de ce que vous devriez avoir. Pour mettre les choses en perspective, vous pourriez avoir une entrée pour des ampoules de 60 watts, mais n'en avoir aucune en stock.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Tahoma,Calibri,Helvetica'; font-size:10pt; font-weight:600; color:#888888;&quot;&gt;Garder une liste exhaustive des pièces servira son objectif lorsque vous devrez passer des commandes.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -140,6 +140,27 @@ QPushButton:hover{
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+height : 20px;
+background-color :#00A8E8;
+}
+
+
+QPushButton:hover{
+	background-color: rgb(0, 92, 157);
+};</string>
+           </property>
+           <property name="text">
+            <string>Reception Intervenant</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="ButtonModifier">
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
@@ -206,7 +227,7 @@ QPushButton:hover{
        </widget>
       </item>
       <item>
-       <widget class="QTableView" name="tableViewDemandeIntervention"/>
+       <widget class="QTableWidget" name="tableWidgetDemandeIntervention"/>
       </item>
      </layout>
     </widget>
