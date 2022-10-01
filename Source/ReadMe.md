@@ -29,7 +29,11 @@ II) Installation & Configuration
 
     6- Tapez la commande suivante pour installer PyQt5
 		commande : pip install pyqt5
-    6- Tapez la commande suivante pour installer mysql-connector-python
+	7-Installer les modules suivants :
+		MySql connector , commande : pip install mysql-connector
+		QNotifications , commande : pip install python-qnotifications
+		notifypy , commande : pip install notify-py
+    8- Tapez la commande suivante pour installer mysql-connector-python
 		commande : pip install mysql-connector-python
 
 
