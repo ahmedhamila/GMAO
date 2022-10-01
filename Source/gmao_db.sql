@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 16, 2022 at 10:24 PM
+-- Generation Time: Oct 01, 2022 at 10:25 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -72,7 +72,7 @@ CREATE TABLE `bon_travail` (
   `Description` text NOT NULL,
   `Section` varchar(25) NOT NULL,
   `DateLiberation` datetime NOT NULL,
-  `type` enum('Correctif','Preventif') NOT NULL,
+  `type` enum('Curatif','Preventif') NOT NULL,
   `CodeEquipement` varchar(25) NOT NULL,
   `RefDIM` varchar(50) NOT NULL,
   `Frequence` varchar(50) DEFAULT NULL,
@@ -85,12 +85,16 @@ CREATE TABLE `bon_travail` (
 --
 
 INSERT INTO `bon_travail` (`Id`, `Matricule_RM`, `Matricule_AM`, `Description`, `Section`, `DateLiberation`, `type`, `CodeEquipement`, `RefDIM`, `Frequence`, `Active`, `Status`) VALUES
-(5, 'AAA00001', 'AAA00009', 'a:kjfnakfkanf\nahdakdkabdd\nddddddddddd', 'C', '2022-07-26 00:00:00', 'Correctif', 'EEE00001', '1', NULL, 0, 'NonTraitee'),
-(6, 'AAA00001', 'AAA00009', 'a:kjfnakfkanf\nakfjbkafbkabfka', 'B', '2022-07-26 00:00:00', 'Correctif', 'EEE00002', '2', NULL, 0, 'NonTraitee'),
-(15, 'AAA00001', 'AAA00009', 'ezsrdtfyughinjlk,af65', 'T', '2022-07-27 00:00:00', 'Correctif', 'EEE00001', '8', 'NULL', 0, 'NonTraitee'),
-(16, 'AAA00001', 'AAA00009', 'oooh!', 'op', '2022-07-27 00:00:00', 'Preventif', 'EEE00002', '', '112', 0, 'NonTraitee'),
-(17, 'AAA00001', 'AAA00009', 'aeaeazeazeazea', 'T', '2022-08-16 19:53:17', 'Correctif', 'EEE00002', '121212', 'NULL', 0, 'NonTraitee'),
-(18, 'AAA00001', 'AAA00009', '111111111111111111111', 'T', '2022-08-16 21:02:01', 'Correctif', 'EEE00001', '22222', 'NULL', 0, 'NonTraitee');
+(5, 'AAA00001', 'AAA00009', 'TSTSTSTSTTSTSTS', 'CCC1', '2022-07-26 00:00:00', 'Curatif', 'EEE00001', '1', '', 0, 'NonTraitee'),
+(6, 'AAA00001', 'AAA00009', 'a:kjfnakfkanf\nakfjbkafbkabfka', 'CCC1', '2022-07-26 00:00:00', 'Curatif', 'EEE00002', '2', NULL, 0, 'NonTraitee'),
+(15, 'AAA00001', 'AAA00009', 'ezsrdtfyughinjlk,af65', 'CCC1', '2022-07-27 00:00:00', 'Curatif', 'EEE00001', '8', 'NULL', 0, 'NonTraitee'),
+(16, 'AAA00001', 'AAA00009', 'oooh!', 'CCC1', '2022-07-27 00:00:00', 'Preventif', 'EEE00002', '', '112', 0, 'NonTraitee'),
+(17, 'AAA00001', 'AAA00009', 'aeaeazeazeazea', 'CCC1', '2022-08-16 19:53:17', 'Curatif', 'EEE00002', '121212', 'NULL', 0, 'NonTraitee'),
+(18, 'AAA00001', 'AAA00009', '111111111111111111111', 'CCC1', '2022-08-16 21:02:01', 'Curatif', 'EEE00001', '22222', 'NULL', 0, 'NonTraitee'),
+(19, 'AAA00001', 'AAA00009', 'adadadad', 'CCC1', '2022-08-24 13:39:53', 'Curatif', 'EEE00001', '1', 'NULL', 0, 'NonTraitee'),
+(28, 'AAA00001', 'AAA00009', '555555555555555', 'CCC1', '2022-08-24 13:56:46', 'Preventif', 'EEE00001', '', '5', 1, 'NonTraitee'),
+(30, 'AAA00001', 'AAA00009', 'TestTestTestTestTestTestTestTestTestTestTest2', 'CCC1', '2022-09-14 14:55:49', 'Preventif', 'EEE00002', 'None', '100', 1, 'NonTraitee'),
+(31, 'AAA00001', 'AAA00009', 'TESTETSTSTTSTSTS', 'CCC1', '2022-09-14 15:04:37', 'Curatif', 'EEE00001', '11', 'NULL', 0, 'NonTraitee');
 
 -- --------------------------------------------------------
 
@@ -144,10 +148,17 @@ CREATE TABLE `demande_intervention` (
 --
 
 INSERT INTO `demande_intervention` (`Id`, `Matricule_RCP`, `Matricule_RM`, `CodeEquipement`, `Section`, `DateLiberation`, `Motif`, `Description`, `Status`) VALUES
-(1, 'AAA00003', 'AAA00001', 'EEE00001', 'T', '2022-08-16 20:38:34', 'ArretComplet', '1111111111111111111', 'NonTraitee'),
-(2, 'AAA00003', 'AAA00001', 'EEE00001', 'T', '2022-08-16 20:38:34', 'ArretComplet', '1111111111111111111', 'NonTraitee'),
-(3, 'AAA00003', 'AAA00001', 'EEE00003', 'T', '2022-08-16 21:17:03', 'AnomaliePouvantEntrainerunePanne', '11111111111111111111111111111', 'NonTraitee'),
-(5, 'AAA00003', 'AAA00001', 'EEE00002', 'T', '2022-08-16 21:23:20', 'ArretComplet', '11111111111111111', 'NonTraitee');
+(1, 'AAA00003', 'AAA00001', 'EEE00001', 'T', '2022-08-16 20:38:34', 'ArretComplet', '1111111111111111111', 'Traitee'),
+(2, 'AAA00003', 'AAA00001', 'EEE00001', 'T', '2022-08-16 20:38:34', 'ArretComplet', '1111111111111111111', 'Traitee'),
+(3, 'AAA00003', 'AAA00001', 'EEE00003', 'T', '2022-08-16 21:17:03', 'AnomaliePouvantEntrainerunePanne', '11111111111111111111111111111', 'Traitee'),
+(5, 'AAA00003', 'AAA00001', 'EEE00002', 'T', '2022-08-16 21:23:20', 'ArretComplet', '11111111111111111', 'Traitee'),
+(6, 'AAA00003', 'AAA00001', 'EEE00001', '1111', '2022-08-24 12:14:24', 'ArretComplet', '11111111111111111111111', 'Traitee'),
+(7, 'AAA00003', 'AAA00001', 'EEE00003', '8', '2022-08-24 12:16:08', 'ArretComplet', '88888888888888888888', 'Traitee'),
+(8, 'AAA00003', 'AAA00001', 'EEE00003', 'l', '2022-08-24 12:18:47', 'ArretComplet', 'llllllllllllllllllllllllllll', 'Traitee'),
+(9, 'AAA00003', 'AAA00001', 'EEE00003', 'p', '2022-08-24 12:20:01', 'ArretComplet', 'ppppppppppppppppppppppp', 'Traitee'),
+(10, 'AAA00003', 'AAA00001', 'EEE00001', 'ddd', '2022-08-24 12:30:54', 'ArretComplet', 'dddddddddddddddddddddddddddddd', 'Traitee'),
+(11, 'AAA00003', 'AAA00001', 'EEE00003', '', '2022-09-02 14:44:37', 'AnomaliePouvantEntrainerunePanne', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'Traitee'),
+(12, 'AAA00003', 'AAA00001', 'EEE00001', 'h', '2022-09-10 11:26:09', 'ArretComplet', 'ngfcngch,gv,jjhv,hv', 'NonTraitee');
 
 --
 -- Triggers `demande_intervention`
@@ -213,7 +224,14 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`id`, `Emetteur`, `Recepteur`, `DateTime`, `Type`) VALUES
-(1, 'AAA00003', 'AAA00001', '2022-08-16 21:23:20', 'DemandeIntervention');
+(1, 'AAA00003', 'AAA00001', '2022-08-16 21:23:20', 'DemandeIntervention'),
+(2, 'AAA00003', 'AAA00001', '2022-08-24 12:14:24', 'DemandeIntervention'),
+(3, 'AAA00003', 'AAA00001', '2022-08-24 12:16:08', 'DemandeIntervention'),
+(4, 'AAA00003', 'AAA00001', '2022-08-24 12:18:47', 'DemandeIntervention'),
+(5, 'AAA00003', 'AAA00001', '2022-08-24 12:20:01', 'DemandeIntervention'),
+(6, 'AAA00003', 'AAA00001', '2022-08-24 12:30:54', 'DemandeIntervention'),
+(7, 'AAA00003', 'AAA00001', '2022-09-02 14:44:37', 'DemandeIntervention'),
+(8, 'AAA00003', 'AAA00001', '2022-09-10 11:26:09', 'DemandeIntervention');
 
 -- --------------------------------------------------------
 
@@ -311,27 +329,7 @@ INSERT INTO `users` (`Matricule`, `Password`, `Role`) VALUES
 ('AAA00001', 'Hamila', 'ResponsableMaintenance'),
 ('AAA00002', 'Hajri', 'Administrateur'),
 ('AAA00003', 'Gaston', 'ResponsableChaineProduction'),
-('AAA00005', 'azerty', 'ResponsableMaintenance');
-
---
--- Triggers `users`
---
-DELIMITER $$
-CREATE TRIGGER `User_Insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
-    IF (NEW.Role = "ResponsableMaintenance") THEN
-    	insert into responsable_maintenance(matricule) VALUES (NEW.matricule);
-    ELSEIF (NEW.Role = "ResponsableChaineProduction") THEN
-    	insert into responsable_chaine_production(matricule) VALUES (NEW.matricule);
-    ELSEIF (NEW.Role = "AgentMaintenance") THEN
-    	insert into agent_maintenance(matricule) VALUES (NEW.matricule);
-    ELSEIF (NEW.Role = "ResponsableProduction") THEN
-    	insert into responsable_production(matricule) VALUES (NEW.matricule);
-    ELSEIF (NEW.Role = "Magasinier") THEN
-    	insert into magasinier(matricule) VALUES (NEW.matricule);
-    End IF;
-END
-$$
-DELIMITER ;
+('AAA00005', 'azerty', 'ResponsableProduction');
 
 --
 -- Indexes for dumped tables
@@ -447,19 +445,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bon_travail`
 --
 ALTER TABLE `bon_travail`
-  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `demande_intervention`
 --
 ALTER TABLE `demande_intervention`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `piece_rechange_bon_approvisionnement`
