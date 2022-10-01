@@ -25,6 +25,7 @@ def getEquipements():
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
+
 def getEquipement(code):
     try:
         connection = mysql.connector.connect(host='localhost',
@@ -32,7 +33,7 @@ def getEquipement(code):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = "select * from equipement where Code = %s"
+            query = "select * from equipement where Reference = %s"
             cursor = connection.cursor()
             cursor.execute(query,(code,))
             record = cursor.fetchall()
@@ -57,9 +58,9 @@ def deleteEquipement(ids):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """delete from equipement where Code = %s"""
+            query = """delete from equipement where Reference = %s"""
             for i in range(len(ids)-1):
-                query+=" or Code = %s"
+                query+=" or Reference = %s"
             cursor = connection.cursor()
             print(query,tuple(ids))
             cursor.execute(query,tuple(ids))

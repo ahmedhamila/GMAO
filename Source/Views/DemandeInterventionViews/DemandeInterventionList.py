@@ -4,7 +4,7 @@ from .DemandeIntervention import Ui_Dialog as DemandeIntervention_UI
 from PyQt5.QtWidgets import QMessageBox
 from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
 from Services.DemandeInterventionServices import getDemandeIntervention, getDemandeInterventionListRCP,deleteDemandeIntervention
-
+from .ValiderDemandeIntervention import Ui_Dialog as valider_UI
 class Ui_Dialog(object):
     def setColortoRow(self,table, rowIndex, color):
         for j in range(table.columnCount()):
@@ -38,6 +38,26 @@ class Ui_Dialog(object):
         self.mainWindowSelf.stackedWidget.addWidget(self.dialogDemandeIntervention)
         self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogDemandeIntervention)
 
+    def receptionDemandeIntervention(self):
+        
+        ids=self.getSelectedRow()
+        if len(ids)>1:
+                self.showDialog("Error","Impossible d'effectuer cette action sur plus d'une ligne",False)
+                return 
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner une ligne",False)
+                return
+        x,y=getDemandeIntervention(ids[0])
+        etat=str(y[0][8])
+        if (etat=="NonTraitee" or etat=="Traitee"):
+                self.showDialog("Error","Impossible d'effectuer cette action",False)
+                return
+        self.dialogDemandeInterventionValider = QtWidgets.QDialog()
+        self.uiDemandeInterventionValider = valider_UI(self.mainWindowSelf,y,self.DemandeInterventionDLG,self)
+        self.uiDemandeInterventionValider.setupUi(self.dialogDemandeInterventionValider)
+        self.mainWindowSelf.stackedWidget.addWidget(self.dialogDemandeInterventionValider)
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogDemandeInterventionValider)
+
     def supprimerDemandeIntervention(self):
         ids=self.getSelectedRow()
         if len(ids)<1:
@@ -51,8 +71,11 @@ class Ui_Dialog(object):
                 return 
         deleteDemandeIntervention(ids)
         self.fetchRows()
-    def receptionDemandeIntervention(self):
-        pass
+    
+
+
+
+
     def imprimerDemandeIntervention(self):
         ids=self.getSelectedRow()
         if len(ids)<1:
