@@ -131,7 +131,7 @@ def addBonTravail(record):
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """insert into bon_travail(Matricule_RM,Matricule_AM,Description,Section,DateLiberation,type,CodeEquipement,RefDIM,Frequence,Active) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+            query = """insert into bon_travail(Matricule_RM,Matricule_AM,Description,Operation,Section,DateLiberation,type,CodeEquipement,RefDIM,Frequence,Active) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
             
             print("######################################•")
             print(query,record)

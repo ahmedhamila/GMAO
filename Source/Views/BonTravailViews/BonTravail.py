@@ -1,7 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
-from Services import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices,DemandeInterventionServices,ChaineProductionServices
+from Services import AgentMaintenanceServices,ResponsableMaintenanceServices,EquipementServices,BonTravailServices,DemandeInterventionServices,ChaineProductionServices,OperationServices
+from ..PopUpViews.Operation import Ui_Dialog as Operation_UI
+from ..PopUpViews.Section import Ui_Dialog as Section_UI
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf,redirectFrom,refDIM=None,returnTo=None) -> None:
         self.mainWindowSelf=mainWindowSelf
@@ -37,10 +39,11 @@ class Ui_Dialog(object):
         dateLiberation=datetime.now().__str__()
 
         # TODO:Add Operation
+        operation=self.comboBoxSection.currentText().split(" ")[1]
         # TODO:Gestion d'erreurs
         
         
-        record = (matriculeRM,matriculeAM,description,section,dateLiberation,type,codeEquipement,refDIM,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
+        record = (matriculeRM,matriculeAM,description,operation,section,dateLiberation,type,codeEquipement,refDIM,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
         BonTravailServices.addBonTravail(record)
         self.showDialog('Success',"Bon de travail ajouté avec succé",True)
         
@@ -79,6 +82,12 @@ class Ui_Dialog(object):
         if state :
             for rec in record :
                 self.comboBoxSection.addItem("Reference Chaine-Production: " +rec[0])
+        
+        state,record = OperationServices.getOperation()
+        self.comboBoxOperation.clear()
+        if state :
+            for rec in record :
+                self.comboBoxOperation.addItem("Titre d'Operation: " +rec[1])
 
         
         self.textEditDescription.setText("")
@@ -99,7 +108,19 @@ class Ui_Dialog(object):
             self.lineEditPreventifCuratif.setReadOnly(True)
             self.comboBoxEquipement.setDisabled(True)
             self.comboBoxSection.setDisabled(True)
-
+    def displayPopUpOperation(self):
+        self.dialogOperation = QtWidgets.QDialog()
+        self.uiOperation = Operation_UI(self,self.mainWindowSelf,self.dialogOperation)
+        self.uiOperation.setupUi(self.dialogOperation)
+        self.mainWindowSelf.mainwindow.hide()
+        self.dialogOperation.show()
+        
+    def displayPopUpSection(self):
+        self.dialogSection = QtWidgets.QDialog()
+        self.uiSection = Section_UI(self,self.mainWindowSelf,self.dialogSection)
+        self.uiSection.setupUi(self.dialogSection)
+        self.mainWindowSelf.mainwindow.hide()
+        self.dialogSection.show()
         
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
@@ -460,6 +481,9 @@ class Ui_Dialog(object):
         
 
         self.buttonEnvoyer.clicked.connect(self.addBonTravail)
+
+        self.pushButtonAjoutOperation.clicked.connect(self.displayPopUpOperation)
+        self.pushButtonAjoutSection.clicked.connect(self.displayPopUpSection)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

@@ -117,7 +117,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEditTitre">
+                <widget class="QLineEdit" name="lineEditReference">
                  <property name="font">
                   <font>
                    <pointsize>12</pointsize>
@@ -126,7 +126,7 @@
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">border: 1px solid back;height:25px;margin-right:25px;</string>
+                  <string notr="true">border: 1px solid back;height:25px;</string>
                  </property>
                  <property name="text">
                   <string/>
@@ -168,7 +168,7 @@
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">border: 1px solid back;height:25px;margin-right:25px;</string>
+                  <string notr="true">border: 1px solid back;height:25px;</string>
                  </property>
                 </widget>
                </item>

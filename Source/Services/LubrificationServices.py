@@ -1,15 +1,14 @@
 import mysql.connector
 from mysql.connector import Error
 
-
-def getChaineProduction():
+def getLubrification():
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """select * from chaine_production """
+            query = """select * from lubrification """
             cursor = connection.cursor()
             cursor.execute(query)
             record = cursor.fetchall()
@@ -28,14 +27,14 @@ def getChaineProduction():
             print("MySQL connection is closed")
 
 
-def addChaineProduction(record):
+def addLubrificationOper(record):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='gmao_db',
                                             user='root',
                                             password='')
         if connection.is_connected():
-            query = """insert into chaine_production(RefChaine,NbEquipement) values (%s,%s) """
+            query = """insert into oper_lubri(oper,lubri) values (%s,%s) """
             print("######################################•")
             print(query,record)
             print("######################################•")
