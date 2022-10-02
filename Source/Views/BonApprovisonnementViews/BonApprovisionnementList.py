@@ -1,6 +1,43 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+from Services.BonApproServices import getBonApproList
 from .BonApprovisionnement import Ui_Dialog as BonApprovisionment_UI
 class Ui_Dialog(object):
+
+    def setColortoRow(self,table, rowIndex, color):
+        for j in range(table.columnCount()):
+                table.item(rowIndex, j).setBackground(color)
+    def getSelectedRow(self):
+        rows=[]
+        for row in range(self.tableWidgetBonTravail.rowCount()):
+                if self.tableWidgetBonTravail.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
+                        rows.append(self.tableWidgetBonTravail.item(row,0).text())
+        return rows
+    def fetchRows(self):
+        status,record = getBonApproList()
+        if status :
+                self.tableWidgetBonTravail.setColumnCount(5)
+                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable Maintenance',"Matricule de Magasinier","Date Liberation","Description"])
+                self.tableWidgetBonTravail.setRowCount(len(record))
+                self.horizontal_header = self.tableWidgetBonTravail.horizontalHeader()     
+                self.horizontal_header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+
+                for row in range(len(record)):
+                        for col in range(12):
+                                item=QtWidgets.QTableWidgetItem(str(record[row][col]))
+                                self.tableWidgetBonTravail.setItem(row,col,item)
+                                if col ==0:
+                                        item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+                                        item.setCheckState(QtCore.Qt.CheckState.Unchecked) 
+                        if str(record[row][11])=="Traitee":
+                                self.setColortoRow(self.tableWidgetBonTravail,row,QColor(202,225,183))
+                        if str(record[row][11])=="NonTraitee":
+                                self.setColortoRow(self.tableWidgetBonTravail,row,QColor(246,173,158))
+
     def RedirectBonApprovisionment(self):
         self.dialogBonApprovisionment = QtWidgets.QDialog()
         self.uiBonApprovisionment = BonApprovisionment_UI()

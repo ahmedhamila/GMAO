@@ -49,8 +49,7 @@ class Ui_Dialog(object):
                 self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
                 self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
-                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
-                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
                 for row in range(len(record)):
                         for col in range(6):
                                 item=QtWidgets.QTableWidgetItem(str(record[row][col]))
