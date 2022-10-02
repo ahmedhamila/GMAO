@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : sam. 01 oct. 2022 à 17:36
--- Version du serveur : 10.4.25-MariaDB
--- Version de PHP : 8.1.10
+-- Host: 127.0.0.1
+-- Generation Time: Oct 02, 2022 at 06:09 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `gmao_db`
+-- Database: `gmao_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `agent_maintenance`
+-- Table structure for table `agent_maintenance`
 --
 
 CREATE TABLE `agent_maintenance` (
@@ -39,30 +39,44 @@ CREATE TABLE `agent_maintenance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `agent_maintenance`
+-- Dumping data for table `agent_maintenance`
 --
 
 INSERT INTO `agent_maintenance` (`Matricule`, `Nom`, `Prenom`, `Specialite`, `Age`, `Sexe`, `NiveauEducation`, `ExperienceProfessionnelle`) VALUES
-('AAA00009', 'Touhemi', 'Jibli', 'Chaudiere', 32, 'Homme', '2', 7);
+('AAA00001', 'Agent1', 'Maintenance1', 'Specialite1', 25, 'Homme', 'Bac', 5),
+('AAA00002', 'Agent2', 'Maintenance2', 'Specialite2', 25, 'Femme', 'Bac', 5),
+('AAA00003', 'Agent3', 'Maintenance3', 'Specialite3', 25, 'Femme', 'Bac', 7);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `bon_approvisionnement`
+-- Table structure for table `bon_approvisionnement`
 --
 
 CREATE TABLE `bon_approvisionnement` (
-  `Id` varchar(25) NOT NULL,
+  `Id` int(11) NOT NULL,
   `Matricule_RM` varchar(50) NOT NULL,
   `Matricule_M` varchar(50) NOT NULL,
   `DateLiberation` date NOT NULL,
   `Description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `bon_approvisionnement`
+--
+
+INSERT INTO `bon_approvisionnement` (`Id`, `Matricule_RM`, `Matricule_M`, `DateLiberation`, `Description`) VALUES
+(1, 'MMM00001', 'MG1', '2022-10-02', 'DescriptionBonApp1'),
+(2, 'MMM00002', 'MG2', '2022-10-01', 'DescriptionBonApp2'),
+(3, 'MMM00003', 'MG3', '2022-10-03', 'DescriptionBonApp3'),
+(4, 'MMM00001', 'MG1', '2022-10-02', 'DescriptionBonApp1'),
+(5, 'MMM00002', 'MG2', '2022-10-01', 'DescriptionBonApp2'),
+(6, 'MMM00003', 'MG3', '2022-10-03', 'DescriptionBonApp3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `bon_travail`
+-- Table structure for table `bon_travail`
 --
 
 CREATE TABLE `bon_travail` (
@@ -70,47 +84,51 @@ CREATE TABLE `bon_travail` (
   `Matricule_RM` varchar(50) NOT NULL,
   `Matricule_AM` varchar(50) NOT NULL,
   `Description` text NOT NULL,
+  `Operation` int(11) NOT NULL,
   `Section` varchar(25) NOT NULL,
   `DateLiberation` datetime NOT NULL,
   `type` enum('Curatif','Preventif') NOT NULL,
   `CodeEquipement` varchar(25) NOT NULL,
-  `RefDIM` varchar(50) NOT NULL,
+  `RefDIM` int(11) DEFAULT NULL,
   `Frequence` varchar(50) DEFAULT NULL,
   `Active` tinyint(1) NOT NULL DEFAULT 0,
   `Status` enum('Traitee','NonTraitee') NOT NULL DEFAULT 'NonTraitee'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `bon_travail`
+-- Dumping data for table `bon_travail`
 --
 
-INSERT INTO `bon_travail` (`Id`, `Matricule_RM`, `Matricule_AM`, `Description`, `Section`, `DateLiberation`, `type`, `CodeEquipement`, `RefDIM`, `Frequence`, `Active`, `Status`) VALUES
-(5, 'AAA00001', 'AAA00009', 'TSTSTSTSTTSTSTS', 'CCC1', '2022-07-26 00:00:00', 'Curatif', 'EEE00001', '1', '', 0, 'NonTraitee'),
-(6, 'AAA00001', 'AAA00009', 'a:kjfnakfkanf\nakfjbkafbkabfka', 'CCC1', '2022-07-26 00:00:00', 'Curatif', 'EEE00002', '2', NULL, 0, 'NonTraitee'),
-(15, 'AAA00001', 'AAA00009', 'ezsrdtfyughinjlk,af65', 'CCC1', '2022-07-27 00:00:00', 'Curatif', 'EEE00001', '8', 'NULL', 0, 'NonTraitee'),
-(16, 'AAA00001', 'AAA00009', 'oooh!', 'CCC1', '2022-07-27 00:00:00', 'Preventif', 'EEE00002', '', '112', 0, 'NonTraitee'),
-(17, 'AAA00001', 'AAA00009', 'aeaeazeazeazea', 'CCC1', '2022-08-16 19:53:17', 'Curatif', 'EEE00002', '121212', 'NULL', 0, 'NonTraitee'),
-(18, 'AAA00001', 'AAA00009', '111111111111111111111', 'CCC1', '2022-08-16 21:02:01', 'Curatif', 'EEE00001', '22222', 'NULL', 0, 'NonTraitee'),
-(19, 'AAA00001', 'AAA00009', 'adadadad', 'CCC1', '2022-08-24 13:39:53', 'Curatif', 'EEE00001', '1', 'NULL', 0, 'NonTraitee'),
-(28, 'AAA00001', 'AAA00009', '555555555555555', 'CCC1', '2022-08-24 13:56:46', 'Preventif', 'EEE00001', '', '5', 1, 'NonTraitee'),
-(30, 'AAA00001', 'AAA00009', 'TestTestTestTestTestTestTestTestTestTestTest2', 'CCC1', '2022-09-14 14:55:49', 'Preventif', 'EEE00002', 'None', '100', 1, 'NonTraitee'),
-(31, 'AAA00001', 'AAA00009', 'TESTETSTSTTSTSTS', 'CCC1', '2022-09-14 15:04:37', 'Curatif', 'EEE00001', '11', 'NULL', 0, 'NonTraitee');
+INSERT INTO `bon_travail` (`Id`, `Matricule_RM`, `Matricule_AM`, `Description`, `Operation`, `Section`, `DateLiberation`, `type`, `CodeEquipement`, `RefDIM`, `Frequence`, `Active`, `Status`) VALUES
+(36, 'MMM00001', 'AAA00001', 'DescriptionBonTra1', 6, 'CCC00001', '2022-10-02 17:56:49', 'Preventif', 'EEE00001', NULL, '12', 1, 'NonTraitee'),
+(37, 'MMM00002', 'AAA00002', 'DescriptionBonTra2', 7, 'CCC00002', '2022-10-02 17:57:17', 'Preventif', 'EEE00002', NULL, '12', 0, 'NonTraitee'),
+(38, 'MMM00003', 'AAA00003', 'DescriptionBonTra3', 8, 'CCC00003', '2022-10-02 17:59:21', 'Curatif', 'EEE00003', 15, NULL, 0, 'NonTraitee');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `chaine_equipement`
+-- Table structure for table `chaine_equipement`
 --
 
 CREATE TABLE `chaine_equipement` (
+  `id` int(11) NOT NULL,
   `RefChaine` varchar(50) NOT NULL,
   `CodeEquipement` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `chaine_equipement`
+--
+
+INSERT INTO `chaine_equipement` (`id`, `RefChaine`, `CodeEquipement`) VALUES
+(1, 'CCC00001', 'EEE00001'),
+(2, 'CCC00002', 'EEE00002'),
+(3, 'CCC00003', 'EEE00003');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `chaine_production`
+-- Table structure for table `chaine_production`
 --
 
 CREATE TABLE `chaine_production` (
@@ -119,16 +137,18 @@ CREATE TABLE `chaine_production` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `chaine_production`
+-- Dumping data for table `chaine_production`
 --
 
 INSERT INTO `chaine_production` (`RefChaine`, `NbEquipement`) VALUES
-('CCC1', 50);
+('CCC00001', 25),
+('CCC00002', 20),
+('CCC00003', 25);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `demande_intervention`
+-- Table structure for table `demande_intervention`
 --
 
 CREATE TABLE `demande_intervention` (
@@ -144,24 +164,16 @@ CREATE TABLE `demande_intervention` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `demande_intervention`
+-- Dumping data for table `demande_intervention`
 --
 
 INSERT INTO `demande_intervention` (`Id`, `Matricule_RCP`, `Matricule_RM`, `CodeEquipement`, `Section`, `DateLiberation`, `Motif`, `Description`, `Status`) VALUES
-(1, 'AAA00003', 'AAA00001', 'EEE00001', 'T', '2022-08-16 20:38:34', 'ArretComplet', '1111111111111111111', 'Traitee'),
-(2, 'AAA00003', 'AAA00001', 'EEE00001', 'T', '2022-08-16 20:38:34', 'ArretComplet', '1111111111111111111', 'EnCours'),
-(3, 'AAA00003', 'AAA00001', 'EEE00003', 'T', '2022-08-16 21:17:03', 'AnomaliePouvantEntrainerunePanne', '11111111111111111111111111111', 'Traitee'),
-(5, 'AAA00003', 'AAA00001', 'EEE00002', 'T', '2022-08-16 21:23:20', 'ArretComplet', '11111111111111111', 'EnCours'),
-(6, 'AAA00003', 'AAA00001', 'EEE00001', '1111', '2022-08-24 12:14:24', 'ArretComplet', '11111111111111111111111', 'Traitee'),
-(7, 'AAA00003', 'AAA00001', 'EEE00003', '8', '2022-08-24 12:16:08', 'ArretComplet', '88888888888888888888', 'Traitee'),
-(8, 'AAA00003', 'AAA00001', 'EEE00003', 'l', '2022-08-24 12:18:47', 'ArretComplet', 'llllllllllllllllllllllllllll', 'Traitee'),
-(9, 'AAA00003', 'AAA00001', 'EEE00003', 'p', '2022-08-24 12:20:01', 'ArretComplet', 'ppppppppppppppppppppppp', 'Traitee'),
-(10, 'AAA00003', 'AAA00001', 'EEE00001', 'ddd', '2022-08-24 12:30:54', 'ArretComplet', 'dddddddddddddddddddddddddddddd', 'Traitee'),
-(11, 'AAA00003', 'AAA00001', 'EEE00003', '', '2022-09-02 14:44:37', 'AnomaliePouvantEntrainerunePanne', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'Traitee'),
-(12, 'AAA00003', 'AAA00001', 'EEE00001', 'h', '2022-09-10 11:26:09', 'ArretComplet', 'ngfcngch,gv,jjhv,hv', 'NonTraitee');
+(13, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-02 17:58:28', 'ArretComplet', 'DescriptionDemandeInter1', 'NonTraitee'),
+(14, 'HHH00002', 'MMM00002', 'EEE00002', 'CCC00002', '2022-10-02 17:58:28', 'ArretComplet', 'DescriptionDemandeInter3', 'NonTraitee'),
+(15, 'HHH00003', 'MMM00003', 'EEE00003', 'CCC00003', '2022-10-02 17:58:28', 'AnomaliePouvantEntrainerunePanne', 'DescriptionDemandeInter3', 'NonTraitee');
 
 --
--- Déclencheurs `demande_intervention`
+-- Triggers `demande_intervention`
 --
 DELIMITER $$
 CREATE TRIGGER `Demande_Intervention_TRG` AFTER INSERT ON `demande_intervention` FOR EACH ROW BEGIN
@@ -173,7 +185,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `equipement`
+-- Table structure for table `equipement`
 --
 
 CREATE TABLE `equipement` (
@@ -186,18 +198,18 @@ CREATE TABLE `equipement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `equipement`
+-- Dumping data for table `equipement`
 --
 
 INSERT INTO `equipement` (`Référence`, `designation`, `Role`, `Fabriquant`, `DateFabriquation`, `DateMiseEnMarche`) VALUES
-('EEE00001', 'Chaudiere', 'ahbd', '', '2013-07-03', '2020-07-29'),
-('EEE00002', 'piece2', 'ajkhfb', '', '2013-07-10', '2020-07-15'),
-('EEE00003', 'piece3', 'afafkjaf', '', '2012-07-11', '2020-07-15');
+('EEE00001', 'Equipement1', 'Role1', 'Fabriquant1', '2022-10-01', '2022-10-02'),
+('EEE00002', 'Equipement2', 'Role2', 'Fabriquant2', '2022-10-01', '2022-10-02'),
+('EEE00003', 'Equipement3', 'Role3', 'Fabriquant3', '2022-10-01', '2022-10-02');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `equipe_piece`
+-- Table structure for table `equipe_piece`
 --
 
 CREATE TABLE `equipe_piece` (
@@ -206,21 +218,39 @@ CREATE TABLE `equipe_piece` (
   `piéce` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `equipe_piece`
+--
+
+INSERT INTO `equipe_piece` (`id`, `Equipement`, `piéce`) VALUES
+(1, 'EEE00001', 'PR1'),
+(2, 'EEE00002', 'PR2'),
+(3, 'EEE00003', 'PR3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `lubrification`
+-- Table structure for table `lubrification`
 --
 
 CREATE TABLE `lubrification` (
-  `Référence` varchar(25) NOT NULL,
+  `Reference` varchar(25) NOT NULL,
   `designation` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `lubrification`
+--
+
+INSERT INTO `lubrification` (`Reference`, `designation`) VALUES
+('Lub1', 'Lubrification1'),
+('Lub2', 'Lubrification2'),
+('Lub3', 'Lubrification3');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `magasinier`
+-- Table structure for table `magasinier`
 --
 
 CREATE TABLE `magasinier` (
@@ -229,10 +259,19 @@ CREATE TABLE `magasinier` (
   `Prenom` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `magasinier`
+--
+
+INSERT INTO `magasinier` (`Matricule`, `Nom`, `Prenom`) VALUES
+('MG1', 'Magasinier1', 'moth1'),
+('MG2', 'Magasinier2', 'moth2'),
+('MG3', 'Magasinier3', 'moth3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `notification`
+-- Table structure for table `notification`
 --
 
 CREATE TABLE `notification` (
@@ -244,7 +283,7 @@ CREATE TABLE `notification` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `notification`
+-- Dumping data for table `notification`
 --
 
 INSERT INTO `notification` (`id`, `Emetteur`, `Recepteur`, `DateTime`, `Type`) VALUES
@@ -255,12 +294,15 @@ INSERT INTO `notification` (`id`, `Emetteur`, `Recepteur`, `DateTime`, `Type`) V
 (5, 'AAA00003', 'AAA00001', '2022-08-24 12:20:01', 'DemandeIntervention'),
 (6, 'AAA00003', 'AAA00001', '2022-08-24 12:30:54', 'DemandeIntervention'),
 (7, 'AAA00003', 'AAA00001', '2022-09-02 14:44:37', 'DemandeIntervention'),
-(8, 'AAA00003', 'AAA00001', '2022-09-10 11:26:09', 'DemandeIntervention');
+(8, 'AAA00003', 'AAA00001', '2022-09-10 11:26:09', 'DemandeIntervention'),
+(9, 'HHH00001', 'MMM00001', '2022-10-02 17:58:28', 'DemandeIntervention'),
+(10, 'HHH00002', 'MMM00002', '2022-10-02 17:58:28', 'DemandeIntervention'),
+(11, 'HHH00003', 'MMM00003', '2022-10-02 17:58:28', 'DemandeIntervention');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `operation`
+-- Table structure for table `operation`
 --
 
 CREATE TABLE `operation` (
@@ -269,10 +311,19 @@ CREATE TABLE `operation` (
   `Mode` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `operation`
+--
+
+INSERT INTO `operation` (`id`, `titre`, `Mode`) VALUES
+(6, 'Operation1', 'OperationDescription1'),
+(7, 'Operation2', 'OperationDescription2'),
+(8, 'Operation3', 'OperationDescription3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `oper_lubri`
+-- Table structure for table `oper_lubri`
 --
 
 CREATE TABLE `oper_lubri` (
@@ -281,10 +332,19 @@ CREATE TABLE `oper_lubri` (
   `lubri` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `oper_lubri`
+--
+
+INSERT INTO `oper_lubri` (`id`, `oper`, `lubri`) VALUES
+(2, 6, 'Lub1'),
+(3, 7, 'Lub2'),
+(4, 8, 'Lub3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `oper_piece`
+-- Table structure for table `oper_piece`
 --
 
 CREATE TABLE `oper_piece` (
@@ -293,33 +353,60 @@ CREATE TABLE `oper_piece` (
   `piece` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `oper_piece`
+--
+
+INSERT INTO `oper_piece` (`id`, `oper`, `piece`) VALUES
+(2, 6, 'PR1'),
+(3, 7, 'PR2'),
+(4, 8, 'PR3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `piece_rechange`
+-- Table structure for table `piece_rechange`
 --
 
 CREATE TABLE `piece_rechange` (
-  `Réference` varchar(25) NOT NULL,
+  `Reference` varchar(25) NOT NULL,
   `Designation` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `piece_rechange`
+--
+
+INSERT INTO `piece_rechange` (`Reference`, `Designation`) VALUES
+('PR1', 'PieceRechange1'),
+('PR2', 'PieceRechange2'),
+('PR3', 'PieceRechange3');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `piece_rechange_bon_approvisionnement`
+-- Table structure for table `piece_rechange_bon_approvisionnement`
 --
 
 CREATE TABLE `piece_rechange_bon_approvisionnement` (
   `Id` int(11) NOT NULL,
   `Code_Piece` varchar(25) NOT NULL,
-  `Id_bon` varchar(25) NOT NULL
+  `Id_bon` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `piece_rechange_bon_approvisionnement`
+--
+
+INSERT INTO `piece_rechange_bon_approvisionnement` (`Id`, `Code_Piece`, `Id_bon`) VALUES
+(1, 'PR1', 1),
+(2, 'PR2', 2),
+(3, 'PR3', 6);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `responsable_chaine_production`
+-- Table structure for table `responsable_chaine_production`
 --
 
 CREATE TABLE `responsable_chaine_production` (
@@ -330,16 +417,18 @@ CREATE TABLE `responsable_chaine_production` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `responsable_chaine_production`
+-- Dumping data for table `responsable_chaine_production`
 --
 
 INSERT INTO `responsable_chaine_production` (`Matricule`, `Nom`, `Prenom`, `RefChaine`) VALUES
-('AAA00003', 'Touhemi', 'boubaker', 'CCC1');
+('HHH00001', 'ResponsableC1', 'Chaine1', 'CCC00001'),
+('HHH00002', 'ResponsableC2', 'Chaine2', 'CCC00002'),
+('HHH00003', 'ResponsableC3', 'Chaine3', 'CCC00003');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `responsable_maintenance`
+-- Table structure for table `responsable_maintenance`
 --
 
 CREATE TABLE `responsable_maintenance` (
@@ -350,17 +439,18 @@ CREATE TABLE `responsable_maintenance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `responsable_maintenance`
+-- Dumping data for table `responsable_maintenance`
 --
 
 INSERT INTO `responsable_maintenance` (`Matricule`, `Nom`, `Prenom`, `RefChaine`) VALUES
-('AAA00001', 'Hamila', 'Ahmed', '1'),
-('AAA00005', '', '', '');
+('MMM00001', 'ResponsableM1', 'Maintenance1', 'CCC00001'),
+('MMM00002', 'ResponsableM2', 'Maintenance2', 'CCC00002'),
+('MMM00003', 'ResponsableM3', 'Maintenance3', 'CCC00003');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `responsable_production`
+-- Table structure for table `responsable_production`
 --
 
 CREATE TABLE `responsable_production` (
@@ -369,10 +459,19 @@ CREATE TABLE `responsable_production` (
   `Prenom` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `responsable_production`
+--
+
+INSERT INTO `responsable_production` (`Matricule`, `Nom`, `Prenom`) VALUES
+('PPP00001', 'ResponsableP1', 'Production1'),
+('PPP00002', 'ResponsableP2', 'Production2'),
+('PPP00003', 'ResponsableP3', 'Production3');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -382,27 +481,29 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`Matricule`, `Password`, `Role`) VALUES
-('AAA00001', 'Hamila', 'ResponsableMaintenance'),
-('AAA00002', 'Hajri', 'Administrateur'),
-('AAA00003', 'Gaston', 'ResponsableChaineProduction'),
-('AAA00005', 'azerty', 'ResponsableProduction');
+('AAA00001', 'Maintenance1', 'AgentMaintenance'),
+('Admin', 'Admin', 'Administrateur'),
+('HHH00001', 'ResponsableC1', 'ResponsableChaineProduction'),
+('MG1', 'Magasinier1', 'Magasinier'),
+('MMM00001', 'ResponsableM1', 'ResponsableMaintenance'),
+('PPP00001', 'ResponsableP1', 'ResponsableProduction');
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `agent_maintenance`
+-- Indexes for table `agent_maintenance`
 --
 ALTER TABLE `agent_maintenance`
   ADD PRIMARY KEY (`Matricule`);
 
 --
--- Index pour la table `bon_approvisionnement`
+-- Indexes for table `bon_approvisionnement`
 --
 ALTER TABLE `bon_approvisionnement`
   ADD PRIMARY KEY (`Id`),
@@ -410,44 +511,49 @@ ALTER TABLE `bon_approvisionnement`
   ADD KEY `FK_BA_2` (`Matricule_M`);
 
 --
--- Index pour la table `bon_travail`
+-- Indexes for table `bon_travail`
 --
 ALTER TABLE `bon_travail`
   ADD PRIMARY KEY (`Id`),
   ADD KEY `FK_BT_1` (`Matricule_RM`),
   ADD KEY `FK_BT_2` (`Matricule_AM`),
-  ADD KEY `FK_BT_3` (`CodeEquipement`);
+  ADD KEY `FK_BT_3` (`CodeEquipement`),
+  ADD KEY `FK_BT_4` (`RefDIM`),
+  ADD KEY `FK_BT_5` (`Operation`),
+  ADD KEY `FK_BT_6` (`Section`);
 
 --
--- Index pour la table `chaine_equipement`
+-- Indexes for table `chaine_equipement`
 --
 ALTER TABLE `chaine_equipement`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `FK_CE_1` (`CodeEquipement`),
   ADD KEY `FK_CE_2` (`RefChaine`);
 
 --
--- Index pour la table `chaine_production`
+-- Indexes for table `chaine_production`
 --
 ALTER TABLE `chaine_production`
   ADD PRIMARY KEY (`RefChaine`);
 
 --
--- Index pour la table `demande_intervention`
+-- Indexes for table `demande_intervention`
 --
 ALTER TABLE `demande_intervention`
   ADD PRIMARY KEY (`Id`),
   ADD KEY `FK_DI_1` (`CodeEquipement`),
   ADD KEY `FK_DI_2` (`Matricule_RCP`),
-  ADD KEY `FK_DI_3` (`Matricule_RM`);
+  ADD KEY `FK_DI_3` (`Matricule_RM`),
+  ADD KEY `FK_DI_4` (`Section`);
 
 --
--- Index pour la table `equipement`
+-- Indexes for table `equipement`
 --
 ALTER TABLE `equipement`
   ADD PRIMARY KEY (`Référence`);
 
 --
--- Index pour la table `equipe_piece`
+-- Indexes for table `equipe_piece`
 --
 ALTER TABLE `equipe_piece`
   ADD PRIMARY KEY (`id`),
@@ -455,31 +561,31 @@ ALTER TABLE `equipe_piece`
   ADD KEY `piéce` (`piéce`);
 
 --
--- Index pour la table `lubrification`
+-- Indexes for table `lubrification`
 --
 ALTER TABLE `lubrification`
-  ADD PRIMARY KEY (`Référence`);
+  ADD PRIMARY KEY (`Reference`);
 
 --
--- Index pour la table `magasinier`
+-- Indexes for table `magasinier`
 --
 ALTER TABLE `magasinier`
   ADD PRIMARY KEY (`Matricule`);
 
 --
--- Index pour la table `notification`
+-- Indexes for table `notification`
 --
 ALTER TABLE `notification`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `operation`
+-- Indexes for table `operation`
 --
 ALTER TABLE `operation`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `oper_lubri`
+-- Indexes for table `oper_lubri`
 --
 ALTER TABLE `oper_lubri`
   ADD PRIMARY KEY (`id`),
@@ -487,7 +593,7 @@ ALTER TABLE `oper_lubri`
   ADD KEY `lubri` (`lubri`);
 
 --
--- Index pour la table `oper_piece`
+-- Indexes for table `oper_piece`
 --
 ALTER TABLE `oper_piece`
   ADD PRIMARY KEY (`id`),
@@ -495,13 +601,13 @@ ALTER TABLE `oper_piece`
   ADD KEY `piece` (`piece`);
 
 --
--- Index pour la table `piece_rechange`
+-- Indexes for table `piece_rechange`
 --
 ALTER TABLE `piece_rechange`
-  ADD PRIMARY KEY (`Réference`);
+  ADD PRIMARY KEY (`Reference`);
 
 --
--- Index pour la table `piece_rechange_bon_approvisionnement`
+-- Indexes for table `piece_rechange_bon_approvisionnement`
 --
 ALTER TABLE `piece_rechange_bon_approvisionnement`
   ADD PRIMARY KEY (`Id`),
@@ -509,149 +615,172 @@ ALTER TABLE `piece_rechange_bon_approvisionnement`
   ADD KEY `FK_PRBA_2` (`Id_bon`);
 
 --
--- Index pour la table `responsable_chaine_production`
+-- Indexes for table `responsable_chaine_production`
 --
 ALTER TABLE `responsable_chaine_production`
   ADD PRIMARY KEY (`Matricule`),
   ADD KEY `FK_1` (`RefChaine`);
 
 --
--- Index pour la table `responsable_maintenance`
+-- Indexes for table `responsable_maintenance`
 --
 ALTER TABLE `responsable_maintenance`
-  ADD PRIMARY KEY (`Matricule`);
+  ADD PRIMARY KEY (`Matricule`),
+  ADD KEY `FK_RM_1` (`RefChaine`);
 
 --
--- Index pour la table `responsable_production`
+-- Indexes for table `responsable_production`
 --
 ALTER TABLE `responsable_production`
   ADD PRIMARY KEY (`Matricule`);
 
 --
--- Index pour la table `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`Matricule`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `bon_travail`
+-- AUTO_INCREMENT for table `bon_approvisionnement`
+--
+ALTER TABLE `bon_approvisionnement`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `bon_travail`
 --
 ALTER TABLE `bon_travail`
-  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
--- AUTO_INCREMENT pour la table `demande_intervention`
+-- AUTO_INCREMENT for table `chaine_equipement`
+--
+ALTER TABLE `chaine_equipement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `demande_intervention`
 --
 ALTER TABLE `demande_intervention`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT pour la table `equipe_piece`
+-- AUTO_INCREMENT for table `equipe_piece`
 --
 ALTER TABLE `equipe_piece`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT pour la table `notification`
+-- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `operation`
+--
+ALTER TABLE `operation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT pour la table `operation`
---
-ALTER TABLE `operation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `oper_lubri`
+-- AUTO_INCREMENT for table `oper_lubri`
 --
 ALTER TABLE `oper_lubri`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `oper_piece`
+-- AUTO_INCREMENT for table `oper_piece`
 --
 ALTER TABLE `oper_piece`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `piece_rechange_bon_approvisionnement`
+-- AUTO_INCREMENT for table `piece_rechange_bon_approvisionnement`
 --
 ALTER TABLE `piece_rechange_bon_approvisionnement`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `bon_approvisionnement`
+-- Constraints for table `bon_approvisionnement`
 --
 ALTER TABLE `bon_approvisionnement`
   ADD CONSTRAINT `FK_BA_1` FOREIGN KEY (`Matricule_RM`) REFERENCES `responsable_maintenance` (`Matricule`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_BA_2` FOREIGN KEY (`Matricule_M`) REFERENCES `magasinier` (`Matricule`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `bon_travail`
+-- Constraints for table `bon_travail`
 --
 ALTER TABLE `bon_travail`
   ADD CONSTRAINT `FK_BT_1` FOREIGN KEY (`Matricule_RM`) REFERENCES `responsable_maintenance` (`Matricule`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_BT_2` FOREIGN KEY (`Matricule_AM`) REFERENCES `agent_maintenance` (`Matricule`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_BT_3` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_BT_3` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_BT_4` FOREIGN KEY (`RefDIM`) REFERENCES `demande_intervention` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_BT_5` FOREIGN KEY (`Operation`) REFERENCES `operation` (`id`),
+  ADD CONSTRAINT `FK_BT_6` FOREIGN KEY (`Section`) REFERENCES `chaine_production` (`RefChaine`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `chaine_equipement`
+-- Constraints for table `chaine_equipement`
 --
 ALTER TABLE `chaine_equipement`
   ADD CONSTRAINT `FK_CE_1` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_CE_2` FOREIGN KEY (`RefChaine`) REFERENCES `chaine_production` (`RefChaine`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `demande_intervention`
+-- Constraints for table `demande_intervention`
 --
 ALTER TABLE `demande_intervention`
   ADD CONSTRAINT `FK_DI_1` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`),
   ADD CONSTRAINT `FK_DI_2` FOREIGN KEY (`Matricule_RCP`) REFERENCES `responsable_chaine_production` (`Matricule`),
-  ADD CONSTRAINT `FK_DI_3` FOREIGN KEY (`Matricule_RM`) REFERENCES `responsable_maintenance` (`Matricule`);
+  ADD CONSTRAINT `FK_DI_3` FOREIGN KEY (`Matricule_RM`) REFERENCES `responsable_maintenance` (`Matricule`),
+  ADD CONSTRAINT `FK_DI_4` FOREIGN KEY (`Section`) REFERENCES `chaine_production` (`RefChaine`);
 
 --
--- Contraintes pour la table `equipe_piece`
+-- Constraints for table `equipe_piece`
 --
 ALTER TABLE `equipe_piece`
   ADD CONSTRAINT `equipe_piece_ibfk_1` FOREIGN KEY (`Equipement`) REFERENCES `equipement` (`Référence`),
-  ADD CONSTRAINT `equipe_piece_ibfk_2` FOREIGN KEY (`piéce`) REFERENCES `piece_rechange` (`Réference`);
+  ADD CONSTRAINT `equipe_piece_ibfk_2` FOREIGN KEY (`piéce`) REFERENCES `piece_rechange` (`Reference`);
 
 --
--- Contraintes pour la table `oper_lubri`
+-- Constraints for table `oper_lubri`
 --
 ALTER TABLE `oper_lubri`
   ADD CONSTRAINT `oper_lubri_ibfk_1` FOREIGN KEY (`oper`) REFERENCES `operation` (`id`),
-  ADD CONSTRAINT `oper_lubri_ibfk_2` FOREIGN KEY (`lubri`) REFERENCES `lubrification` (`Référence`);
+  ADD CONSTRAINT `oper_lubri_ibfk_2` FOREIGN KEY (`lubri`) REFERENCES `lubrification` (`Reference`);
 
 --
--- Contraintes pour la table `oper_piece`
+-- Constraints for table `oper_piece`
 --
 ALTER TABLE `oper_piece`
   ADD CONSTRAINT `oper_piece_ibfk_1` FOREIGN KEY (`oper`) REFERENCES `operation` (`id`),
-  ADD CONSTRAINT `oper_piece_ibfk_2` FOREIGN KEY (`piece`) REFERENCES `piece_rechange` (`Réference`);
+  ADD CONSTRAINT `oper_piece_ibfk_2` FOREIGN KEY (`piece`) REFERENCES `piece_rechange` (`Reference`);
 
 --
--- Contraintes pour la table `piece_rechange_bon_approvisionnement`
+-- Constraints for table `piece_rechange_bon_approvisionnement`
 --
 ALTER TABLE `piece_rechange_bon_approvisionnement`
-  ADD CONSTRAINT `FK_PRBA_1` FOREIGN KEY (`Code_Piece`) REFERENCES `piece_rechange` (`Réference`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_PRBA_1` FOREIGN KEY (`Code_Piece`) REFERENCES `piece_rechange` (`Reference`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_PRBA_2` FOREIGN KEY (`Id_bon`) REFERENCES `bon_approvisionnement` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `responsable_chaine_production`
+-- Constraints for table `responsable_chaine_production`
 --
 ALTER TABLE `responsable_chaine_production`
   ADD CONSTRAINT `FK_1` FOREIGN KEY (`RefChaine`) REFERENCES `chaine_production` (`RefChaine`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `responsable_maintenance`
+--
+ALTER TABLE `responsable_maintenance`
+  ADD CONSTRAINT `FK_RM_1` FOREIGN KEY (`RefChaine`) REFERENCES `chaine_production` (`RefChaine`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

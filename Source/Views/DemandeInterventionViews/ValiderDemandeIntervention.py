@@ -228,8 +228,12 @@ class Ui_Dialog(object):
         base=self.id
 
         a,aa=getBonTravailDemandeInter(base[0][0])
+        
+        print(aa)
         agentid=aa[0][2]
+
         b,bb=getResponsableChaineProduction(base[0][1])
+
         c,cc=getEquipement(base[0][3])
         print("/////////////////////////////////////////////////")
         print(aa)
