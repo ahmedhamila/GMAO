@@ -25,6 +25,7 @@ def getDemandeIntervention(id):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
+            
 def setTraiteeDemandeIntervention(id):
     try:
         connection = mysql.connector.connect(host='localhost',
