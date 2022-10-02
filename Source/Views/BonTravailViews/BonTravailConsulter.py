@@ -21,8 +21,8 @@ class Ui_Dialog(object):
         elif self.mainWindowSelf.role in ["Administrateur","ResponsableProduction"] :
                 status,record = getBonTravailListAll()
         if status :
-                self.tableWidgetBonTravail.setColumnCount(12)
-                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","Section","Date","Type","Code equipement","RefDIM","Frequence","Active"])
+                self.tableWidgetBonTravail.setColumnCount(13)
+                self.tableWidgetBonTravail.setHorizontalHeaderLabels(['Id','Matricule de Responsable',"Matricule de l'agent","Description","OperationID","Section","Date","Type","Code equipement","RefDIM","Frequence","Active","Status"])
                 self.tableWidgetBonTravail.setRowCount(len(record))
 
                 self.horizontal_header = self.tableWidgetBonTravail.horizontalHeader()     
@@ -38,9 +38,10 @@ class Ui_Dialog(object):
                 self.horizontal_header.setSectionResizeMode(9, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(10, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(11, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(12, QtWidgets.QHeaderView.ResizeToContents)
                 for row in range(len(record)):
-                        for col in range(12):
-                                if col==10 :
+                        for col in range(13):
+                                if col==11 :
                                         item=QtWidgets.QTableWidgetItem('False' if record[row][col]==0 else 'True')
                                         self.tableWidgetBonTravail.setItem(row,col,item)
                                 else :
@@ -49,9 +50,9 @@ class Ui_Dialog(object):
                                 if col ==0:
                                         item.setFlags(QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                                         item.setCheckState(QtCore.Qt.CheckState.Unchecked) 
-                        if str(record[row][11])=="Traitee":
+                        if str(record[row][12])=="Traitee":
                                 self.setColortoRow(self.tableWidgetBonTravail,row,QColor(202,225,183))
-                        if str(record[row][11])=="NonTraitee":
+                        if str(record[row][12])=="NonTraitee":
                                 self.setColortoRow(self.tableWidgetBonTravail,row,QColor(246,173,158))
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()

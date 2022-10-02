@@ -39,11 +39,13 @@ class Ui_Dialog(object):
         dateLiberation=datetime.now().__str__()
 
         # TODO:Add Operation
-        operation=self.comboBoxSection.currentText().split(" ")[1]
+        operation=self.comboBoxOperation.currentText().split(" ")[1]
         # TODO:Gestion d'erreurs
         
-        
-        record = (matriculeRM,matriculeAM,description,operation,section,dateLiberation,type,codeEquipement,refDIM,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
+        if type=="Preventif":
+            record = (matriculeRM,matriculeAM,description,operation,section,dateLiberation,type,codeEquipement,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
+        else :
+            record = (matriculeRM,matriculeAM,description,operation,section,dateLiberation,type,codeEquipement,refDIM,frequence if len(frequence)>0 else 'NULL',1 if active else 0)
         BonTravailServices.addBonTravail(record)
         self.showDialog('Success',"Bon de travail ajouté avec succé",True)
         
@@ -87,7 +89,7 @@ class Ui_Dialog(object):
         self.comboBoxOperation.clear()
         if state :
             for rec in record :
-                self.comboBoxOperation.addItem("Titre d'Operation: " +rec[1])
+                self.comboBoxOperation.addItem("OperationID: " +str(rec[0])+" "+rec[1])
 
         
         self.textEditDescription.setText("")

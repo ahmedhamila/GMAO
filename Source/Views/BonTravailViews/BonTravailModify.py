@@ -1,8 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Services import BonTravailServices,ResponsableMaintenanceServices,AgentMaintenanceServices,EquipementServices,ChaineProductionServices
+from Services import BonTravailServices,ResponsableMaintenanceServices,AgentMaintenanceServices,EquipementServices,ChaineProductionServices,OperationServices
 from datetime import datetime
 from PyQt5.QtWidgets import QMessageBox
-
+from ..PopUpViews.Operation import Ui_Dialog as Operation_UI
+from ..PopUpViews.Section import Ui_Dialog as Section_UI
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf,id,BonTravailDLG,BonTravailUI) -> None:
         self.id=id
@@ -15,8 +16,8 @@ class Ui_Dialog(object):
         status,record=BonTravailServices.getBonTravail(self.id)
         
         if status :
-            self.type=record[0][6]
-            self.dateLiberation.setText("Date : "+datetime.date(record[0][5]).__str__())
+            self.type=record[0][7]
+            self.dateLiberation.setText("Date : "+datetime.date(record[0][6]).__str__())
 
             state1,record1 = ResponsableMaintenanceServices.getResponsableMaintenance(self.mainWindowSelf.matricule)
             if state1:
@@ -26,6 +27,7 @@ class Ui_Dialog(object):
             self.comboBoxDestinateur.clear()
             index=0
             i=0
+            #TODO:
             if state2:
                 for rec in record2 :
                     if rec[0]==record[0][3] :
@@ -43,8 +45,8 @@ class Ui_Dialog(object):
                 for rec in record3 :
                     self.comboBoxEquipement.addItem(rec[1]+" "+rec[2])
 
-            self.comboBoxEquipement.setCurrentIndex(self.codesEquipement.index(record[0][7]))
-            self.labelCodeEquipement.setText(record3[self.codesEquipement.index(record[0][7])][0])
+            self.comboBoxEquipement.setCurrentIndex(self.codesEquipement.index(record[0][8]))
+            self.labelCodeEquipement.setText(record3[self.codesEquipement.index(record[0][8])][0])
                 
             if self.type == "Curatif":
                 self.comboBoxEquipement.setDisabled(True)
@@ -52,13 +54,21 @@ class Ui_Dialog(object):
             state4,record4 = ChaineProductionServices.getChaineProduction()
             self.comboBoxSection.clear()
             self.codesSection=[rec[0] for rec in record4]
-            index=0
-            i=0
+            
             if state4:
                 for rec in record4 :
                     self.comboBoxSection.addItem("Reference Chaine-Production: " +rec[0])
 
-            self.comboBoxSection.setCurrentIndex(self.codesSection.index(record[0][4]))
+            self.comboBoxSection.setCurrentIndex(self.codesSection.index(record[0][5]))
+
+            state5,record5 = OperationServices.getOperation()
+            self.comboBoxOperation.clear()
+            self.codesOperation=[rec[0] for rec in record5]
+            if state5 :
+                for rec in record5 :
+                    self.comboBoxOperation.addItem("OperationID: " +str(rec[0])+" "+rec[1])
+
+            self.comboBoxOperation.setCurrentIndex(self.codesOperation.index(record[0][4]))
             
             if self.type == "Curatif":
                 self.comboBoxSection.setDisabled(True)
@@ -69,33 +79,30 @@ class Ui_Dialog(object):
 
             if self.type == "Preventif" :
                 self.label_3.setText("Préventif ( fréquence :")
-                self.lineEditPreventifCuratif.setText(record[0][9])
-                self.checkBoxActive.setChecked(False if record[0][10]==0 else True)
+                self.lineEditPreventifCuratif.setText(record[0][10])
+                self.checkBoxActive.setChecked(False if record[0][11]==0 else True)
                 self.checkBoxActive.setVisible(True)
             else :
                 self.label_3.setText("Curatif ( refDIM :")
                 self.label_5.setVisible(False)
-                self.lineEditPreventifCuratif.setText(record[0][8])
+                self.lineEditPreventifCuratif.setText(record[0][9])
                 self.lineEditPreventifCuratif.setReadOnly(True)
                 self.checkBoxActive.setChecked(False)
                 self.checkBoxActive.setVisible(False)
                 
     def modifierBonTravail(self):
         
-        refDIM=""
-        frequence=""
-        active=""
+        
+        frequence="NULL"
+        active="0"
         if self.type=="Preventif" :
             frequence = self.lineEditPreventifCuratif.text()
             active = self.checkBoxActive.isChecked()
-            refDIM = "None"
-        elif self.type=="Curatif":
-            refDIM = self.lineEditPreventifCuratif.text()
         else:
             print("error")
+
             
         matriculeRM=self.labelEmetteur.text().split(" ")[0]
-        
         matriculeAM=self.comboBoxDestinateur.currentText().split(" ")[0]
         
         codeEquipement=self.labelCodeEquipement.text()
@@ -104,14 +111,32 @@ class Ui_Dialog(object):
         
         description=self.textEditDescription.toPlainText()
         
-        record = (matriculeRM,matriculeAM,description,section,self.type,codeEquipement,refDIM,frequence,1 if active else 0,self.id)
+
+        # TODO:Add Operation
+        operation=self.comboBoxOperation.currentText().split(" ")[1]
+        # TODO:Gestion d'erreurs
+        
+        
+        record = (matriculeRM,matriculeAM,description,operation,section,self.type,codeEquipement,frequence,1 if active else 0,self.id)
         
         BonTravailServices.updateBonTravail(record)
         
         self.showDialog('Success',"Bon de travail Modifié avec succé",True)
         self.BonTravailUI.fetchRows()
         self.mainWindowSelf.stackedWidget.setCurrentWidget(self.BonTravailDLG)
+    def displayPopUpOperation(self):
+        self.dialogOperation = QtWidgets.QDialog()
+        self.uiOperation = Operation_UI(self,self.mainWindowSelf,self.dialogOperation)
+        self.uiOperation.setupUi(self.dialogOperation)
+        self.mainWindowSelf.mainwindow.hide()
+        self.dialogOperation.show()
         
+    def displayPopUpSection(self):
+        self.dialogSection = QtWidgets.QDialog()
+        self.uiSection = Section_UI(self,self.mainWindowSelf,self.dialogSection)
+        self.uiSection.setupUi(self.dialogSection)
+        self.mainWindowSelf.mainwindow.hide()
+        self.dialogSection.show()    
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:
@@ -463,12 +488,15 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-
+        
         self.initialiseBonTravail()
         
         self.buttonEnvoyer.clicked.connect(self.modifierBonTravail)
         
         self.comboBoxEquipement.currentTextChanged.connect(self.comboChange)
+
+        self.pushButtonAjoutOperation.clicked.connect(self.displayPopUpOperation)
+        self.pushButtonAjoutSection.clicked.connect(self.displayPopUpSection)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

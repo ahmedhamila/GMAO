@@ -39,8 +39,8 @@ class Ui_Dialog(object):
     def fetchRows(self):
         status,record = getEquipements()
         if status :
-                self.tableWidgetEquipement.setColumnCount(5)
-                self.tableWidgetEquipement.setHorizontalHeaderLabels(["Code","Nom","Type","DateFabriquation","DateMiseEnMarche"])
+                self.tableWidgetEquipement.setColumnCount(6)
+                self.tableWidgetEquipement.setHorizontalHeaderLabels(["Reference","Designation","Role","Fabriquant","DateFabriquation","DateMiseEnMarche"])
                 self.tableWidgetEquipement.setRowCount(len(record))
 
                 self.horizontal_header = self.tableWidgetEquipement.horizontalHeader()     
@@ -49,8 +49,10 @@ class Ui_Dialog(object):
                 self.horizontal_header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
                 self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
                 self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+                self.horizontal_header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
                 for row in range(len(record)):
-                        for col in range(5):
+                        for col in range(6):
                                 item=QtWidgets.QTableWidgetItem(str(record[row][col]))
                                 self.tableWidgetEquipement.setItem(row,col,item)
                                 if col ==0:
