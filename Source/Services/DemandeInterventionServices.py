@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
+from . import BonTravailServices
 
 def getDemandeIntervention(id):
     try:
@@ -38,6 +38,7 @@ def setTraiteeDemandeIntervention(id):
             
             cursor.execute(query,("Traitee",id))
             connection.commit()
+        BonTravailServices.setTraiteeBonTravail(id)
 
     except Error as e:
         print("Error while connecting to MySQL", e)
@@ -81,7 +82,6 @@ def updateDemandeIntervention(record):
             print(query,record)
             print("######################################•")
             cursor.execute(query,record)
-            record = cursor.fetchall()
             print(cursor.rowcount)
             connection.commit()
 

@@ -30,13 +30,15 @@ class Ui_Dialog(object):
         self.selectedPieceRechangeLabels=[]
         self.selectedLubrificationLabels=[]
     def addPieceRechange(self):
-        self.selectedPieceRechangeCodes.append(self.comboBoxPieceRechange.currentText().split(" ")[0])
+        if self.comboBoxPieceRechange.currentText().split(" ")[0] not in self.selectedPieceRechangeCodes :
+            self.selectedPieceRechangeCodes.append(self.comboBoxPieceRechange.currentText().split(" ")[0])
 
         self.selectedPieceRechangeLabels.append(self.comboBoxPieceRechange.currentText().split(" ")[1])
         self.labelListePiecesRechanges.setText(",".join(list(set(self.selectedPieceRechangeLabels))))
 
     def addLubrification(self):
-        self.selectedLubrificationCodes.append(self.comboBoxLubrification.currentText().split(" ")[0])
+        if self.comboBoxLubrification.currentText().split(" ")[0] not in self.selectedLubrificationCodes :
+            self.selectedLubrificationCodes.append(self.comboBoxLubrification.currentText().split(" ")[0])
 
         self.selectedLubrificationLabels.append(self.comboBoxLubrification.currentText().split(" ")[1])
         self.labelListeLubrifications.setText(",".join(list(set(self.selectedLubrificationLabels))))

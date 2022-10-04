@@ -235,12 +235,7 @@ class Ui_Dialog(object):
         b,bb=getResponsableChaineProduction(base[0][1])
 
         c,cc=getEquipement(base[0][3])
-        print("/////////////////////////////////////////////////")
-        print(aa)
-        print(bb)
-        print(cc)
-        #print(dd)
-        print("/////////////////////////////////////////////////")
+        
         d,dd=getAgentMaintenanceID(agentid)
        
         mat=bb[0][0]

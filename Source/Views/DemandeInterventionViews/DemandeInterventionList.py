@@ -86,7 +86,7 @@ class Ui_Dialog(object):
         status,record = getDemandeInterventionListRCP(self.mainWindowSelf.matricule)
         if status :
                 self.tableWidgetDemandeIntervention.setColumnCount(9)
-                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','Matricule de Responsable Chaine Production',"Matricule de Responsable Maintenance","Code Equipement","Section","Date","Motif","Description","Status"])
+                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','MatriculeRCP',"MatriculeRM","Code Equipement","Section","Date","Motif","Description","Status"])
                 self.tableWidgetDemandeIntervention.setRowCount(len(record))
 
                 self.horizontal_header = self.tableWidgetDemandeIntervention.horizontalHeader()     

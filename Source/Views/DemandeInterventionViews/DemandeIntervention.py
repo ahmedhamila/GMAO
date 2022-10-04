@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
-from Services import AgentMaintenanceServices,ResponsableChaineProductionServices,EquipementServices,DemandeInterventionServices
+from Services import AgentMaintenanceServices,ResponsableChaineProductionServices,EquipementServices,DemandeInterventionServices,ChaineProductionServices,ResponsableMaintenanceServices
 
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf) -> None:
@@ -10,9 +10,11 @@ class Ui_Dialog(object):
         self.label_7.setText(self.codes[self.comboBox.currentIndex()])
     def addDemandeIntervention(self):
         Matricule_RCP=self.mainWindowSelf.matricule
-        matriculeRM="AAA00001"
+        #TODO:
+        matriculeRM=self.comboBoxRM.currentText().split(" ")[0]
+        #TODO:
         codeEquipement=self.label_7.text()
-        section=self.Section.text()
+        section=self.Section.currentText()
         dateLiberation=datetime.now().__str__()
         motif = "ArretComplet" if self.ArretComplet.isChecked() else "AnomaliePouvantEntrainerunePanne"
         description = self.Observation.toPlainText()
@@ -43,8 +45,19 @@ class Ui_Dialog(object):
             self.label_7.setText(record[0][0])
             for rec in record :
                 self.comboBox.addItem(rec[1]+" "+rec[2])
-        
-        self.Section.setText("")
+
+        state,record=ResponsableMaintenanceServices.getResponsableMaintenanceAll()
+        self.comboBoxRM.clear()
+        if state:
+            for rec in record:
+                self.comboBoxRM.addItem(rec[0]+" "+rec[1]+" "+rec[2])
+
+        state,record=ChaineProductionServices.getChaineProduction()
+        self.Section.clear()
+        if state:
+            for rec in record:
+                self.Section.addItem(rec[0])
+
         self.Observation.setText("")
 
         self.ArretComplet.setChecked(False)
@@ -63,7 +76,7 @@ class Ui_Dialog(object):
         msgBox.exec()
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(918, 840)
+        Dialog.resize(926, 840)
         Dialog.setStyleSheet("background-color : #22333B;\n"
 "")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(Dialog)
@@ -171,9 +184,15 @@ class Ui_Dialog(object):
 "    height : 25px;\n"
 "}")
         self.widget_9.setObjectName("widget_9")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_9)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.label_6 = QtWidgets.QLabel(self.widget_9)
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.widget_9)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.frame_2 = QtWidgets.QFrame(self.widget_9)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.frame_2)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.label_6 = QtWidgets.QLabel(self.frame_2)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -182,13 +201,13 @@ class Ui_Dialog(object):
         self.label_6.setFont(font)
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
-        self.horizontalLayout_4.addWidget(self.label_6)
-        self.comboBox = QtWidgets.QComboBox(self.widget_9)
+        self.horizontalLayout_6.addWidget(self.label_6)
+        self.comboBox = QtWidgets.QComboBox(self.frame_2)
         self.comboBox.setStyleSheet("border: 1px solid back;height:25px;")
         self.comboBox.setCurrentText("")
         self.comboBox.setObjectName("comboBox")
-        self.horizontalLayout_4.addWidget(self.comboBox)
-        self.label_7 = QtWidgets.QLabel(self.widget_9)
+        self.horizontalLayout_6.addWidget(self.comboBox)
+        self.label_7 = QtWidgets.QLabel(self.frame_2)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -196,21 +215,45 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
-        self.horizontalLayout_4.addWidget(self.label_7)
-        self.Section = QtWidgets.QLineEdit(self.widget_9)
+        self.horizontalLayout_6.addWidget(self.label_7)
+        self.verticalLayout_7.addWidget(self.frame_2)
+        self.frame_3 = QtWidgets.QFrame(self.widget_9)
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.frame_3)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_4 = QtWidgets.QLabel(self.frame_3)
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(11)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.Section.setFont(font)
-        self.Section.setStyleSheet("border : 1px solid black;")
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_4.addWidget(self.label_4)
+        self.comboBoxRM = QtWidgets.QComboBox(self.frame_3)
+        self.comboBoxRM.setStyleSheet("border: 1px solid back;height:25px;")
+        self.comboBoxRM.setObjectName("comboBoxRM")
+        self.horizontalLayout_4.addWidget(self.comboBoxRM)
+        self.label_5 = QtWidgets.QLabel(self.frame_3)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_4.addWidget(self.label_5)
+        self.Section = QtWidgets.QComboBox(self.frame_3)
+        self.Section.setStyleSheet("border: 1px solid back;height:25px;")
         self.Section.setObjectName("Section")
         self.horizontalLayout_4.addWidget(self.Section)
         self.horizontalLayout_4.setStretch(0, 1)
         self.horizontalLayout_4.setStretch(1, 2)
         self.horizontalLayout_4.setStretch(2, 1)
         self.horizontalLayout_4.setStretch(3, 2)
+        self.verticalLayout_7.addWidget(self.frame_3)
         self.verticalLayout_4.addWidget(self.widget_9)
         self.verticalLayout_3.addWidget(self.widget_7)
         self.widget_5 = QtWidgets.QWidget(self.widget_2)
@@ -312,8 +355,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-
-
+        
         self.initialiseDemandeIntervention()
 
         self.comboBox.currentTextChanged.connect(self.comboChange)
@@ -332,7 +374,8 @@ class Ui_Dialog(object):
         self.NumeroChaine.setText(_translate("Dialog", "Chaine :"))
         self.label_6.setText(_translate("Dialog", "Equipement :"))
         self.label_7.setText(_translate("Dialog", "Code : "))
-        self.Section.setPlaceholderText(_translate("Dialog", "Section"))
+        self.label_4.setText(_translate("Dialog", "Responsable Maintenance :"))
+        self.label_5.setText(_translate("Dialog", "Section :"))
         self.label.setText(_translate("Dialog", "Motif de l\'appel :"))
         self.ArretComplet.setText(_translate("Dialog", "Arret Complet"))
         self.Anomalie.setText(_translate("Dialog", "Anomalie Pouvant Entrainer une Panne"))

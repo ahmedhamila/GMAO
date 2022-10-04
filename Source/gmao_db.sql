@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2022 at 06:09 PM
+-- Generation Time: Oct 04, 2022 at 10:20 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -100,9 +100,14 @@ CREATE TABLE `bon_travail` (
 --
 
 INSERT INTO `bon_travail` (`Id`, `Matricule_RM`, `Matricule_AM`, `Description`, `Operation`, `Section`, `DateLiberation`, `type`, `CodeEquipement`, `RefDIM`, `Frequence`, `Active`, `Status`) VALUES
-(36, 'MMM00001', 'AAA00001', 'DescriptionBonTra1', 6, 'CCC00001', '2022-10-02 17:56:49', 'Preventif', 'EEE00001', NULL, '12', 1, 'NonTraitee'),
+(36, 'MMM00001', 'AAA00001', 'DescriptionBonTra1', 7, 'CCC00001', '2022-10-02 17:56:49', 'Preventif', 'EEE00001', NULL, '12', 1, 'NonTraitee'),
 (37, 'MMM00002', 'AAA00002', 'DescriptionBonTra2', 7, 'CCC00002', '2022-10-02 17:57:17', 'Preventif', 'EEE00002', NULL, '12', 0, 'NonTraitee'),
-(38, 'MMM00003', 'AAA00003', 'DescriptionBonTra3', 8, 'CCC00003', '2022-10-02 17:59:21', 'Curatif', 'EEE00003', 15, NULL, 0, 'NonTraitee');
+(38, 'MMM00003', 'AAA00003', 'DescriptionBonTra3', 8, 'CCC00003', '2022-10-02 17:59:21', 'Curatif', 'EEE00003', 15, NULL, 0, 'NonTraitee'),
+(41, 'MMM00001', 'AAA00003', 'DescTest', 9, 'CCC00001', '2022-10-02 18:31:27', 'Curatif', 'EEE00001', 13, 'NULL', 0, 'NonTraitee'),
+(44, 'MMM00001', 'AAA00001', '5', 6, 'CCC00001', '2022-10-04 19:11:15', 'Curatif', 'EEE00001', 18, 'NULL', 0, 'NonTraitee'),
+(45, 'MMM00001', 'AAA00001', '2', 10, 'CCC00001', '2022-10-04 19:15:07', 'Curatif', 'EEE00001', 19, 'NULL', 0, 'NonTraitee'),
+(46, 'MMM00001', 'AAA00001', 'd', 6, 'CCC00001', '2022-10-04 19:20:36', 'Curatif', 'EEE00001', 20, 'NULL', 0, 'NonTraitee'),
+(47, 'MMM00001', 'AAA00001', '111111111111111111111111', 6, 'CCC00001', '2022-10-04 19:22:52', 'Curatif', 'EEE00001', 21, 'NULL', 0, 'Traitee');
 
 -- --------------------------------------------------------
 
@@ -168,9 +173,14 @@ CREATE TABLE `demande_intervention` (
 --
 
 INSERT INTO `demande_intervention` (`Id`, `Matricule_RCP`, `Matricule_RM`, `CodeEquipement`, `Section`, `DateLiberation`, `Motif`, `Description`, `Status`) VALUES
-(13, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-02 17:58:28', 'ArretComplet', 'DescriptionDemandeInter1', 'NonTraitee'),
+(13, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-02 17:58:28', 'ArretComplet', 'DescriptionDemandeInter1', 'Traitee'),
 (14, 'HHH00002', 'MMM00002', 'EEE00002', 'CCC00002', '2022-10-02 17:58:28', 'ArretComplet', 'DescriptionDemandeInter3', 'NonTraitee'),
-(15, 'HHH00003', 'MMM00003', 'EEE00003', 'CCC00003', '2022-10-02 17:58:28', 'AnomaliePouvantEntrainerunePanne', 'DescriptionDemandeInter3', 'NonTraitee');
+(15, 'HHH00003', 'MMM00003', 'EEE00003', 'CCC00003', '2022-10-02 17:58:28', 'AnomaliePouvantEntrainerunePanne', 'DescriptionDemandeInter3', 'NonTraitee'),
+(17, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-04 19:02:05', 'ArretComplet', 'Test3', 'EnCours'),
+(18, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-04 19:10:36', 'ArretComplet', '1', 'Traitee'),
+(19, 'HHH00001', 'MMM00001', 'EEE00002', 'CCC00002', '2022-10-04 19:14:44', 'AnomaliePouvantEntrainerunePanne', 'lhbhjblb', 'Traitee'),
+(20, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-04 19:20:23', 'ArretComplet', 'd', 'Traitee'),
+(21, 'HHH00001', 'MMM00001', 'EEE00001', 'CCC00001', '2022-10-04 19:22:36', 'ArretComplet', '11111111111111', 'Traitee');
 
 --
 -- Triggers `demande_intervention`
@@ -189,7 +199,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `equipement` (
-  `Référence` varchar(25) NOT NULL,
+  `Reference` varchar(25) NOT NULL,
   `designation` varchar(50) NOT NULL,
   `Role` varchar(50) NOT NULL,
   `Fabriquant` varchar(25) NOT NULL,
@@ -201,7 +211,7 @@ CREATE TABLE `equipement` (
 -- Dumping data for table `equipement`
 --
 
-INSERT INTO `equipement` (`Référence`, `designation`, `Role`, `Fabriquant`, `DateFabriquation`, `DateMiseEnMarche`) VALUES
+INSERT INTO `equipement` (`Reference`, `designation`, `Role`, `Fabriquant`, `DateFabriquation`, `DateMiseEnMarche`) VALUES
 ('EEE00001', 'Equipement1', 'Role1', 'Fabriquant1', '2022-10-01', '2022-10-02'),
 ('EEE00002', 'Equipement2', 'Role2', 'Fabriquant2', '2022-10-01', '2022-10-02'),
 ('EEE00003', 'Equipement3', 'Role3', 'Fabriquant3', '2022-10-01', '2022-10-02');
@@ -215,14 +225,14 @@ INSERT INTO `equipement` (`Référence`, `designation`, `Role`, `Fabriquant`, `D
 CREATE TABLE `equipe_piece` (
   `id` int(11) NOT NULL,
   `Equipement` varchar(25) NOT NULL,
-  `piéce` varchar(25) NOT NULL
+  `piece` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `equipe_piece`
 --
 
-INSERT INTO `equipe_piece` (`id`, `Equipement`, `piéce`) VALUES
+INSERT INTO `equipe_piece` (`id`, `Equipement`, `piece`) VALUES
 (1, 'EEE00001', 'PR1'),
 (2, 'EEE00002', 'PR2'),
 (3, 'EEE00003', 'PR3');
@@ -297,7 +307,12 @@ INSERT INTO `notification` (`id`, `Emetteur`, `Recepteur`, `DateTime`, `Type`) V
 (8, 'AAA00003', 'AAA00001', '2022-09-10 11:26:09', 'DemandeIntervention'),
 (9, 'HHH00001', 'MMM00001', '2022-10-02 17:58:28', 'DemandeIntervention'),
 (10, 'HHH00002', 'MMM00002', '2022-10-02 17:58:28', 'DemandeIntervention'),
-(11, 'HHH00003', 'MMM00003', '2022-10-02 17:58:28', 'DemandeIntervention');
+(11, 'HHH00003', 'MMM00003', '2022-10-02 17:58:28', 'DemandeIntervention'),
+(12, 'HHH00001', 'MMM00003', '2022-10-04 19:02:05', 'DemandeIntervention'),
+(13, 'HHH00001', 'MMM00001', '2022-10-04 19:10:36', 'DemandeIntervention'),
+(14, 'HHH00001', 'MMM00001', '2022-10-04 19:14:44', 'DemandeIntervention'),
+(15, 'HHH00001', 'MMM00001', '2022-10-04 19:20:23', 'DemandeIntervention'),
+(16, 'HHH00001', 'MMM00001', '2022-10-04 19:22:36', 'DemandeIntervention');
 
 -- --------------------------------------------------------
 
@@ -318,7 +333,9 @@ CREATE TABLE `operation` (
 INSERT INTO `operation` (`id`, `titre`, `Mode`) VALUES
 (6, 'Operation1', 'OperationDescription1'),
 (7, 'Operation2', 'OperationDescription2'),
-(8, 'Operation3', 'OperationDescription3');
+(8, 'Operation3', 'OperationDescription3'),
+(9, 'OperationTest', 'OperationTestDesc'),
+(10, 'OpTest2', 'OpTest2');
 
 -- --------------------------------------------------------
 
@@ -339,7 +356,9 @@ CREATE TABLE `oper_lubri` (
 INSERT INTO `oper_lubri` (`id`, `oper`, `lubri`) VALUES
 (2, 6, 'Lub1'),
 (3, 7, 'Lub2'),
-(4, 8, 'Lub3');
+(4, 8, 'Lub3'),
+(5, 9, 'Lub1'),
+(6, 10, 'Lub1');
 
 -- --------------------------------------------------------
 
@@ -360,7 +379,9 @@ CREATE TABLE `oper_piece` (
 INSERT INTO `oper_piece` (`id`, `oper`, `piece`) VALUES
 (2, 6, 'PR1'),
 (3, 7, 'PR2'),
-(4, 8, 'PR3');
+(4, 8, 'PR3'),
+(5, 9, 'PR1'),
+(6, 10, 'PR3');
 
 -- --------------------------------------------------------
 
@@ -550,7 +571,7 @@ ALTER TABLE `demande_intervention`
 -- Indexes for table `equipement`
 --
 ALTER TABLE `equipement`
-  ADD PRIMARY KEY (`Référence`);
+  ADD PRIMARY KEY (`Reference`);
 
 --
 -- Indexes for table `equipe_piece`
@@ -558,7 +579,7 @@ ALTER TABLE `equipement`
 ALTER TABLE `equipe_piece`
   ADD PRIMARY KEY (`id`),
   ADD KEY `Equipement` (`Equipement`),
-  ADD KEY `piéce` (`piéce`);
+  ADD KEY `piéce` (`piece`);
 
 --
 -- Indexes for table `lubrification`
@@ -654,7 +675,7 @@ ALTER TABLE `bon_approvisionnement`
 -- AUTO_INCREMENT for table `bon_travail`
 --
 ALTER TABLE `bon_travail`
-  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `Id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `chaine_equipement`
@@ -666,37 +687,37 @@ ALTER TABLE `chaine_equipement`
 -- AUTO_INCREMENT for table `demande_intervention`
 --
 ALTER TABLE `demande_intervention`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `equipe_piece`
 --
 ALTER TABLE `equipe_piece`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `operation`
 --
 ALTER TABLE `operation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `oper_lubri`
 --
 ALTER TABLE `oper_lubri`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `oper_piece`
 --
 ALTER TABLE `oper_piece`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `piece_rechange_bon_approvisionnement`
@@ -721,7 +742,7 @@ ALTER TABLE `bon_approvisionnement`
 ALTER TABLE `bon_travail`
   ADD CONSTRAINT `FK_BT_1` FOREIGN KEY (`Matricule_RM`) REFERENCES `responsable_maintenance` (`Matricule`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_BT_2` FOREIGN KEY (`Matricule_AM`) REFERENCES `agent_maintenance` (`Matricule`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_BT_3` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_BT_3` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Reference`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_BT_4` FOREIGN KEY (`RefDIM`) REFERENCES `demande_intervention` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_BT_5` FOREIGN KEY (`Operation`) REFERENCES `operation` (`id`),
   ADD CONSTRAINT `FK_BT_6` FOREIGN KEY (`Section`) REFERENCES `chaine_production` (`RefChaine`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -730,14 +751,14 @@ ALTER TABLE `bon_travail`
 -- Constraints for table `chaine_equipement`
 --
 ALTER TABLE `chaine_equipement`
-  ADD CONSTRAINT `FK_CE_1` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_CE_1` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Reference`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_CE_2` FOREIGN KEY (`RefChaine`) REFERENCES `chaine_production` (`RefChaine`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `demande_intervention`
 --
 ALTER TABLE `demande_intervention`
-  ADD CONSTRAINT `FK_DI_1` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Référence`),
+  ADD CONSTRAINT `FK_DI_1` FOREIGN KEY (`CodeEquipement`) REFERENCES `equipement` (`Reference`),
   ADD CONSTRAINT `FK_DI_2` FOREIGN KEY (`Matricule_RCP`) REFERENCES `responsable_chaine_production` (`Matricule`),
   ADD CONSTRAINT `FK_DI_3` FOREIGN KEY (`Matricule_RM`) REFERENCES `responsable_maintenance` (`Matricule`),
   ADD CONSTRAINT `FK_DI_4` FOREIGN KEY (`Section`) REFERENCES `chaine_production` (`RefChaine`);
@@ -746,8 +767,8 @@ ALTER TABLE `demande_intervention`
 -- Constraints for table `equipe_piece`
 --
 ALTER TABLE `equipe_piece`
-  ADD CONSTRAINT `equipe_piece_ibfk_1` FOREIGN KEY (`Equipement`) REFERENCES `equipement` (`Référence`),
-  ADD CONSTRAINT `equipe_piece_ibfk_2` FOREIGN KEY (`piéce`) REFERENCES `piece_rechange` (`Reference`);
+  ADD CONSTRAINT `equipe_piece_ibfk_1` FOREIGN KEY (`Equipement`) REFERENCES `equipement` (`Reference`),
+  ADD CONSTRAINT `equipe_piece_ibfk_2` FOREIGN KEY (`piece`) REFERENCES `piece_rechange` (`Reference`);
 
 --
 -- Constraints for table `oper_lubri`

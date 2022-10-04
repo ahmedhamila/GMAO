@@ -38,7 +38,7 @@ class Ui_Dialog(object):
                 status,record = getDemandeInterventionListAll()
         if status :
                 self.tableWidgetDemandeIntervention.setColumnCount(9)
-                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','Matricule de Responsable Chaine Production',"Matricule de Responsable Maintenance","Code Equipement","Section","Date","Motif","Description","Status"])
+                self.tableWidgetDemandeIntervention.setHorizontalHeaderLabels(['Id','MatriculeRCP',"MatriculeRM","Code Equipement","Section","Date","Motif","Description","Status"])
                 self.tableWidgetDemandeIntervention.setRowCount(len(record))
 
                 self.horizontal_header = self.tableWidgetDemandeIntervention.horizontalHeader()     
@@ -63,6 +63,8 @@ class Ui_Dialog(object):
                                 self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(202,225,183))
                         if str(record[row][8])=="NonTraitee":
                                 self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(246,173,158))
+                        if str(record[row][8])=="EnCours":
+                                self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(238,220,52))
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:

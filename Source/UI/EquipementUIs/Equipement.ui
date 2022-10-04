@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>702</width>
-    <height>0</height>
+    <height>754</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -342,7 +342,10 @@
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 1px solid back;height:25px;margin-right:25px;</string>
+               <string notr="true">border: 1px solid back;height:25px;</string>
+              </property>
+              <property name="displayFormat">
+               <string>yyyy-M-d</string>
               </property>
              </widget>
             </item>
@@ -384,7 +387,10 @@
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 1px solid back;height:25px;margin-right:25px;</string>
+               <string notr="true">border: 1px solid back;height:25px;</string>
+              </property>
+              <property name="displayFormat">
+               <string>yyyy-M-d</string>
               </property>
              </widget>
             </item>

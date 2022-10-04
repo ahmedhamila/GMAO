@@ -2,8 +2,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMessageBox
 from Services.EquipementServices import getEquipements,deleteEquipement
-#from .Equipement import Equipement_UI
-#from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
+from .Equipement import Ui_Dialog as Equipement_UI
+from .EquipementModify import Ui_Dialog as Equipement_Modif_UI
 class Ui_Dialog(object):
     def setColortoRow(self,table, rowIndex, color):
         for j in range(table.columnCount()):
@@ -22,13 +22,13 @@ class Ui_Dialog(object):
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner une ligne",False)
                 return 
-        #self.RedirectEquipementModify(ids[0])
-    '''def RedirectEquipementModify(self,id):
+        self.RedirectEquipementModify(ids[0])
+    def RedirectEquipementModify(self,id):
         self.dialogEquipement = QtWidgets.QDialog()
-        self.uiEquipement = Equipement_Modif_UI(self.mainWindowSelf,id,self.EquipementDLG,self)
+        self.uiEquipement = Equipement_Modif_UI(self.mainWindowSelf,id,self.dialogEquipementList,self)
         self.uiEquipement.setupUi(self.dialogEquipement)
         self.mainWindowSelf.stackedWidget.addWidget(self.dialogEquipement)
-        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogEquipement)'''
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogEquipement)
     def supprimerEquipement(self):
         ids=self.getSelectedRow()
         if len(ids)<1:
@@ -68,14 +68,15 @@ class Ui_Dialog(object):
         msgBox.setWindowTitle(title)
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec()
-    '''def RedirectEquipement(self):
+    def RedirectEquipement(self):
         self.dialogEquipement = QtWidgets.QDialog()
-        self.uiEquipement = Equipement_UI()
+        self.uiEquipement = Equipement_UI(self.mainWindowSelf)
         self.uiEquipement.setupUi(self.dialogEquipement)
         self.mainWindowSelf.stackedWidget.addWidget(self.dialogEquipement)
-        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogEquipement)'''
-    def __init__(self,mainWindowSelf) -> None:
+        self.mainWindowSelf.stackedWidget.setCurrentWidget(self.dialogEquipement)
+    def __init__(self,mainWindowSelf,dialogEquipementList) -> None:
         self.mainWindowSelf=mainWindowSelf
+        self.dialogEquipementList=dialogEquipementList
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1018, 810)
@@ -191,6 +192,7 @@ class Ui_Dialog(object):
         
         self.ButtonModifier.clicked.connect(self.modifierEquipement)
         self.ButtonSupprimer.clicked.connect(self.supprimerEquipement)
+        self.ButtonCreerEquipement.clicked.connect(self.RedirectEquipement)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
