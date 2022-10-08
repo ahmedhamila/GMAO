@@ -11,7 +11,7 @@ class Ui_Dialog(object):
         self.BonTravailDLG=BonTravailDLG
         self.BonTravailUI=BonTravailUI
     def comboChange(self):
-        self.labelCodeEquipement.setText(self.codesEquipement[self.comboBoxEquipement.currentIndex()])
+        self.labelCodeEquipement.setText(str(self.codesEquipement[self.comboBoxEquipement.currentIndex()]))
     def initialiseBonTravail(self):
         status,record=BonTravailServices.getBonTravail(self.id)
         
@@ -46,7 +46,7 @@ class Ui_Dialog(object):
                     self.comboBoxEquipement.addItem(rec[1]+" "+rec[2])
 
             self.comboBoxEquipement.setCurrentIndex(self.codesEquipement.index(record[0][8]))
-            self.labelCodeEquipement.setText(record3[self.codesEquipement.index(record[0][8])][0])
+            self.labelCodeEquipement.setText(str(record3[self.codesEquipement.index(record[0][8])][0]))
                 
             if self.type == "Curatif":
                 self.comboBoxEquipement.setDisabled(True)
@@ -75,17 +75,17 @@ class Ui_Dialog(object):
 
             
             
-            self.textEditDescription.setText(record[0][3])
+            self.textEditDescription.setText(str(record[0][3]))
 
             if self.type == "Preventif" :
                 self.label_3.setText("Préventif ( fréquence :")
-                self.lineEditPreventifCuratif.setText(record[0][10])
+                self.lineEditPreventifCuratif.setText(str(record[0][10]))
                 self.checkBoxActive.setChecked(False if record[0][11]==0 else True)
                 self.checkBoxActive.setVisible(True)
             else :
                 self.label_3.setText("Curatif ( refDIM :")
                 self.label_5.setVisible(False)
-                self.lineEditPreventifCuratif.setText(record[0][9])
+                self.lineEditPreventifCuratif.setText(str(record[0][9]))
                 self.lineEditPreventifCuratif.setReadOnly(True)
                 self.checkBoxActive.setChecked(False)
                 self.checkBoxActive.setVisible(False)
@@ -112,9 +112,7 @@ class Ui_Dialog(object):
         description=self.textEditDescription.toPlainText()
         
 
-        # TODO:Add Operation
         operation=self.comboBoxOperation.currentText().split(" ")[1]
-        # TODO:Gestion d'erreurs
         
         
         record = (matriculeRM,matriculeAM,description,operation,section,self.type,codeEquipement,frequence,1 if active else 0,self.id)

@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMessageBox
 from .DemandeInterventionModify import Ui_Dialog as DemandeIntervention_Modif_UI
 from Services.DemandeInterventionServices import getDemandeIntervention, getDemandeInterventionListRCP,deleteDemandeIntervention
 from .ValiderDemandeIntervention import Ui_Dialog as valider_UI
+from ..Components import PDFGenarator
 class Ui_Dialog(object):
     def setColortoRow(self,table, rowIndex, color):
         for j in range(table.columnCount()):
@@ -81,6 +82,11 @@ class Ui_Dialog(object):
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner au moins une ligne",False)
                 return 
+        for id in ids:
+                status,record=getDemandeIntervention(id)
+                if status:
+                        PDFGenarator.generateDemandeInterventionPDF(record[0])
+        self.showDialog("Success","PDF(s) generee avec succee",True)
 
     def fetchRows(self):
         status,record = getDemandeInterventionListRCP(self.mainWindowSelf.matricule)

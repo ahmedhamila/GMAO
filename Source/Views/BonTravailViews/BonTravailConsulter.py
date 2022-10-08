@@ -1,8 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QColor
-from Services.BonTravailServices import getBonTravailListAM,getBonTravailListAll
-
+from Services.BonTravailServices import getBonTravailListAM,getBonTravailListAll,getBonTravail
+from ..Components import PDFGenarator
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf) -> None:
         self.mainWindowSelf=mainWindowSelf
@@ -11,9 +11,9 @@ class Ui_Dialog(object):
                 table.item(rowIndex, j).setBackground(color)
     def getSelectedRow(self):
         rows=[]
-        for row in range(self.tableWidgetDemandeIntervention.rowCount()):
-                if self.tableWidgetDemandeIntervention.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
-                        rows.append(self.tableWidgetDemandeIntervention.item(row,0).text())
+        for row in range(self.tableWidgetBonTravail.rowCount()):
+                if self.tableWidgetBonTravail.item(row,0).checkState()==QtCore.Qt.CheckState.Checked:
+                        rows.append(self.tableWidgetBonTravail.item(row,0).text())
         return rows
     def fetchRows(self):
         if self.mainWindowSelf.role == "AgentMaintenance" :
@@ -54,6 +54,17 @@ class Ui_Dialog(object):
                                 self.setColortoRow(self.tableWidgetBonTravail,row,QColor(202,225,183))
                         if str(record[row][12])=="NonTraitee":
                                 self.setColortoRow(self.tableWidgetBonTravail,row,QColor(246,173,158))
+    def imprimerBonTravail(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return
+        for id in ids:
+                status,record=getBonTravail(id)
+                if status:
+                        PDFGenarator.generateBonTravailPDF(record[0])
+        self.showDialog("Success","PDF(s) generee avec succee",True)
+
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:
@@ -163,6 +174,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
         self.fetchRows()
+        self.ButtonImprimer.clicked.connect(self.imprimerBonTravail)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

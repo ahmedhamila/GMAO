@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QColor
 from Services.DemandeInterventionServices import * 
 from .DemandeInterventionConsulterDetaille import Ui_Dialog as DemandeIntervention_Consulter_Detaille_UI
+from ..Components import PDFGenarator
 class Ui_Dialog(object):
     def __init__(self,mainWindowSelf,selfDLG) -> None:
         self.mainWindowSelf=mainWindowSelf
@@ -65,6 +66,16 @@ class Ui_Dialog(object):
                                 self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(246,173,158))
                         if str(record[row][8])=="EnCours":
                                 self.setColortoRow(self.tableWidgetDemandeIntervention,row,QColor(238,220,52))
+    def imprimerDemandeIntervention(self):
+        ids=self.getSelectedRow()
+        if len(ids)<1:
+                self.showDialog("Error","Il faut selectionner au moins une ligne",False)
+                return 
+        for id in ids:
+                status,record=getDemandeIntervention(id)
+                if status:
+                        PDFGenarator.generateDemandeInterventionPDF(record[0])
+        self.showDialog("Success","PDF(s) generee avec succee",True)
     def showDialog(self,title,str,bool):
         msgBox = QMessageBox()
         if bool==False:
@@ -175,6 +186,7 @@ class Ui_Dialog(object):
 
         self.fetchRows()
         self.ButtonConsulter.clicked.connect(self.ConsulterDetaille)
+        self.ButtonImprimer.clicked.connect(self.imprimerDemandeIntervention)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

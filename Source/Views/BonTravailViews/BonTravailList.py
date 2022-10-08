@@ -3,8 +3,8 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMessageBox
 from .BonTravail import Ui_Dialog as Bontravail_UI
 from .BonTravailModify import Ui_Dialog as BonTravail_Modif_UI
-from Services.BonTravailServices import getBonTravailListRM,deleteBonTravail
-
+from Services.BonTravailServices import getBonTravailListRM,deleteBonTravail,getBonTravail
+from ..Components import PDFGenarator
 class Ui_Dialog(object):
     def setColortoRow(self,table, rowIndex, color):
         for j in range(table.columnCount()):
@@ -16,6 +16,7 @@ class Ui_Dialog(object):
                         rows.append(self.tableWidgetBonTravail.item(row,0).text())
         return rows
     def modifierBonTravial(self):
+
         ids=self.getSelectedRow()
         if len(ids)>1:
                 self.showDialog("Error","Impossible d'effectuer cette action sur plus d'une ligne",False)
@@ -23,7 +24,13 @@ class Ui_Dialog(object):
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner une ligne",False)
                 return 
-        self.RedirectBonTravailModify(ids[0])
+        status,record=getBonTravail(ids[0])
+        if status :
+                if record[0][12]=="Traitee":
+                        self.showDialog("Error","Impossible d'effectuer cette action",False)
+                        return
+                else:
+                        self.RedirectBonTravailModify(ids[0])
     def RedirectBonTravailModify(self,id):
         self.dialogBonTravail = QtWidgets.QDialog()
         self.uiBonTravail = BonTravail_Modif_UI(self.mainWindowSelf,id,self.BonTravailDLG,self)
@@ -41,7 +48,13 @@ class Ui_Dialog(object):
         ids=self.getSelectedRow()
         if len(ids)<1:
                 self.showDialog("Error","Il faut selectionner au moins une ligne",False)
-                return 
+                return
+        for id in ids:
+                status,record=getBonTravail(id)
+                if status:
+                        PDFGenarator.generateBonTravailPDF(record[0])
+        self.showDialog("Success","PDF(s) generee avec succee",True)
+         
     def fetchRows(self):
         status,record = getBonTravailListRM(self.mainWindowSelf.matricule)
         if status :
