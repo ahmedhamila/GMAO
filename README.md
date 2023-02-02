@@ -20,7 +20,7 @@ GMAO offers a streamlined solution for managing the maintenance of machines in a
 1. Clone the repository: `git clone https://github.com/<your-username>/GMAO.git`
 2. Navigate to the project directory: `cd GMAO`
 3. Install the required dependencies: `pip install -r PyQt5`
-4. Run the application: `python main.py`
+4. Run the application: `python Source/Main.py`
 
 ## Conclusion
 GMAO is a valuable tool for any factory looking to efficiently manage and track the maintenance of their machines. By using this application, factories can improve their maintenance processes, reduce downtime, and ensure smooth production.
