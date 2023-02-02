@@ -19,7 +19,7 @@ GMAO offers a streamlined solution for managing the maintenance of machines in a
 ## Getting Started
 1. Clone the repository: `git clone https://github.com/<your-username>/GMAO.git`
 2. Navigate to the project directory: `cd GMAO`
-3. Install the required dependencies: `pip install -r requirements.txt`
+3. Install the required dependencies: `pip install -r PyQt5`
 4. Run the application: `python main.py`
 
 ## Conclusion
