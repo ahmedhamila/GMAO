@@ -1,22 +1,26 @@
-# GMAO
+# GMAO (Computerized Maintenance Management System)
 
-GMAO Project
+## Introduction
+GMAO is a desktop GUI application developed as a summer internship project during the second year of preparatory cycle degree. The aim of this project is to provide a comprehensive solution for managing the maintenance of machines in a factory. 
 
-## Getting started
+## Technologies Used
+- PyQt5: A popular Python library for creating GUI applications.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Features
+- Two types of maintenance support: 
+  - Automatic, scheduled, or periodic maintenance
+  - Maintenance following machine dysfunction
+- Hierarchy management of employees and their roles in the machine reporting and fixing process, from the factory administrator to the contractor.
+- User-friendly and responsive GUI interfaces.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Contributions
+GMAO offers a streamlined solution for managing the maintenance of machines in a factory, reducing downtime and ensuring smooth production. With its comprehensive features and user-friendly interface, it provides a significant contribution to the maintenance management industry.
 
-## Add your files
+## Getting Started
+1. Clone the repository: `git clone https://github.com/<your-username>/GMAO.git`
+2. Navigate to the project directory: `cd GMAO`
+3. Install the required dependencies: `pip install -r requirements.txt`
+4. Run the application: `python main.py`
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/ahmedhamila/gmao.git
-git branch -M main
-git push -uf origin main
-```
-
+## Conclusion
+GMAO is a valuable tool for any factory looking to efficiently manage and track the maintenance of their machines. By using this application, factories can improve their maintenance processes, reduce downtime, and ensure smooth production.
